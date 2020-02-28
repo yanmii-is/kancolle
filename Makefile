@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS=-I.
 
-all: main.c
-	$(CC) -o kancolle main.c
+all: main.c game.c
+	$(CC) -o kancolle main.c game.c
 
 clean:
 	rm -f kancolle
