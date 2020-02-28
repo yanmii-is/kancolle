@@ -18,5 +18,8 @@ void print_game(Game* game)
 {
   printf("State: %s\n", game->state ? "true" : "false");
   printf("Boats: %d | %d | %d | %d\n", game->b1, game->b2, game->b3, game->b4);
-  // TODO: print_board
+  printf("Board 1:\n");
+  print_board(game->board_p1);
+  printf("Board 2:\n");
+  print_board(game->board_p2);
 }
