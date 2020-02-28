@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     scanf("%d", &n);
     if (n < 4)
     {
-      printf("Invalid size, a board must be at least 4x4");
+      printf("Invalid size (%dx%d), a board must be at least 4x4\n", n, n);
     }
   }
 
