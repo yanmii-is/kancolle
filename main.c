@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
   int b3 = read_input(3);
   int b4 = read_input(4);
 
-  mk_game(n, n);
+  Game* game = mk_game(n, n, b1, b2, b3, b4);
+  print_game(game);
   return 0;
 }
