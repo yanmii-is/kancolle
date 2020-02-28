@@ -1,5 +1,5 @@
 # Binary
 kancolle
 ./kancolle
-./kancolle.elf
-kancolle.exe
+*.elf
+*.exe
