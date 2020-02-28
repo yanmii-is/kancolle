@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "game.h"
 
+
 int main(int argc, char *argv[])
 {
   if (argc >= 2)
@@ -8,6 +9,6 @@ int main(int argc, char *argv[])
     printf("%d argument(s)\n", argc-1);
   }
 
-  mk_game(10,10);
+  mk_game(10, 10);
   return 0;
 }
