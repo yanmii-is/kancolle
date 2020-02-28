@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "board.h"
 
+
 typedef struct
 {
   bool   state;
