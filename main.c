@@ -22,13 +22,13 @@ int read_amount(int size)
 
 Boat* read_boat(int size, int remaining, int total)
 {
-  int x = 0;
-  int y = 0;
-  while (x <= 0 || y <= 0)
+  int x = -1;
+  int y = -1;
+  while (x < 0 || y < 0)
   {
     printf("Player 1, choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
     scanf("%d,%d", &x, &y);
-    if (x <= 0 || y <= 0)
+    if (x < 0 || y < 0)
     {
       printf("Invalid coordinates (%d,%d), you must choose positive coordinates and input them as \"x,y\"\n", x, y);
     }
