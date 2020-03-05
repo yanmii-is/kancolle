@@ -39,13 +39,13 @@ Boat* read_boat(int size, int remaining, int total)
 int main(int argc, char *argv[])
 {
   int n = 0;
-  while (n < 4 || n > 99)
+  while (n < 4 || n > 100)
   {
     printf("Choose the board size: ");
     scanf("%d", &n);
-    if (n < 4 || n > 99)
+    if (n < 4 || n > 100)
     {
-      printf("Invalid size (%dx%d), a board must be between 4x4 and 99x99\n", n, n);
+      printf("Invalid size (%dx%d), a board must be between 4x4 and 100x100\n", n, n);
     }
   }
 
