@@ -3,7 +3,15 @@
 
 Board* mk_board(int height, int width)
 {
-  Board* ret = malloc(sizeof(Board));
+  Board* ret;
+
+  if (height <= 0 || width <= 0)
+  {
+    _logf(L_ERROR, "Cannot create a board with zero or negative size (%d, %d)", height, width);
+    return NULL;
+  }
+
+  ret = malloc(sizeof(Board));
   ret->height = height;
   ret->width = width;
   ret->matrix = (int**) malloc(width * sizeof(int*));
@@ -50,6 +58,10 @@ void print_board(Board* board)
       if (board->matrix[x][y] == 0)
       {
         printf("~~ ");
+      }
+      else
+      {
+        printf("%d%d ", board->matrix[x][y], board->matrix[x][y]);
       }
 
     }

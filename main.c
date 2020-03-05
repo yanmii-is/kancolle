@@ -20,17 +20,23 @@ int read_amount(int size)
   return amount;
 }
 
-Boat* read_boat(int size, int remaining, int total)
+Boat* read_boat(Board* board, int size, int remaining, int total)
 {
   int x = -1;
   int y = -1;
-  while (x < 0 || y < 0)
+  while (x < 0 || y < 0 || x >= board->height || y >= board->width)
   {
     printf("Player 1, choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
     scanf("%d,%d", &x, &y);
-    if (x < 0 || y < 0)
+    if (x < 0 || y < 0 || x >= board->height || y >= board->width)
     {
-      printf("Invalid coordinates (%d,%d), you must choose positive coordinates and input them as \"x,y\"\n", x, y);
+      printf("Invalid coordinates (%d,%d), you must choose coordinates that fit in your board and input them as \"x,y\"\n", x, y);
+    }
+    else if (board->matrix[x][y] != 0)
+    {
+      printf("Coordinates already in use (%d,%d), input unused coordinates as \"x,y\"\n", x, y);
+      x = -1;
+      y = -1;
     }
   }
   mk_boat(x, y, size);
@@ -63,7 +69,9 @@ int main(int argc, char *argv[])
   // read_boat: Size 4
   for (int current = b4; current > 0; current--)
   {
-    Boat* boat = read_boat(4, current, b4);
+    Boat* boat = read_boat(game->board_p1, 4, current, b4);
+    game->board_p1->matrix[boat->x][boat->y] = 4; // TODO
+    print_board(game->board_p1);
     // TODO: Sanity checks
     // TODO: Add boat to board
   }
@@ -71,7 +79,9 @@ int main(int argc, char *argv[])
   // read_boat: Size 3
   for (int current = b3; current > 0; current--)
   {
-    Boat* boat = read_boat(3, current, b3);
+    Boat* boat = read_boat(game->board_p1, 3, current, b3);
+    game->board_p1->matrix[boat->x][boat->y] = 3; // TODO
+    print_board(game->board_p1);
     // TODO: Sanity checks
     // TODO: Add boat to board
   }
@@ -79,7 +89,9 @@ int main(int argc, char *argv[])
   // read_boat: Size 2
   for (int current = b2; current > 0; current--)
   {
-    Boat* boat = read_boat(2, current, b2);
+    Boat* boat = read_boat(game->board_p1, 2, current, b2);
+    game->board_p1->matrix[boat->x][boat->y] = 2; // TODO
+    print_board(game->board_p1);
     // TODO: Sanity checks
     // TODO: Add boat to board
   }
@@ -87,7 +99,9 @@ int main(int argc, char *argv[])
   // read_boat: Size 1
   for (int current = b1; current > 0; current--)
   {
-    Boat* boat = read_boat(1, current, b1);
+    Boat* boat = read_boat(game->board_p1, 1, current, b1);
+    game->board_p1->matrix[boat->x][boat->y] = 1; // TODO
+    print_board(game->board_p1);
     // TODO: Sanity checks
     // TODO: Add boat to board
   }
