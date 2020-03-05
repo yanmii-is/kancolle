@@ -2,19 +2,35 @@
 #include "game.h"
 
 
-int read_input(int size)
+int read_amount(int size)
 {
-  int boats = 0;
-  while (boats < 1)
+  int amount = 0;
+  while (amount < 1)
   {
     printf("Choose the amount of size %d boats: ", size);
-    scanf("%d", &boats);
-    if (boats < 1)
+    scanf("%d", &amount);
+    if (amount < 1)
     {
-      printf("Invalid amount (%d)\n", boats);
+      printf("Invalid amount (%d)\n", amount);
     }
   }
-  return boats;
+  return amount;
+}
+
+Boat* read_boat(int size, int remaining, int total)
+{
+  int x = 0;
+  int y = 0;
+  while (x <= 0 || y <= 0)
+  {
+    printf("Player 1, choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
+    scanf("%d,%d", &x, &y);
+    if (x <= 0 || y <= 0)
+    {
+      printf("Invalid coordinates (%d,%d), you must choose positive coordinates and input them as \"x,y\"\n", x, y);
+    }
+  }
+  mk_boat(x, y, size);
 }
 
 int main(int argc, char *argv[])
@@ -35,16 +51,25 @@ int main(int argc, char *argv[])
     }
   }
 
-  int b1 = read_input(1);
-  int b2 = read_input(2);
-  int b3 = read_input(3);
-  int b4 = read_input(4);
+  int b1 = read_amount(1);
+  int b2 = read_amount(2);
+  int b3 = read_amount(3);
+  int b4 = read_amount(4);
 
   Game* game = mk_game(n, n, b1, b2, b3, b4);
-  // print_game(game);
+  print_game(game);
+  printf("\n");
 
-  printf("Player 1, choose your boats: \n");
   print_board(game->board_p1);
+  printf("\n");
+
+
+  for (int current = b4; current > 0; current--)
+  {
+    Boat* boat = read_boat(4, current, b4);
+    // TODO: Sanity checks
+    // TODO: Add boat to board
+  }
 
   return 0;
 }
