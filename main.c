@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "game.h"
 
+// TODO: Logging system
+// TODO: Configuration constants / macros
+// TODO: Fortification / sanity checks
 
 int read_amount(int size)
 {
@@ -57,16 +60,39 @@ int main(int argc, char *argv[])
   int b4 = read_amount(4);
 
   Game* game = mk_game(n, n, b1, b2, b3, b4);
-  print_game(game);
-  printf("\n");
 
+  printf("\n");
   print_board(game->board_p1);
   printf("\n");
 
-
+  // read_boat: Size 4
   for (int current = b4; current > 0; current--)
   {
     Boat* boat = read_boat(4, current, b4);
+    // TODO: Sanity checks
+    // TODO: Add boat to board
+  }
+
+  // read_boat: Size 3
+  for (int current = b3; current > 0; current--)
+  {
+    Boat* boat = read_boat(3, current, b3);
+    // TODO: Sanity checks
+    // TODO: Add boat to board
+  }
+
+  // read_boat: Size 2
+  for (int current = b2; current > 0; current--)
+  {
+    Boat* boat = read_boat(2, current, b2);
+    // TODO: Sanity checks
+    // TODO: Add boat to board
+  }
+
+  // read_boat: Size 1
+  for (int current = b1; current > 0; current--)
+  {
+    Boat* boat = read_boat(1, current, b1);
     // TODO: Sanity checks
     // TODO: Add boat to board
   }
