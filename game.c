@@ -11,7 +11,7 @@ Game* mk_game(int height, int width, int b1, int b2, int b3, int b4)
   ret->b4 = b4;
   ret->board_p1 = mk_board(height, width);
   ret->board_p2 = mk_board(height, width);
-  printf("[!] Game created with boat limits %d | %d | %d | %d\n", b1, b2, b3, b4);
+  _logf(L_INFO, "Game created with boat limits %d | %d | %d | %d\n", b1, b2, b3, b4);
   return ret;
 }
 

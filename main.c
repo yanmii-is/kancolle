@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include "game.h"
 
-// TODO: Logging system
+
 // TODO: Configuration constants / macros
 // TODO: Fortification / sanity checks
+// TODO: Get rid of scanf
 
 int read_amount(int size)
 {
@@ -38,11 +38,6 @@ Boat* read_boat(int size, int remaining, int total)
 
 int main(int argc, char *argv[])
 {
-  if (argc >= 2)
-  {
-    printf("%d argument(s)\n", argc-1);
-  }
-
   int n = 0;
   while (n < 4 || n > 99)
   {
