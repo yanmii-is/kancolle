@@ -19,6 +19,7 @@ Board* mk_board(int height, int width)
       //*(*(ret->matrix + x) + y) = 0;
     }
   }
+  printf("[!] Board created with size %dx%d\n", height, width);
   return ret;
 }
 
