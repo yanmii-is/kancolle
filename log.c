@@ -1,7 +1,8 @@
 #include "log.h"
 
 
-void _logf(Level level, const char *fmt, ...) {
+void _logf(Level level, const char *fmt, ...)
+{
   va_list args;
 
   switch (level)

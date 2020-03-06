@@ -58,7 +58,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
   // Do not ask for direction on size 1 boats
   if (size == 1)
   {
-    mk_boat(x, y, size, HORIZONTAL);
+    return mk_boat(x, y, size, HORIZONTAL);
   }
 
   int d = -1;
@@ -72,7 +72,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
     }
   }
 
-  mk_boat(x, y, size, d);
+  return mk_boat(x, y, size, d);
 }
 
 void place_boats(Board* board, int size, int total)
@@ -95,6 +95,7 @@ void place_boats(Board* board, int size, int total)
         board->matrix[boat->x][t] = size;
       }
     }
+		printf("\n");
     print_board(board);
     printf("\n");
   }

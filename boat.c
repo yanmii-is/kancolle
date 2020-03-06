@@ -7,12 +7,12 @@ Boat* mk_boat(int x, int y, int size, Direction direction)
 
   if (x < 0 || y < 0)
   {
-    _logf(L_ERROR, "Cannot create a boat on negative coordinates (%d, %d)", x, y);
+    _logf(L_FATAL, "Cannot create a boat on negative coordinates (%d, %d)", x, y);
     return NULL;
   }
   if (size <= 0)
   {
-    _logf(L_ERROR, "Cannot create a boat with no size or negative size (%d)", size);
+    _logf(L_FATAL, "Cannot create a boat with no size or negative size (%d)", size);
     return NULL;
   }
 

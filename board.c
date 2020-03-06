@@ -7,7 +7,7 @@ Board* mk_board(int height, int width)
 
   if (height <= 0 || width <= 0)
   {
-    _logf(L_ERROR, "Cannot create a board with zero or negative size (%d, %d)", height, width);
+    _logf(L_FATAL, "Cannot create a board with zero or negative size (%d, %d)", height, width);
     return NULL;
   }
 
