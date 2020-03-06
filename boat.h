@@ -14,4 +14,5 @@ typedef struct
   // TODO: Non-rectangular boats
 } Boat;
 
-Boat* mk_boat(int x, int y, int size, Direction direction);
+Boat* construct_boat(int x, int y, int size, Direction direction);
+void destruct_boat(Boat* boat);

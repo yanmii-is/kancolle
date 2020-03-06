@@ -58,7 +58,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
   // Do not ask for direction on size 1 boats
   if (size == 1)
   {
-    return mk_boat(x, y, size, HORIZONTAL);
+    return construct_boat(x, y, size, HORIZONTAL);
   }
 
   int d = -1;
@@ -72,7 +72,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
     }
   }
 
-  return mk_boat(x, y, size, d);
+  return construct_boat(x, y, size, d);
 }
 
 void place_boats(Board* board, int size, int total)
@@ -80,19 +80,32 @@ void place_boats(Board* board, int size, int total)
   for (int remaining = total; remaining > 0; remaining--)
   {
     Boat* boat = read_boat(board, size, remaining, total);
-    // TODO: Boundary checks
     if (boat->direction == HORIZONTAL)
     {
-      for (int t = boat->x; t < boat->x + size; t++)
+      if (boat->y + size >= board->width)
       {
-        board->matrix[t][boat->y] = size;
+        printf("You cannot place a boat on (%d, %d) with direction %d\n", boat->x, boat->y, boat->direction);
+        destruct_boat(boat);
+        remaining++;
+        continue;
+      }
+      for (int t = boat->y; t < boat->y + size; t++)
+      {
+        board->matrix[boat->x][t] = size;
       }
     }
     else if (boat->direction == VERTICAL)
     {
-      for (int t = boat->y; t < boat->y + size; t++)
+      if (boat->x + size >= board->height)
       {
-        board->matrix[boat->x][t] = size;
+        printf("You cannot place a boat on (%d, %d) with direction %d\n", boat->x, boat->y, boat->direction);
+        destruct_boat(boat);
+        remaining++;
+        continue;
+      }
+      for (int t = boat->x; t < boat->x + size; t++)
+      {
+        board->matrix[t][boat->y] = size;
       }
     }
 		printf("\n");
