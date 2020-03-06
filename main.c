@@ -3,15 +3,15 @@
 
 // TODO: Configuration constants / macros
 // TODO: Fortification / sanity checks
-// TODO: Get rid of scanf
+// TODO: Get rid of scanf!!!
 
-int read_boardsize()
+uint8_t read_boardsize()
 {
-  int ret = 0;
+  uint8_t ret = 0;
   while (ret < 5 || ret > 100)
   {
     printf("Choose the board size: ");
-    scanf("%d", &ret);
+    scanf("%u", &ret);
     if (ret < 5 || ret > 100)
     {
       printf("Invalid size (%dx%d), a board must be between 5x5 and 100x100\n", ret, ret);
@@ -122,7 +122,7 @@ void place_boats(Board* board, int size, int total)
 
 int main(int argc, char *argv[])
 {
-  int boardsz = read_boardsize();
+  uint8_t boardsz = read_boardsize();
 
   int all = 0;
   int* boats = (int*) malloc(6 * sizeof(int));

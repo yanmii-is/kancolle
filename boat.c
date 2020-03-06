@@ -1,7 +1,7 @@
 #include "boat.h"
 
 
-Boat* construct_boat(int x, int y, int size, Direction direction)
+Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction)
 {
   Boat* ret;
 

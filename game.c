@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-Game* construct_game(int height, int width, int* boats)
+Game* construct_game(uint8_t height, uint8_t width, int* boats)
 {
   Game* ret;
 

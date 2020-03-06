@@ -1,23 +1,23 @@
 #include "board.h"
 
 
-Board* construct_board(int height, int width)
+Board* construct_board(uint8_t height, uint8_t width)
 {
   Board* ret;
 
-  if (height <= 0 || width <= 0)
+  if (height == 0 || width == 0)
   {
-    _logf(L_FATAL, "Cannot create a board with zero or negative size (%d, %d)\n", height, width);
+    _logf(L_FATAL, "Cannot create a board with zero size (%u, %u)\n", height, width);
     return NULL;
   }
 
   ret = malloc(sizeof(Board));
   ret->height = height;
   ret->width = width;
-  ret->matrix = (int**) malloc(width * sizeof(int*));
+  ret->matrix = (uint8_t**) malloc(width * sizeof(uint8_t*));
   for (int i = 0; i < height; i++)
   {
-    ret->matrix[i] = (int*) malloc(height * sizeof(int));
+    ret->matrix[i] = (uint8_t*) malloc(height * sizeof(uint8_t));
   }
   for (int x = 0; x < height; x++)
   {
@@ -27,7 +27,7 @@ Board* construct_board(int height, int width)
       //*(*(ret->matrix + x) + y) = 0;
     }
   }
-  _logf(L_INFO, "Board created with size %dx%d\n", height, width);
+  _logf(L_INFO, "Board created with size %ux%u\n", height, width);
   return ret;
 }
 
