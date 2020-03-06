@@ -124,12 +124,21 @@ int main(int argc, char *argv[])
 {
   int boardsz = read_boardsize();
 
+  int all = 0;
   int* boats = (int*) malloc(6 * sizeof(int));
-  boats[1] = read_amount(1);
-  boats[2] = read_amount(2);
-  boats[3] = read_amount(3);
-  boats[4] = read_amount(4);
-  boats[5] = read_amount(5);
+  while (all == 0)
+  {
+    boats[1] = read_amount(1);
+    boats[2] = read_amount(2);
+    boats[3] = read_amount(3);
+    boats[4] = read_amount(4);
+    boats[5] = read_amount(5);
+    all = boats[1] + boats[2] + boats[3] + boats[4] + boats[5];
+    if (all == 0)
+    {
+      printf("You must have at least one boat on your game\n");
+    }
+  }
 
   Game* game = construct_game(boardsz, boardsz, boats);
 

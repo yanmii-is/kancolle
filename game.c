@@ -3,7 +3,20 @@
 
 Game* construct_game(int height, int width, int* boats)
 {
-  Game* ret = malloc(sizeof(Game));
+  Game* ret;
+
+  if (height <= 0 || width <= 0)
+  {
+    _logf(L_FATAL, "Cannot create a game with zero or negative size boards (%d, %d)\n", height, width);
+    return NULL;
+  }
+  if (boats[1] + boats[2] + boats[3] + boats[4] + boats[5] == 0)
+  {
+    _logf(L_FATAL, "Cannot create a game with no boats\n");
+    return NULL;
+  }
+
+  ret = malloc(sizeof(Game));
   ret->state = false;
   ret->boats = boats;
   ret->board_p1 = construct_board(height, width);
