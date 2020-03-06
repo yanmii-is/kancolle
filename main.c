@@ -11,7 +11,7 @@ uint8_t read_boardsize()
   while (ret < 5 || ret > 100)
   {
     printf("Choose the board size: ");
-    scanf("%u", &ret);
+    scanf("%hhu", &ret);
     if (ret < 5 || ret > 100)
     {
       printf("Invalid size (%dx%d), a board must be between 5x5 and 100x100\n", ret, ret);
@@ -90,7 +90,7 @@ void place_boats(Board* board, int size, int total)
     {
       if (boat->y + size - 1 >= board->width)
       {
-        printf("You cannot place a boat on (%d, %d) with direction %d\n", boat->x, boat->y, boat->direction);
+        printf("You cannot place a boat on (%hhu, %hhu) with direction %d\n", boat->x, boat->y, boat->direction);
         destruct_boat(boat);
         remaining++;
         continue;
@@ -104,7 +104,7 @@ void place_boats(Board* board, int size, int total)
     {
       if (boat->x + size - 1 >= board->height)
       {
-        printf("You cannot place a boat on (%d, %d) with direction %d\n", boat->x, boat->y, boat->direction);
+        printf("You cannot place a boat on (%hhu, %hhu) with direction %d\n", boat->x, boat->y, boat->direction);
         destruct_boat(boat);
         remaining++;
         continue;

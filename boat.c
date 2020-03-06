@@ -5,12 +5,7 @@ Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction)
 {
   Boat* ret;
 
-  if (x < 0 || y < 0)
-  {
-    _logf(L_FATAL, "Cannot create a boat on negative coordinates (%d, %d)", x, y);
-    return NULL;
-  }
-  if (size <= 0)
+  if (size == 0)
   {
     _logf(L_FATAL, "Cannot create a boat with no size or negative size (%d)", size);
     return NULL;
