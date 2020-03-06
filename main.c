@@ -5,6 +5,21 @@
 // TODO: Fortification / sanity checks
 // TODO: Get rid of scanf
 
+int read_boardsize()
+{
+  int ret = 0;
+  while (ret < 4 || ret > 100)
+  {
+    printf("Choose the board size: ");
+    scanf("%d", &ret);
+    if (ret < 4 || ret > 100)
+    {
+      printf("Invalid size (%dx%d), a board must be between 4x4 and 100x100\n", ret, ret);
+    }
+  }
+  return ret;
+}
+
 int read_amount(int size)
 {
   int amount = 0;
@@ -79,32 +94,24 @@ void place_boats(Board* board, int size, int total)
 
 int main(int argc, char *argv[])
 {
-  int n = 0;
-  while (n < 4 || n > 100)
-  {
-    printf("Choose the board size: ");
-    scanf("%d", &n);
-    if (n < 4 || n > 100)
-    {
-      printf("Invalid size (%dx%d), a board must be between 4x4 and 100x100\n", n, n);
-    }
-  }
+  int boardsz = read_boardsize();
 
-  int b1 = read_amount(1);
-  int b2 = read_amount(2);
-  int b3 = read_amount(3);
-  int b4 = read_amount(4);
+  int* boats = (int*) malloc(5 * sizeof(int));
+  boats[1] = read_amount(1);
+  boats[2] = read_amount(2);
+  boats[3] = read_amount(3);
+  boats[4] = read_amount(4);
 
-  Game* game = mk_game(n, n, b1, b2, b3, b4);
+  Game* game = mk_game(boardsz, boardsz, boats);
 
   printf("\n");
   print_board(game->board_p1);
   printf("\n");
 
-  place_boats(game->board_p1, 4, b4);
-  place_boats(game->board_p1, 3, b3);
-  place_boats(game->board_p1, 2, b2);
-  place_boats(game->board_p1, 1, b1);
+  place_boats(game->board_p1, 4, boats[4]);
+  place_boats(game->board_p1, 3, boats[3]);
+  place_boats(game->board_p1, 2, boats[2]);
+  place_boats(game->board_p1, 1, boats[1]);
 
   return 0;
 }
