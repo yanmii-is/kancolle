@@ -41,7 +41,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
   int y = -1;
   while (x < 0 || y < 0 || x >= board->height || y >= board->width)
   {
-    printf("Player 1, choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
+    printf("Choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
     scanf("%d,%d", &x, &y);
     if (x < 0 || y < 0 || x >= board->height || y >= board->width)
     {
@@ -105,6 +105,8 @@ int main(int argc, char *argv[])
   Game* game = mk_game(boardsz, boardsz, boats);
 
   printf("\n");
+  printf("Player 1, it's time to set up your board\n");
+  printf("\n");
   print_board(game->board_p1);
   printf("\n");
 
@@ -112,6 +114,17 @@ int main(int argc, char *argv[])
   place_boats(game->board_p1, 3, boats[3]);
   place_boats(game->board_p1, 2, boats[2]);
   place_boats(game->board_p1, 1, boats[1]);
+
+  printf("\n");
+  printf("Player 2, it's time to set up your board\n");
+  printf("\n");
+  print_board(game->board_p2);
+  printf("\n");
+
+  place_boats(game->board_p2, 4, boats[4]);
+  place_boats(game->board_p2, 3, boats[3]);
+  place_boats(game->board_p2, 2, boats[2]);
+  place_boats(game->board_p2, 1, boats[1]);
 
   return 0;
 }
