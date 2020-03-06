@@ -17,15 +17,7 @@ Board* construct_board(uint8_t height, uint8_t width)
   ret->matrix = (uint8_t**) malloc(width * sizeof(uint8_t*));
   for (int i = 0; i < height; i++)
   {
-    ret->matrix[i] = (uint8_t*) malloc(height * sizeof(uint8_t));
-  }
-  for (int x = 0; x < height; x++)
-  {
-    for (int y = 0; y < width; y++)
-    {
-      ret->matrix[x][y] = 0;
-      //*(*(ret->matrix + x) + y) = 0;
-    }
+    ret->matrix[i] = (uint8_t*) calloc(height, sizeof(uint8_t));
   }
   _logf(L_INFO, "Board created with size %ux%u\n", height, width);
   return ret;
