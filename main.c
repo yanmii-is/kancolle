@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
   boats[3] = read_amount(3);
   boats[4] = read_amount(4);
 
-  Game* game = mk_game(boardsz, boardsz, boats);
+  Game* game = construct_game(boardsz, boardsz, boats);
 
   printf("\n");
   printf("Player 1, it's time to set up your board\n");
@@ -148,5 +148,6 @@ int main(int argc, char *argv[])
   place_boats(game->board_p2, 2, boats[2]);
   place_boats(game->board_p2, 1, boats[1]);
 
+  destruct_game(game);
   return 0;
 }

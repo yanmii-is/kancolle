@@ -1,7 +1,7 @@
 #include "board.h"
 
 
-Board* mk_board(int height, int width)
+Board* construct_board(int height, int width)
 {
   Board* ret;
 
@@ -29,6 +29,13 @@ Board* mk_board(int height, int width)
   }
   _logf(L_INFO, "Board created with size %dx%d\n", height, width);
   return ret;
+}
+
+void destruct_board(Board* board)
+{
+  _logf(L_INFO, "Board (%d, %d) destructed\n", board->height, board->width);
+  free(board);
+  return;
 }
 
 void print_board(Board* board)

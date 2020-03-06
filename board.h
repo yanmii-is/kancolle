@@ -10,5 +10,6 @@ typedef struct
   int** matrix;
 } Board;
 
-Board* mk_board(int height, int width);
+Board* construct_board(int height, int width);
+void destruct_board(Board* board);
 void print_board(Board* board);

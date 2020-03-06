@@ -12,5 +12,6 @@ typedef struct
   Board* board_p2;
 } Game;
 
-Game* mk_game(int height, int width, int* boats);
+Game* construct_game(int height, int width, int* boats);
+void destruct_game(Game* game);
 void print_game(Game* game);

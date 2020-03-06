@@ -27,7 +27,7 @@ Boat* construct_boat(int x, int y, int size, Direction direction)
 
 void destruct_boat(Boat* boat)
 {
-  _logf(L_INFO, "Boat destroyed at (%d, %d) with size %d and direction %d\n", boat->x, boat->y, boat->size, boat->direction);
+  _logf(L_INFO, "Boat destructed at (%d, %d) with size %d and direction %d\n", boat->x, boat->y, boat->size, boat->direction);
   free(boat);
   return;
 }
