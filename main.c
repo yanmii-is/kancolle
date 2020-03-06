@@ -54,6 +54,13 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
       y = -1;
     }
   }
+
+  // Do not ask for direction on size 1 boats
+  if (size == 1)
+  {
+    mk_boat(x, y, size, HORIZONTAL);
+  }
+
   int d = -1;
   while (d != HORIZONTAL && d != VERTICAL)
   {
@@ -64,6 +71,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
       printf("Invalid direction\n");
     }
   }
+
   mk_boat(x, y, size, d);
 }
 
