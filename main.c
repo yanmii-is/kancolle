@@ -8,13 +8,13 @@
 int read_boardsize()
 {
   int ret = 0;
-  while (ret < 4 || ret > 100)
+  while (ret < 5 || ret > 100)
   {
     printf("Choose the board size: ");
     scanf("%d", &ret);
-    if (ret < 4 || ret > 100)
+    if (ret < 5 || ret > 100)
     {
-      printf("Invalid size (%dx%d), a board must be between 4x4 and 100x100\n", ret, ret);
+      printf("Invalid size (%dx%d), a board must be between 5x5 and 100x100\n", ret, ret);
     }
   }
   return ret;
@@ -22,12 +22,12 @@ int read_boardsize()
 
 int read_amount(int size)
 {
-  int amount = 0;
-  while (amount < 1)
+  int amount = -1;
+  while (amount < 0)
   {
     printf("Choose the amount of size %d boats: ", size);
     scanf("%d", &amount);
-    if (amount < 1)
+    if (amount < 0)
     {
       printf("Invalid amount (%d)\n", amount);
     }
@@ -77,6 +77,12 @@ Boat* read_boat(Board* board, int size, int remaining, int total)
 
 void place_boats(Board* board, int size, int total)
 {
+  if (total < 1)
+  {
+    _logf(L_INFO, "No boats of size %d to place\n", size);
+    return;
+  }
+
   for (int remaining = total; remaining > 0; remaining--)
   {
     Boat* boat = read_boat(board, size, remaining, total);
@@ -118,11 +124,12 @@ int main(int argc, char *argv[])
 {
   int boardsz = read_boardsize();
 
-  int* boats = (int*) malloc(5 * sizeof(int));
+  int* boats = (int*) malloc(6 * sizeof(int));
   boats[1] = read_amount(1);
   boats[2] = read_amount(2);
   boats[3] = read_amount(3);
   boats[4] = read_amount(4);
+  boats[5] = read_amount(5);
 
   Game* game = construct_game(boardsz, boardsz, boats);
 
@@ -132,6 +139,7 @@ int main(int argc, char *argv[])
   print_board(game->board_p1);
   printf("\n");
 
+  place_boats(game->board_p1, 5, boats[5]);
   place_boats(game->board_p1, 4, boats[4]);
   place_boats(game->board_p1, 3, boats[3]);
   place_boats(game->board_p1, 2, boats[2]);
@@ -143,6 +151,7 @@ int main(int argc, char *argv[])
   print_board(game->board_p2);
   printf("\n");
 
+  place_boats(game->board_p2, 5, boats[5]);
   place_boats(game->board_p2, 4, boats[4]);
   place_boats(game->board_p2, 3, boats[3]);
   place_boats(game->board_p2, 2, boats[2]);
