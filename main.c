@@ -82,7 +82,7 @@ void place_boats(Board* board, int size, int total)
     Boat* boat = read_boat(board, size, remaining, total);
     if (boat->direction == HORIZONTAL)
     {
-      if (boat->y + size >= board->width)
+      if (boat->y + size - 1 >= board->width)
       {
         printf("You cannot place a boat on (%d, %d) with direction %d\n", boat->x, boat->y, boat->direction);
         destruct_boat(boat);
@@ -96,7 +96,7 @@ void place_boats(Board* board, int size, int total)
     }
     else if (boat->direction == VERTICAL)
     {
-      if (boat->x + size >= board->height)
+      if (boat->x + size - 1 >= board->height)
       {
         printf("You cannot place a boat on (%d, %d) with direction %d\n", boat->x, boat->y, boat->direction);
         destruct_boat(boat);
