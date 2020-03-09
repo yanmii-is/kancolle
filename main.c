@@ -111,6 +111,7 @@ void place_boats(Board* board, int size, int total, int8_t mode)
     return;
   }
 
+  /*
   for (int remaining = total; remaining > 0; remaining--)
   {
     Boat* boat = read_boat(board, size, remaining, total, mode);
@@ -146,6 +147,7 @@ void place_boats(Board* board, int size, int total, int8_t mode)
     print_board(board);
     printf("\n");
   }
+  */
 }
 
 int main(int argc, char *argv[])
