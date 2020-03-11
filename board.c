@@ -1,7 +1,7 @@
 #include "board.h"
 
 
-Board* construct_board(uint8_t height, uint8_t width)
+Board* construct_board(uint8_t height, uint8_t width, uint16_t boats)
 {
   Board* ret;
 
@@ -19,13 +19,14 @@ Board* construct_board(uint8_t height, uint8_t width)
   {
     ret->matrix[i] = (uint8_t*) calloc(height, sizeof(uint8_t));
   }
-  _logf(L_INFO, "Board created with size %hhux%hhu\n", height, width);
+  ret->boats = (Boat**) malloc(boats * sizeof(Boat*));
+  _logf(L_INFO, "Board created with size %hhux%hhu for %hu boats\n", height, width, boats);
   return ret;
 }
 
 void destruct_board(Board* board)
 {
-  _logf(L_INFO, "Board (%d, %d) destructed\n", board->height, board->width);
+  _logf(L_INFO, "Board (%hhu, %hhu) destructed\n", board->height, board->width);
   free(board);
   return;
 }
@@ -65,4 +66,16 @@ void print_board(Board* board)
     }
     printf("\n");
   }
+}
+
+void add_boat(Board* board, Boat* boat)
+{
+  if (board == NULL || boat == NULL)
+  {
+    return;
+  }
+
+  _logf(L_INFO, "Added boat with size %hhu to board\n", boat->size);
+  board->boats[board->cur_boat] = boat;
+  return;
 }

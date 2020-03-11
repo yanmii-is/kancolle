@@ -4,13 +4,16 @@
 Game* construct_game(uint8_t height, uint8_t width, int* boats)
 {
   Game* ret;
+  uint16_t sum;
 
   if (height == 0 || width == 0)
   {
     _logf(L_FATAL, "Cannot create a game with zero or negative size boards (%hhu, %hhu)\n", height, width);
     return NULL;
   }
-  if (boats[1] + boats[2] + boats[3] + boats[4] + boats[5] == 0)
+
+  sum = boats[1] + boats[2] + boats[3] + boats[4] + boats[5];
+  if (sum == 0)
   {
     _logf(L_FATAL, "Cannot create a game with no boats\n");
     return NULL;
@@ -19,8 +22,8 @@ Game* construct_game(uint8_t height, uint8_t width, int* boats)
   ret = malloc(sizeof(Game));
   ret->state = false;
   ret->boats = boats;
-  ret->board_p1 = construct_board(height, width);
-  ret->board_p2 = construct_board(height, width);
+  ret->board_p1 = construct_board(height, width, sum);
+  ret->board_p2 = construct_board(height, width, sum);
   _logf(L_INFO, "Game created with boat limits %hhu | %hhu | %hhu | %hhu | %hhu\n", boats[1], boats[2], boats[3], boats[4], boats[5]);
   return ret;
 }
