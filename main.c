@@ -1,17 +1,16 @@
 #include "game.h"
+#include "utils.h"
 
 
 // TODO: Configuration constants / macros
 // TODO: Fortification / sanity checks
-// TODO: Get rid of scanf!!!
 
 uint8_t read_boardsize()
 {
   uint8_t ret = 0;
   while (ret < 5 || ret > 100)
   {
-    printf("Choose the board size: ");
-    scanf("%hhu", &ret);
+    ret = read_u8("Choose the board size: ");
     if (ret < 5 || ret > 100)
     {
       printf("Invalid size (%dx%d), a board must be between 5x5 and 100x100\n", ret, ret);
@@ -20,19 +19,11 @@ uint8_t read_boardsize()
   return ret;
 }
 
-int read_amount(int size)
+uint8_t read_amount(uint8_t size)
 {
-  int amount = -1;
-  while (amount < 0)
-  {
-    printf("Choose the amount of size %d boats: ", size);
-    scanf("%d", &amount);
-    if (amount < 0)
-    {
-      printf("Invalid amount (%d)\n", amount);
-    }
-  }
-  return amount;
+  char prompt[38];
+  sprintf(prompt, "Choose the amount of size %hhu boats: ", size);
+  return read_u8(prompt);
 }
 
 Boat* read_boat(Board* board, int size, int remaining, int total, int8_t mode)
@@ -45,7 +36,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total, int8_t mode)
     if (mode == 1)
     {
       printf("Choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
-      scanf("%d,%d", &x, &y);
+      scanf("%d,%d", &x, &y); // TODO: Exterminate scanf
       if (x < 0 || y < 0 || x >= board->height || y >= board->width)
       {
         printf("Invalid coordinates (%d,%d), you must choose coordinates that fit in your board and input them as \"x,y\"\n", x, y);
@@ -87,8 +78,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total, int8_t mode)
   {
     while (d != HORIZONTAL && d != VERTICAL)
     {
-      printf("What direction do you want to place this boat at (%d, %d) (0 = Horizontal, 1 = Vertical): ", x, y);
-      scanf("%d", &d);
+      d = read_u8("What direction do you want to place this boat at (0 = Horizontal, 1 = Vertical): ");
       if (d != HORIZONTAL && d != VERTICAL)
       {
         printf("Invalid direction\n");
@@ -131,8 +121,8 @@ int main(int argc, char *argv[])
   int8_t config_type = -1;
   while (config_type != 0 && config_type != 1)
   {
-    printf("Choose the configuration type (0 = random configuration, 1 = manual configuration): ");
-    scanf("%hhd", &config_type);
+    // TODO: Read boolean
+    config_type = read_u8("Choose the configuration type (0 = random, 1 = manual): ");
     if (config_type != 0 && config_type != 1)
     {
       printf("Invalid configuration type %hhd", config_type);
@@ -142,8 +132,8 @@ int main(int argc, char *argv[])
 
   uint8_t boardsz = read_boardsize();
 
-  int all = 0;
-  int* boats = (int*) malloc(6 * sizeof(int));
+  uint16_t all = 0;
+  uint8_t* boats = (uint8_t*) malloc(6 * sizeof(uint8_t));
   while (all == 0)
   {
     boats[1] = read_amount(1);

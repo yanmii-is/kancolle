@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-Game* construct_game(uint8_t height, uint8_t width, int* boats)
+Game* construct_game(uint8_t height, uint8_t width, uint8_t* boats)
 {
   Game* ret;
   uint16_t sum;
