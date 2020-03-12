@@ -114,39 +114,12 @@ void place_boats(Board* board, int size, int total, int8_t mode)
   for (int remaining = total; remaining > 0; remaining--)
   {
     Boat* boat = read_boat(board, size, remaining, total, mode);
-    add_boat(board, boat);
-    // TODO: Check if points overlap with board's current boats
-
-    /*
-    if (boat->direction == HORIZONTAL)
+    if (add_boat(board, boat) == false)
     {
-      if (boat->y + size - 1 >= board->width)
-      {
-        printf("You cannot place a boat on (%hhu, %hhu) with direction %d\n", boat->x, boat->y, boat->direction);
-        destruct_boat(boat);
-        remaining++;
-        continue;
-      }
-      for (int t = boat->y; t < boat->y + size; t++)
-      {
-        board->matrix[boat->x][t] = size;
-      }
+      destruct_boat(boat);
+      remaining++;
+      continue;
     }
-    else if (boat->direction == VERTICAL)
-    {
-      if (boat->x + size - 1 >= board->height)
-      {
-        printf("You cannot place a boat on (%hhu, %hhu) with direction %d\n", boat->x, boat->y, boat->direction);
-        destruct_boat(boat);
-        remaining++;
-        continue;
-      }
-      for (int t = boat->x; t < boat->x + size; t++)
-      {
-        board->matrix[t][boat->y] = size;
-      }
-    }
-    */
 		printf("\n");
     print_board(board);
     printf("\n");

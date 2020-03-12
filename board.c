@@ -20,6 +20,7 @@ Board* construct_board(uint8_t height, uint8_t width, uint16_t boats)
     ret->matrix[i] = (uint8_t*) calloc(height, sizeof(uint8_t));
   }
   ret->boats = (Boat**) malloc(boats * sizeof(Boat*));
+  ret->cur_boat = 0;
   _logf(L_INFO, "Board created with size %hhux%hhu for %hu boats\n", height, width, boats);
   return ret;
 }
@@ -68,14 +69,33 @@ void print_board(Board* board)
   }
 }
 
-void add_boat(Board* board, Boat* boat)
+bool add_boat(Board* board, Boat* boat)
 {
   if (board == NULL || boat == NULL)
   {
-    return;
+    return false;
   }
 
-  _logf(L_INFO, "Added boat with size %hhu to board\n", boat->size);
+  // Verify if boat's points won't overlap any used board coordinates
+  for (int i = 0; i < boat->size; i++)
+  {
+    if (board->matrix[boat->points[i]->x][boat->points[i]->y] != 0)
+    {
+      return false;
+    }
+  }
+
+  // Update board's quick access matrix
+  for (int i = 0; i < boat->size; i++)
+  {
+    board->matrix[boat->points[i]->x][boat->points[i]->y] = boat->size;
+  }
+
+  // Push new boat to board boat array
   board->boats[board->cur_boat] = boat;
-  return;
+  // Internal pointer for boats array
+  board->cur_boat++;
+
+  _logf(L_INFO, "Added boat with size %hhu to board\n", boat->size);
+  return true;
 }
