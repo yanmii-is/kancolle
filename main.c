@@ -26,14 +26,14 @@ uint8_t read_amount(uint8_t size)
   return read_u8(prompt);
 }
 
-Boat* read_boat(Board* board, int size, int remaining, int total, int8_t mode)
+Boat* read_boat(Board* board, int size, int remaining, int total, bool mode)
 {
   int x = -1;
   int y = -1;
   while (x < 0 || y < 0 || x >= board->height || y >= board->width)
   {
-    // Manual inupt
-    if (mode == 1)
+    // Manual input
+    if (mode)
     {
       printf("Choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
       scanf("%d,%d", &x, &y); // TODO: Exterminate scanf
@@ -72,9 +72,9 @@ Boat* read_boat(Board* board, int size, int remaining, int total, int8_t mode)
     return construct_boat(x, y, size, HORIZONTAL);
   }
 
-  int d = -1;
+  uint8_t d = -1;
 
-  if(mode == 1)
+  if (mode)
   {
     while (d != HORIZONTAL && d != VERTICAL)
     {
@@ -93,7 +93,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total, int8_t mode)
   return construct_boat(x, y, size, d);
 }
 
-void place_boats(Board* board, int size, int total, int8_t mode)
+void place_boats(Board* board, int size, int total, bool mode)
 {
   if (total < 1)
   {
@@ -118,17 +118,7 @@ void place_boats(Board* board, int size, int total, int8_t mode)
 
 int main(int argc, char *argv[])
 {
-  int8_t config_type = -1;
-  while (config_type != 0 && config_type != 1)
-  {
-    // TODO: Read boolean
-    config_type = read_u8("Choose the configuration type (0 = random, 1 = manual): ");
-    if (config_type != 0 && config_type != 1)
-    {
-      printf("Invalid configuration type %hhd", config_type);
-      config_type = -1;
-    }
-  }
+  bool config = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
 
   uint8_t boardsz = read_boardsize();
 
@@ -156,11 +146,11 @@ int main(int argc, char *argv[])
   print_board(game->board_p1);
   printf("\n");
 
-  place_boats(game->board_p1, 5, boats[5], config_type);
-  place_boats(game->board_p1, 4, boats[4], config_type);
-  place_boats(game->board_p1, 3, boats[3], config_type);
-  place_boats(game->board_p1, 2, boats[2], config_type);
-  place_boats(game->board_p1, 1, boats[1], config_type);
+  place_boats(game->board_p1, 5, boats[5], config);
+  place_boats(game->board_p1, 4, boats[4], config);
+  place_boats(game->board_p1, 3, boats[3], config);
+  place_boats(game->board_p1, 2, boats[2], config);
+  place_boats(game->board_p1, 1, boats[1], config);
 
   printf("\n");
   printf("Player 2, it's time to set up your board\n");
@@ -168,11 +158,11 @@ int main(int argc, char *argv[])
   print_board(game->board_p2);
   printf("\n");
 
-  place_boats(game->board_p2, 5, boats[5], config_type);
-  place_boats(game->board_p2, 4, boats[4], config_type);
-  place_boats(game->board_p2, 3, boats[3], config_type);
-  place_boats(game->board_p2, 2, boats[2], config_type);
-  place_boats(game->board_p2, 1, boats[1], config_type);
+  place_boats(game->board_p2, 5, boats[5], config);
+  place_boats(game->board_p2, 4, boats[4], config);
+  place_boats(game->board_p2, 3, boats[3], config);
+  place_boats(game->board_p2, 2, boats[2], config);
+  place_boats(game->board_p2, 1, boats[1], config);
 
   destruct_game(game);
   return 0;

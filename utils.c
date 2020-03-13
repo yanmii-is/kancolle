@@ -3,7 +3,8 @@
 
 uint8_t read_u8(char *prompt)
 {
-  char in[4];
+  // 3 byte input + 1 byte newline + 1 byte terminator
+  char in[5];
   // We use an u16 as a temporary buffer to detect OOB input
   int16_t ret = -1;
 
@@ -22,4 +23,29 @@ uint8_t read_u8(char *prompt)
   }
 
   return (uint8_t) ret;
+}
+
+bool read_bool(char *prompt)
+{
+  // 1 byte input + 1 byte newline + 1 byte terminator
+  char in[3];
+
+  while (true)
+  {
+    printf(prompt);
+    fgets(in, sizeof(in), stdin);
+
+    if (in[0] == '0')
+    {
+      return false;
+    }
+    else if (in[0] == '1')
+    {
+      return true;
+    }
+    else
+    {
+      printf("Input error, you must input a valid boolean [0,1]\n");
+    }
+  }
 }
