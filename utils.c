@@ -1,6 +1,15 @@
 #include "utils.h"
 
 
+// NOTE: We are assuming that the input is always the
+//       expected size as the teacher indicated, however
+//       it would be best to have this eat unexpected
+//       inputs without trouble.
+//       Right now if you send more than the bytes it can
+//       store on the read buffers it won't flush stdin
+//       and the remaining of the input will fall through
+//       to the next read functions on the program.
+
 uint8_t read_u8(char *prompt)
 {
   // 3 byte input + 1 byte newline + 1 byte terminator
