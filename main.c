@@ -2,8 +2,11 @@
 #include "utils.h"
 
 
-// TODO: Configuration constants / macros
+#define BOAT_MIN_SIZE 1
+#define BOAT_MAX_SIZE 5
+
 // TODO: Fortification / sanity checks
+// TODO: Fix direction
 
 uint8_t read_boardsize()
 {
@@ -24,6 +27,34 @@ uint8_t read_amount(uint8_t size)
   char prompt[38];
   sprintf(prompt, "Choose the amount of size %hhu boats: ", size);
   return read_u8(prompt);
+}
+
+uint8_t* read_boatamount()
+{
+  uint8_t* boats = (uint8_t*) malloc((BOAT_MAX_SIZE + 1) * sizeof(uint8_t));
+  boats[0] = 0;
+  while (boats[0] == 0)
+  {
+    uint16_t all = 0;
+    for (int i = BOAT_MIN_SIZE; i <= BOAT_MAX_SIZE; i++)
+    {
+      boats[i] = read_amount(i);
+      all += boats[i];
+    }
+    boats[0] = all;
+
+    if (all == 0)
+    {
+      printf("You must have at least one boat on your game\n");
+    }
+    else if (boats[0] != all)
+    {
+      // Overflow detected (u16 vs u8), user past the 255 limit
+      printf("You can't have more than 255 boats on your game\n");
+      boats[0] = 0;
+    }
+  }
+  return boats;
 }
 
 Boat* read_boat(Board* board, int size, int remaining, int total, bool mode)
@@ -119,25 +150,8 @@ void place_boats(Board* board, int size, int total, bool mode)
 int main(int argc, char *argv[])
 {
   bool config = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
-
   uint8_t boardsz = read_boardsize();
-
-  uint16_t all = 0;
-  uint8_t* boats = (uint8_t*) malloc(6 * sizeof(uint8_t));
-  while (all == 0)
-  {
-    boats[1] = read_amount(1);
-    boats[2] = read_amount(2);
-    boats[3] = read_amount(3);
-    boats[4] = read_amount(4);
-    boats[5] = read_amount(5);
-    all = boats[1] + boats[2] + boats[3] + boats[4] + boats[5];
-    if (all == 0)
-    {
-      printf("You must have at least one boat on your game\n");
-    }
-  }
-
+  uint8_t* boats = read_boatamount();
   Game* game = construct_game(boardsz, boardsz, boats);
 
   printf("\n");
@@ -146,11 +160,10 @@ int main(int argc, char *argv[])
   print_board(game->board_p1);
   printf("\n");
 
-  place_boats(game->board_p1, 5, boats[5], config);
-  place_boats(game->board_p1, 4, boats[4], config);
-  place_boats(game->board_p1, 3, boats[3], config);
-  place_boats(game->board_p1, 2, boats[2], config);
-  place_boats(game->board_p1, 1, boats[1], config);
+  for (int i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
+  {
+    place_boats(game->board_p1, i, boats[i], config);
+  }
 
   printf("\n");
   printf("Player 2, it's time to set up your board\n");
@@ -158,11 +171,10 @@ int main(int argc, char *argv[])
   print_board(game->board_p2);
   printf("\n");
 
-  place_boats(game->board_p2, 5, boats[5], config);
-  place_boats(game->board_p2, 4, boats[4], config);
-  place_boats(game->board_p2, 3, boats[3], config);
-  place_boats(game->board_p2, 2, boats[2], config);
-  place_boats(game->board_p2, 1, boats[1], config);
+  for (int i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
+  {
+    place_boats(game->board_p2, i, boats[i], config);
+  }
 
   destruct_game(game);
   return 0;
