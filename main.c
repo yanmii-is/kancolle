@@ -2,8 +2,6 @@
 #include "utils.h"
 #include "config.h"
 
-// TODO: Fortification / sanity checks
-// TODO: Fix direction
 
 uint8_t read_boardsize()
 {
@@ -63,15 +61,16 @@ Boat* read_boat(Board* board, int size, int remaining, int total, bool mode)
     // Manual input
     if (mode)
     {
-      printf("Choose the coordinates for your next size %d boat as \"x,y\" (%d/%d): ", size, remaining, total);
-      scanf("%d,%d", &x, &y); // TODO: Exterminate scanf
+      printf("Choose the coordinates for your next size %d boat\n", size);
+      x = read_u8("Vertical coordinate: ");
+      y = read_u8("Horizontal coordinate: ");
       if (x < 0 || y < 0 || x >= board->height || y >= board->width)
       {
-        printf("Invalid coordinates (%d,%d), you must choose coordinates that fit in your board and input them as \"x,y\"\n", x, y);
+        printf("Invalid coordinates (%d,%d), you must choose coordinates that fit in your board\n", x, y);
       }
       else if (board->matrix[x][y] != 0)
       {
-        printf("Coordinates already in use (%d,%d), input unused coordinates as \"x,y\"\n", x, y);
+        printf("Coordinates already in use (%d,%d)\n", x, y);
         x = -1;
         y = -1;
       }

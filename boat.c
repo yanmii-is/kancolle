@@ -13,21 +13,18 @@ Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction)
 
   ret = malloc(sizeof(Boat));
   ret->points = (Point**) malloc(size * sizeof(Point*));
-  for (uint8_t i = 0; i < size; i++)
+  if (direction == HORIZONTAL)
   {
-    if (direction == HORIZONTAL)
+    for (uint8_t i = 0, t = y; t < y + size; t++, i++)
     {
-      for (uint8_t t = y; t < y + size; t++)
-      {
-        ret->points[i] = construct_point(x, t);
-      }
+      ret->points[i] = construct_point(x, t);
     }
-    else if (direction == VERTICAL)
+  }
+  else if (direction == VERTICAL)
+  {
+    for (uint8_t i = 0, t = x; t < x + size; t++, i++)
     {
-      for (uint8_t t = x; t < x + size; t++)
-      {
-        ret->points[i] = construct_point(t, y);
-      }
+      ret->points[i] = construct_point(t, y);
     }
   }
   ret->size = size;
