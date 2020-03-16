@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <time.h>
 #include "board.h"
-
+#include "config.h"
 
 typedef struct
 {
