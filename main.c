@@ -2,6 +2,16 @@
 #include "utils.h"
 #include "config.h"
 
+// TODO
+bool can_add(Board* board, uint8_t x, uint8_t y, uint8_t size, Direction direction)
+{
+  // Out of boundaries
+  if (x + size - 1 > board->height || y + size - 1 > board->width)
+  {
+    return false;
+  }
+  return true;
+}
 
 uint8_t read_boardsize()
 {
@@ -57,65 +67,50 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
   // Maybe we can use something other than s16?
   int16_t x = -1;
   int16_t y = -1;
+  int8_t  d = -1;
+
   while (x < 0 || y < 0 || x >= board->height || y >= board->width)
   {
     // Manual input
     if (mode)
     {
-      printf("Choose the coordinates for your next size %d boat\n", size);
+      printf("Choose the properties for your next size %d boat\n", size);
       x = read_u8("Vertical coordinate: ");
       y = read_u8("Horizontal coordinate: ");
-      if (x < 0 || y < 0 || x >= board->height || y >= board->width)
+      // Do not ask for direction on size 1 boats
+      if (size != 1)
       {
-        printf("Invalid coordinates (%d,%d), you must choose coordinates that fit in your board\n", x, y);
+        while (d != HORIZONTAL && d != VERTICAL)
+        {
+          d = read_u8("What direction do you want to place this boat at (0 = Horizontal, 1 = Vertical): ");
+          if (d != HORIZONTAL && d != VERTICAL)
+          {
+            printf("Invalid direction\n");
+          }
+        }
       }
-      else if (board->matrix[x][y] != 0)
-      {
-        printf("Coordinates already in use (%d,%d)\n", x, y);
-        x = -1;
-        y = -1;
+      else {
+        d = HORIZONTAL;
       }
     }
     // Random input
-    else
-    {
+    else {
       while (x == -1 || y == -1)
       {
         srand(time(0));
         x = rand() % board->height;
         y = rand() % board->width;
-
-        if (board->matrix[x][y] != 0)
-        {
-          x = -1;
-          y = -1;
-        }
+        d = rand() % 2;
       }
     }
-  }
 
-  // Do not ask for direction on size 1 boats
-  if (size == 1)
-  {
-    return construct_boat(x, y, size, HORIZONTAL);
-  }
-
-  uint8_t d = -1;
-
-  if (mode)
-  {
-    while (d != HORIZONTAL && d != VERTICAL)
+    if (!can_add(board, x, y, size, d))
     {
-      d = read_u8("What direction do you want to place this boat at (0 = Horizontal, 1 = Vertical): ");
-      if (d != HORIZONTAL && d != VERTICAL)
-      {
-        printf("Invalid direction\n");
-      }
+      printf("Not possible to add size %d boat at (%d, %d) with direction %d\n", size, x, y, d);
+      x = -1;
+      y = -1;
+      d = -1;
     }
-  }
-  else
-  {
-    d = rand() % 2;
   }
 
   return construct_boat(x, y, size, d);
