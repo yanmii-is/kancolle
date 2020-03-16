@@ -31,7 +31,7 @@ uint8_t* read_boatamount()
   while (boats[0] == 0)
   {
     uint16_t all = 0;
-    for (int i = BOAT_MIN_SIZE; i <= BOAT_MAX_SIZE; i++)
+    for (uint8_t i = BOAT_MIN_SIZE; i <= BOAT_MAX_SIZE; i++)
     {
       boats[i] = read_amount(i);
       all += boats[i];
@@ -52,10 +52,11 @@ uint8_t* read_boatamount()
   return boats;
 }
 
-Boat* read_boat(Board* board, int size, int remaining, int total, bool mode)
+Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bool mode)
 {
-  int x = -1;
-  int y = -1;
+  // Maybe we can use something other than s16?
+  int16_t x = -1;
+  int16_t y = -1;
   while (x < 0 || y < 0 || x >= board->height || y >= board->width)
   {
     // Manual input
@@ -120,7 +121,7 @@ Boat* read_boat(Board* board, int size, int remaining, int total, bool mode)
   return construct_boat(x, y, size, d);
 }
 
-void place_boats(Board* board, int size, int total, bool mode)
+void place_boats(Board* board, uint8_t size, uint8_t total, bool mode)
 {
   if (total < 1)
   {
@@ -128,7 +129,7 @@ void place_boats(Board* board, int size, int total, bool mode)
     return;
   }
 
-  for (int remaining = total; remaining > 0; remaining--)
+  for (uint8_t remaining = total; remaining > 0; remaining--)
   {
     Boat* boat = read_boat(board, size, remaining, total, mode);
     if (add_boat(board, boat) == false)
@@ -156,7 +157,7 @@ int main(int argc, char *argv[])
   print_board(game->board_p1);
   printf("\n");
 
-  for (int i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
+  for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
   {
     place_boats(game->board_p1, i, boats[i], config);
   }
@@ -167,7 +168,7 @@ int main(int argc, char *argv[])
   print_board(game->board_p2);
   printf("\n");
 
-  for (int i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
+  for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
   {
     place_boats(game->board_p2, i, boats[i], config);
   }

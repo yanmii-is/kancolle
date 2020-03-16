@@ -36,14 +36,14 @@ void print_board(Board* board)
 {
   // Table headers
   printf("   | ");
-  for (int x = 0; x < board->height; x++)
+  for (uint8_t x = 0; x < board->height; x++)
   {
     printf("%02hhu ", x);
   }
   printf("\n");
 
   printf("---+");
-  for (int x = 0; x < board->height; x++)
+  for (uint8_t x = 0; x < board->height; x++)
   {
     printf("---");
   }
@@ -51,10 +51,10 @@ void print_board(Board* board)
 
 
   // Table content
-  for (int x = 0; x < board->height; x++)
+  for (uint8_t x = 0; x < board->height; x++)
   {
     printf("%02hhu | ", x);
-    for (int y = 0; y < board->width; y++)
+    for (uint8_t y = 0; y < board->width; y++)
     {
       if (board->matrix[x][y] == 0)
       {
@@ -77,7 +77,7 @@ bool add_boat(Board* board, Boat* boat)
   }
 
   // Verify if boat's points won't overlap any used board coordinates
-  for (int i = 0; i < boat->size; i++)
+  for (uint8_t i = 0; i < boat->size; i++)
   {
     if (board->matrix[boat->points[i]->x][boat->points[i]->y] != 0)
     {
@@ -86,7 +86,7 @@ bool add_boat(Board* board, Boat* boat)
   }
 
   // Update board's quick access matrix
-  for (int i = 0; i < boat->size; i++)
+  for (uint8_t i = 0; i < boat->size; i++)
   {
     board->matrix[boat->points[i]->x][boat->points[i]->y] = boat->size;
   }
