@@ -1,9 +1,6 @@
 #include "game.h"
 #include "utils.h"
-
-
-#define BOAT_MIN_SIZE 1
-#define BOAT_MAX_SIZE 5
+#include "config.h"
 
 // TODO: Fortification / sanity checks
 // TODO: Fix direction

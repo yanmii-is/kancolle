@@ -3,6 +3,12 @@
 
 void _logf(Level level, const char *fmt, ...)
 {
+  // Check if logging is disabled
+  if (!LOGGING)
+  {
+    return;
+  }
+
   va_list args;
 
   switch (level)
