@@ -42,10 +42,10 @@ uint8_t* read_boatamount()
     {
       printf("You must have at least one boat on your game\n");
     }
-    else if (boats[0] != all)
+    else if (boats[0] != all || boats[0] > MAX_BOATS)
     {
-      // Overflow detected (u16 vs u8), user past the 255 limit
-      printf("You can't have more than 255 boats on your game\n");
+      // Overflow detected (u16 vs u8), user past the 255 limit or above MAX_BOATS limit
+      printf("You can't have more than %d boats on your game\n", MAX_BOATS);
       boats[0] = 0;
     }
   }

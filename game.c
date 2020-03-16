@@ -21,6 +21,11 @@ Game* construct_game(uint8_t height, uint8_t width, uint8_t* boats)
     _logf(L_FATAL, "Cannot create a game with no boats");
     return NULL;
   }
+  if (sum > MAX_BOATS)
+  {
+    _logf(L_FATAL, "Cannot create a game with more boats (%d) than the maximum limit (%d)", sum, MAX_BOATS);
+    return NULL;
+  }
 
   ret = malloc(sizeof(Game));
   ret->state = false;
