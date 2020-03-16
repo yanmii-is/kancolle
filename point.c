@@ -6,7 +6,8 @@ Point* construct_point(uint8_t x, uint8_t y)
   Point* ret = malloc(sizeof(Point));
   ret->x = x;
   ret->y = y;
-  _logf(L_INFO, "Point created at (%d, %d)", x, y);
+  ret->display = false;
+  _logf(L_INFO, "Point created at (%d, %d) with display %s", x, y, ret->display ? "true" : "false");
   return ret;
 }
 
