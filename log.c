@@ -40,5 +40,6 @@ void _logf(Level level, const char *fmt, ...)
 
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
+  fprintf(stderr, "%c", '\n');
   va_end(args);
 }

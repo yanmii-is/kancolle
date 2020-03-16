@@ -125,7 +125,7 @@ void place_boats(Board* board, int size, int total, bool mode)
 {
   if (total < 1)
   {
-    _logf(L_INFO, "No boats of size %d to place\n", size);
+    _logf(L_INFO, "No boats of size %d to place", size);
     return;
   }
 

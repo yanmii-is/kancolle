@@ -7,7 +7,7 @@ Board* construct_board(uint8_t height, uint8_t width, uint16_t boats)
 
   if (height == 0 || width == 0)
   {
-    _logf(L_FATAL, "Cannot create a board with zero size (%hhu, %hhu)\n", height, width);
+    _logf(L_FATAL, "Cannot create a board with zero size (%hhu, %hhu)", height, width);
     return NULL;
   }
 
@@ -21,13 +21,13 @@ Board* construct_board(uint8_t height, uint8_t width, uint16_t boats)
   }
   ret->boats = (Boat**) malloc(boats * sizeof(Boat*));
   ret->cur_boat = 0;
-  _logf(L_INFO, "Board created with size %hhux%hhu for %hu boats\n", height, width, boats);
+  _logf(L_INFO, "Board created with size %hhux%hhu for %hu boats", height, width, boats);
   return ret;
 }
 
 void destruct_board(Board* board)
 {
-  _logf(L_INFO, "Board (%hhu, %hhu) destructed\n", board->height, board->width);
+  _logf(L_INFO, "Board (%hhu, %hhu) destructed", board->height, board->width);
   free(board);
   return;
 }
@@ -96,6 +96,6 @@ bool add_boat(Board* board, Boat* boat)
   // Internal pointer for boats array
   board->cur_boat++;
 
-  _logf(L_INFO, "Added boat with size %hhu to board\n", boat->size);
+  _logf(L_INFO, "Added boat with size %hhu to board", boat->size);
   return true;
 }

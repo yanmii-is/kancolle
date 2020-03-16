@@ -32,7 +32,7 @@ Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction)
   }
   ret->size = size;
   ret->direction = direction;
-  _logf(L_INFO, "Boat constructed at (%d, %d) with size %d and direction %d\n", x, y, size, direction);
+  _logf(L_INFO, "Boat constructed at (%d, %d) with size %d and direction %d", x, y, size, direction);
   return ret;
 }
 
@@ -45,7 +45,7 @@ void destruct_boat(Boat* boat)
   }
   free(boat->points);
 
-  _logf(L_INFO, "Boat destructed with size %d and direction %d\n", boat->size, boat->direction);
+  _logf(L_INFO, "Boat destructed with size %d and direction %d", boat->size, boat->direction);
   free(boat);
   return;
 }

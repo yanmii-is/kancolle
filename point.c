@@ -11,7 +11,7 @@ Point* construct_point(uint8_t x, uint8_t y)
 
 void destruct_point(Point* point)
 {
-  _logf(L_INFO, "Point destructed at (%d, %d)\n", point->x, point->y);
+  _logf(L_INFO, "Point destructed at (%d, %d)", point->x, point->y);
   free(point);
   return;
 }
