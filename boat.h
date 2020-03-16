@@ -13,7 +13,6 @@ typedef struct
 {
   Point** points;
   uint8_t size;
-  Direction direction; // TODO: Remove
 } Boat;
 
 Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction);
