@@ -6,21 +6,21 @@ Game* construct_game(uint8_t height, uint8_t width, uint8_t* boats)
   Game* ret;
   uint8_t sum;
 
+  // Sanity check: board limits
   if (height == 0 || width == 0)
   {
     _logf(L_FATAL, "Cannot create a game with zero or negative size boards (%hhu, %hhu)", height, width);
     return NULL;
   }
 
-  for (uint8_t i = BOAT_MIN_SIZE; i <= BOAT_MAX_SIZE; i++)
-  {
-    sum += boats[i];
-  }
-  if (sum == 0)
+  // Sanity check: existance of boats
+  if (boats[0] == 0)
   {
     _logf(L_FATAL, "Cannot create a game with no boats");
     return NULL;
   }
+
+  // Sanity check: boats below MAX_SIZE config
   if (sum > MAX_BOATS)
   {
     _logf(L_FATAL, "Cannot create a game with more boats (%d) than the maximum limit (%d)", sum, MAX_BOATS);
@@ -30,10 +30,10 @@ Game* construct_game(uint8_t height, uint8_t width, uint8_t* boats)
   ret = malloc(sizeof(Game));
   ret->state = false;
   ret->boats = boats;
-  ret->board_p1 = construct_board(height, width, sum);
-  ret->board_p2 = construct_board(height, width, sum);
+  ret->board_p1 = construct_board(height, width, boats[0]);
+  ret->board_p2 = construct_board(height, width, boats[0]);
 
-  _logf(L_INFO, "Game created with %hhu boats", sum);
+  _logf(L_INFO, "Game created with %hhu boats", boats[0]);
   return ret;
 }
 
