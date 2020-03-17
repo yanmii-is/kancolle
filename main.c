@@ -1,3 +1,9 @@
+#if defined(_WIN32)
+#include <windows.h>
+#endif
+#if defined(__linux__) || defined(__APPLE__)
+#include <sys/time.h>
+#endif
 #include "game.h"
 #include "utils.h"
 #include "config.h"
@@ -116,7 +122,17 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
     else {
       while (x == -1 || y == -1)
       {
-        srand(time(0));
+        // Randomization for Windows
+        #if defined(_WIN32)
+        srand(GetTickCount());
+        #endif
+        // Randomization for Unix
+        #if defined(__linux__) || defined(__APPLE__)
+        struct timeval time;
+        gettimeofday(&time, NULL);
+        srand((time.tv_sec * 1000) + (time.tv_usec / 1000));
+        #endif
+
         x = rand() % board->height;
         y = rand() % board->width;
         d = rand() % 2;
