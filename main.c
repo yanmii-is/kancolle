@@ -106,7 +106,10 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
 
     if (!can_add(board, x, y, size, d))
     {
-      printf("Not possible to add size %d boat at (%d, %d) with direction %d\n", size, x, y, d);
+      if (mode)
+      {
+        printf("Not possible to add size %d boat at (%d, %d) with direction %d\n", size, x, y, d);
+      }
       x = -1;
       y = -1;
       d = -1;
