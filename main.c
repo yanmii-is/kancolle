@@ -141,6 +141,7 @@ void place_boats(Board* board, uint8_t size, uint8_t total, bool mode)
 
 int main(int argc, char *argv[])
 {
+  clear();
   bool config = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
   uint8_t boardsz = read_boardsize();
   uint8_t* boats = read_boatamount();

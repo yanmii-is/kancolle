@@ -58,3 +58,13 @@ bool read_bool(char *prompt)
     }
   }
 }
+
+void clear()
+{
+  #if defined(_WIN32)
+  system("cls");
+  #endif
+  #if defined(__linux__) || defined(__APPLE__)
+  system("clear");
+  #endif
+}
