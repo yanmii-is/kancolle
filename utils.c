@@ -71,5 +71,5 @@ void clear()
 
 void newline()
 {
-  printf("%s", '\n');
+  printf("%c", '\n');
 }
