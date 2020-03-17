@@ -150,22 +150,20 @@ int main(int argc, char *argv[])
   uint8_t* boats = read_boatamount();
   Game* game = construct_game(boardsz, boardsz, boats);
 
-  printf("\n");
+  clear();
   printf("Player 1, it's time to set up your board\n");
-  printf("\n");
+  newline();
   print_board(game->board_p1);
-  printf("\n");
 
   for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
   {
     place_boats(game->board_p1, i, boats[i], config);
   }
 
-  printf("\n");
+  clear();
   printf("Player 2, it's time to set up your board\n");
-  printf("\n");
+  newline();
   print_board(game->board_p2);
-  printf("\n");
 
   for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
   {

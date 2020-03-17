@@ -68,3 +68,8 @@ void clear()
   system("clear");
   #endif
 }
+
+void newline()
+{
+  printf('\n');
+}
