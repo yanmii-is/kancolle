@@ -16,12 +16,12 @@ bool can_add(Board* board, uint8_t x, uint8_t y, uint8_t size, Direction directi
 uint8_t read_boardsize()
 {
   uint8_t ret = 0;
-  while (ret < 5 || ret > 100)
+  while (ret < BOARD_MIN_SIZE || ret > BOARD_MAX_SIZE)
   {
     ret = read_u8("Choose the board size: ");
-    if (ret < 5 || ret > 100)
+    if (ret < BOARD_MIN_SIZE || ret > BOARD_MAX_SIZE)
     {
-      printf("Invalid size (%dx%d), a board must be between 5x5 and 100x100\n", ret, ret);
+      printf("Invalid size (%dx%d), a board must be between %dx%d and %dx%d\n", ret, ret, BOARD_MIN_SIZE, BOARD_MIN_SIZE, BOARD_MAX_SIZE, BOARD_MAX_SIZE);
     }
   }
   return ret;
