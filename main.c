@@ -13,7 +13,7 @@ bool can_add(Board* board, uint8_t x, uint8_t y, uint8_t size, Direction directi
   return true;
 }
 
-uint8_t read_boardsize()
+uint8_t setup_boardsize()
 {
   uint8_t ret = 0;
   while (ret < BOARD_MIN_SIZE || ret > BOARD_MAX_SIZE)
@@ -27,23 +27,19 @@ uint8_t read_boardsize()
   return ret;
 }
 
-uint8_t read_amount(uint8_t size)
+uint8_t* setup_boatamounts()
 {
   char prompt[38];
-  sprintf(prompt, "Choose the amount of size %hhu boats: ", size);
-  return read_u8(prompt);
-}
-
-uint8_t* read_boatamount()
-{
   uint8_t* boats = (uint8_t*) malloc((BOAT_MAX_SIZE + 1) * sizeof(uint8_t));
   boats[0] = 0;
+
   while (boats[0] == 0)
   {
     uint16_t all = 0;
     for (uint8_t i = BOAT_MIN_SIZE; i <= BOAT_MAX_SIZE; i++)
     {
-      boats[i] = read_amount(i);
+      sprintf(prompt, "Choose the amount of size %hhu boats: ", i);
+      boats[i] = read_u8(prompt);
       all += boats[i];
     }
     boats[0] = all;
@@ -142,34 +138,36 @@ void place_boats(Board* board, uint8_t size, uint8_t total, bool mode)
   }
 }
 
-int main(int argc, char *argv[])
+void setup_board(uint8_t player, Board* board, uint8_t* boats, bool mode)
 {
   clear();
-  bool config = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
-  uint8_t boardsz = read_boardsize();
-  uint8_t* boats = read_boatamount();
-  Game* game = construct_game(boardsz, boardsz, boats);
-
-  clear();
-  printf("Player 1, it's time to set up your board\n");
+  printf("Player %hhu, it's time to set up your board\n", player);
   newline();
-  print_board(game->board_p1);
+  print_board(board);
 
   for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
   {
-    place_boats(game->board_p1, i, boats[i], config);
+    place_boats(board, i, boats[i], mode);
   }
+}
 
+
+int main(int argc, char *argv[])
+{
+  // Clear the user's screen
   clear();
-  printf("Player 2, it's time to set up your board\n");
-  newline();
-  print_board(game->board_p2);
 
-  for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
-  {
-    place_boats(game->board_p2, i, boats[i], config);
-  }
+  // Game initial setup: config, board size, boat amount
+  bool     config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
+  uint8_t  boardsz = setup_boardsize();
+  uint8_t* boats   = setup_boatamounts();
+  Game*    game    = construct_game(boardsz, boardsz, boats);
 
+  // Setup both players' boards
+  setup_board(1, game->board_p1, boats, config);
+  setup_board(2, game->board_p2, boats, config);
+
+  // Destruct objects and gracefully terminate
   destruct_game(game);
   return 0;
 }
