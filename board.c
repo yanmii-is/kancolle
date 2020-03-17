@@ -99,3 +99,37 @@ bool add_boat(Board* board, Boat* boat)
   _logf(L_INFO, "Added boat with size %hhu to board", boat->size);
   return true;
 }
+
+// TODO: Different shape checks
+bool can_add_boat(Board* board, uint8_t x, uint8_t y, uint8_t size, Direction direction)
+{
+  // Out of boundaries
+  if (x + size - 1 >= board->height || y + size - 1 >= board->width)
+  {
+    return false;
+  }
+
+  // Verify if boat's points won't overlap any used board coordinates
+  if (direction == HORIZONTAL)
+  {
+    for (uint8_t i = 0, t = y; t < y + size; t++, i++)
+    {
+      if (board->matrix[x][t] != 0)
+      {
+        return false;
+      }
+    }
+  }
+  else if (direction == VERTICAL)
+  {
+    for (uint8_t i = 0, t = x; t < x + size; t++, i++)
+    {
+      if (board->matrix[x][t] != 0)
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}

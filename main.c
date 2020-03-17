@@ -9,38 +9,7 @@
 #include "config.h"
 
 
-bool can_add(Board* board, uint8_t x, uint8_t y, uint8_t size, Direction direction)
-{
-  // Out of boundaries
-  if (x + size - 1 >= board->height || y + size - 1 >= board->width)
-  {
-    return false;
-  }
 
-  // Verify if boat's points won't overlap any used board coordinates
-  if (direction == HORIZONTAL)
-  {
-    for (uint8_t i = 0, t = y; t < y + size; t++, i++)
-    {
-      if (board->matrix[x][t] != 0)
-      {
-        return false;
-      }
-    }
-  }
-  else if (direction == VERTICAL)
-  {
-    for (uint8_t i = 0, t = x; t < x + size; t++, i++)
-    {
-      if (board->matrix[x][t] != 0)
-      {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
 
 uint8_t setup_boardsize()
 {
@@ -139,7 +108,7 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
       }
     }
 
-    if (!can_add(board, x, y, size, d))
+    if (!can_add_boat(board, x, y, size, d))
     {
       if (mode)
       {
