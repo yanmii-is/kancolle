@@ -60,6 +60,10 @@ void print_board(Board* board)
       {
         printf("~~ ");
       }
+      else if (board->matrix[x][y] == 'x' || board->matrix[x][y] == 'X')
+      {
+        printf("%c%c ", board->matrix[x][y], board->matrix[x][y]);
+      }
       else
       {
         printf("%hhu%hhu ", board->matrix[x][y], board->matrix[x][y]);
@@ -141,8 +145,9 @@ bool verify_state(uint8_t height, uint8_t width, uint8_t** matrix)
     for (int y = 0; y < width; y++)
     {
       // Game still not over
-      if (matrix[x][y] != '0' && matrix[x][y] != 'x' && matrix[x][y] != 'X')
+      if (matrix[x][y] != 0x0 && matrix[x][y] != 'x' && matrix[x][y] != 'X')
       {
+        _logf(L_INFO, "verify_state: Found %c at %hhu, %hhu", matrix[x][y], x, y);
         return false;
       }
     }

@@ -138,9 +138,9 @@ void place_boats(Board* board, uint8_t size, uint8_t total, bool mode)
       remaining++;
       continue;
     }
-		printf("\n");
+		newline();
     print_board(board);
-    printf("\n");
+    newline();
   }
 }
 
@@ -177,28 +177,42 @@ void player_move(uint8_t player, Game* game)
     return;
   }
 
+  clear();
+  printf("Player %hhu, it's your turn!\n", player);
+  newline();
   print_board(board);
+  newline();\
   printf("Choose where you want to strike on your opponents' board: \n");
-  x = read_u8("Vertical coordinate: ");
-  y = read_u8("Horizontal coordinate: ");
 
-  // Check whether the given coordinates are outside of the board
-  if (x >= board->height || y >= board->width)
+  while (true)
   {
-    printf("Invalid coordinates, the board is not that big!\n");
+    x = read_u8("Vertical coordinate: ");
+    y = read_u8("Horizontal coordinate: ");
+
+    // Check whether the given coordinates are outside of the board
+    if (x >= board->height || y >= board->width)
+    {
+      printf("Invalid coordinates, the board is not that big!\n");
+      continue;
+    }
+    else if (board->matrix[x][y] == 'x' || board->matrix[x][y] == 'X')
+    {
+      printf("You already shot there previously!\n");
+      continue;
+    }
+
+    break;
   }
 
   // TODO: Copy matrix for adversary version w/o seeing boats, edit on matrix copy
   if (board->matrix[x][y] == 0)
   {
     printf("You hit the sea...\n");
-    // TODO
     board->matrix[x][y] = 'x';
   }
   else
   {
     printf("You hit something!\n");
-    // TODO
     board->matrix[x][y] = 'X';
   }
 

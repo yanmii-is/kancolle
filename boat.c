@@ -54,34 +54,3 @@ void destruct_boat(Boat* boat)
   free(boat);
   return;
 }
-
-// unused
-Point** get_points(Boat** boats, uint8_t boats_size)
-{
-  Point** ret;
-  uint16_t points_size = 0;
-  uint16_t points_current = 0;
-
-  // Calculate how many points are being used by Boat objects
-  for (uint8_t current; current < boats_size; current++)
-  {
-    points_size += boats[current]->size;
-  }
-
-  _logf(L_INFO, "Getting %hu points from %hhu boats", points_size, boats_size);
-
-  ret = (Point**) malloc(points_size * sizeof(Point*));
-
-  // Iterate through Boat objects
-  for (uint8_t current; current < boats_size; current++)
-  {
-    // Iterate through Boat's points
-    for (uint8_t i; i < boats[current]->size; i++)
-    {
-      ret[points_current] = boats[current]->points[i];
-      points_current++;
-    }
-  }
-
-  return ret;
-}
