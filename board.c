@@ -32,7 +32,7 @@ void destruct_board(Board* board)
   return;
 }
 
-void print_board(Board* board)
+void print_board(Board* board, bool obfuscate)
 {
   // Table headers
   printf("   | ");
@@ -64,9 +64,13 @@ void print_board(Board* board)
       {
         printf("%c%c ", board->matrix[x][y], board->matrix[x][y]);
       }
-      else
+      else if (!obfuscate)
       {
         printf("%hhu%hhu ", board->matrix[x][y], board->matrix[x][y]);
+      }
+      else if (obfuscate)
+      {
+        printf("~~ ");
       }
     }
     printf("\n");

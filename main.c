@@ -139,7 +139,7 @@ void place_boats(Board* board, uint8_t size, uint8_t total, bool mode)
       continue;
     }
 		newline();
-    print_board(board);
+    print_board(board, false);
     newline();
   }
 }
@@ -149,7 +149,7 @@ void setup_board(uint8_t player, Board* board, uint8_t* boats, bool mode)
   clear();
   printf("Player %hhu, it's time to set up your board\n", player);
   newline();
-  print_board(board);
+  print_board(board, false);
 
   for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
   {
@@ -162,7 +162,6 @@ void player_move(uint8_t player, Game* game)
   Board* board;
   uint8_t x, y;
 
-  // TODO: Print hidden version of the board
   if (player == 1)
   {
     board = game->board_p2;
@@ -180,7 +179,7 @@ void player_move(uint8_t player, Game* game)
   clear();
   printf("Player %hhu, it's your turn!\n", player);
   newline();
-  print_board(board);
+  print_board(board, true);
   newline();\
   printf("Choose where you want to strike on your opponents' board: \n");
 
@@ -204,7 +203,6 @@ void player_move(uint8_t player, Game* game)
     break;
   }
 
-  // TODO: Copy matrix for adversary version w/o seeing boats, edit on matrix copy
   if (board->matrix[x][y] == 0)
   {
     printf("You hit the sea...\n");
