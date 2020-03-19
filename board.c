@@ -133,3 +133,20 @@ bool can_add_boat(Board* board, uint8_t x, uint8_t y, uint8_t size, Direction di
 
   return true;
 }
+
+bool verify_state(uint8_t height, uint8_t width, uint8_t** matrix)
+{
+  for (int x = 0; x < height; x++)
+  {
+    for (int y = 0; y < width; y++)
+    {
+      // Game still not over
+      if (matrix[x][y] != '0' && matrix[x][y] != 'x' && matrix[x][y] != 'X')
+      {
+        return false;
+      }
+    }
+  }
+  // Game over
+  return true;
+}

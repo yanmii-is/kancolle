@@ -9,8 +9,6 @@
 #include "config.h"
 
 
-
-
 uint8_t setup_boardsize()
 {
   uint8_t ret = 0;
@@ -159,6 +157,59 @@ void setup_board(uint8_t player, Board* board, uint8_t* boats, bool mode)
   }
 }
 
+void player_move(uint8_t player, Game* game)
+{
+  Board* board;
+  uint8_t x, y;
+
+  // TODO: Print hidden version of the board
+  if (player == 1)
+  {
+    board = game->board_p2;
+  }
+  else if (player == 2)
+  {
+    board = game->board_p1;
+  }
+  else
+  {
+    _logf(L_FATAL, "Tried running player_move with player %hhu", player);
+    return;
+  }
+
+  print_board(board);
+  printf("Choose where you want to strike on your opponents' board: \n");
+  x = read_u8("Vertical coordinate: ");
+  y = read_u8("Horizontal coordinate: ");
+
+  // Check whether the given coordinates are outside of the board
+  if (x >= board->height || y >= board->width)
+  {
+    printf("Invalid coordinates, the board is not that big!\n");
+  }
+
+  // TODO: Copy matrix for adversary version w/o seeing boats, edit on matrix copy
+  if (board->matrix[x][y] == 0)
+  {
+    printf("You hit the sea...\n");
+    // TODO
+    board->matrix[x][y] = 'x';
+  }
+  else
+  {
+    printf("You hit something!\n");
+    // TODO
+    board->matrix[x][y] = 'X';
+  }
+
+  if (verify_state(board->height, board->width, board->matrix))
+  {
+    game->state = true;
+  }
+
+  return;
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -174,6 +225,23 @@ int main(int argc, char *argv[])
   // Setup both players' boards
   setup_board(1, game->board_p1, boats, config);
   setup_board(2, game->board_p2, boats, config);
+
+  // Gameplay
+  while (!game->state)
+  {
+    player_move(1, game);
+    if (game->state)
+    {
+      printf("Player 1 has won\n");
+      break;
+    }
+    player_move(2, game);
+    if (game->state)
+    {
+      printf("Player 2 has won\n");
+      break;
+    }
+  }
 
   // Destruct objects and gracefully terminate
   destruct_game(game);
