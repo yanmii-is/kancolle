@@ -36,17 +36,18 @@ uint8_t* setup_boatamounts()
     {
       sprintf(prompt, "Choose the amount of size %hhu boats: ", i);
       boats[i] = read_u8(prompt);
+      while (boats[i] == 0)
+      {
+        printf("You must have at least one boat of each type in your game\n");
+        boats[i] = read_u8(prompt);
+      }
       all += boats[i];
     }
     boats[0] = all;
 
-    if (all == 0)
+    // Overflow detected (u16 vs u8), user past the 255 limit or above MAX_BOATS limit
+    if (boats[0] != all || boats[0] > MAX_BOATS)
     {
-      printf("You must have at least one boat on your game\n");
-    }
-    else if (boats[0] != all || boats[0] > MAX_BOATS)
-    {
-      // Overflow detected (u16 vs u8), user past the 255 limit or above MAX_BOATS limit
       printf("You can't have more than %d boats on your game\n", MAX_BOATS);
       boats[0] = 0;
     }
