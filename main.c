@@ -69,20 +69,21 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
       printf("Choose the properties for your next size %d boat\n", size);
       x = read_u8("Vertical coordinate: ");
       y = read_u8("Horizontal coordinate: ");
-      // Do not ask for direction on size 1 boats
+      // Do not ask for rotation on size 1 boats
       if (size != 1)
       {
-        while (d != HORIZONTAL && d != VERTICAL)
+        while (d != ROTATION_0 && d != ROTATION_90 && d != ROTATION_180 && d != ROTATION_270)
         {
-          d = read_u8("What direction do you want to place this boat at (0 = Horizontal, 1 = Vertical): ");
-          if (d != HORIZONTAL && d != VERTICAL)
+          d = read_u8("What rotation do you want to apply to this boat (0 = 0º, 1 = 90º, 2 = 180º, 3 = 270º): ");
+          if (d != ROTATION_0 && d != ROTATION_90 && d != ROTATION_180 && d != ROTATION_270)
           {
             printf("Invalid direction\n");
           }
         }
       }
-      else {
-        d = HORIZONTAL;
+      else
+      {
+        d = ROTATION_0;
       }
     }
     // Random input
@@ -99,7 +100,7 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
     {
       if (mode)
       {
-        printf("Not possible to add size %d boat at (%d, %d) with direction %d\n", size, x, y, d);
+        printf("Not possible to add size %d boat at (%d, %d) with rotation %d\n", size, x, y, d);
       }
       x = -1;
       y = -1;

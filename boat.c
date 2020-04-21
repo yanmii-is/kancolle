@@ -1,7 +1,7 @@
 #include "boat.h"
 
 
-Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction)
+Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Rotation rotation)
 {
   Boat* ret;
 
@@ -18,14 +18,14 @@ Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction)
   ret->points = (Point**) malloc(size * sizeof(Point*));
 
   // Construct Point objects and tie the to the current Boat
-  if (direction == HORIZONTAL)
+  if (rotation == ROTATION_0)
   {
     for (uint8_t i = 0, t = y; t < y + size; t++, i++)
     {
       ret->points[i] = construct_point(x, t);
     }
   }
-  else if (direction == VERTICAL)
+  else if (rotation == ROTATION_90)
   {
     for (uint8_t i = 0, t = x; t < x + size; t++, i++)
     {
@@ -36,7 +36,7 @@ Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Direction direction)
   // Boat size, amount of points
   ret->size = size;
 
-  _logf(L_INFO, "Boat constructed at (%d, %d) with size %d and direction %d", x, y, size, direction);
+  _logf(L_INFO, "Boat constructed at (%d, %d) with size %d and rotation %d", x, y, size, rotation);
   return ret;
 }
 
