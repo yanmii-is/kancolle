@@ -64,7 +64,7 @@ void clear()
   #if defined(_WIN32)
   system("cls");
   #endif
-  #if defined(__linux__) || defined(__APPLE__)
+  #if !defined(_WIN32)
   system("clear");
   #endif
 }
