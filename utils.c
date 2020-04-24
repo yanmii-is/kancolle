@@ -65,7 +65,7 @@ void clear()
   {
     return;
   }
-  
+
   #if defined(_WIN32)
   system("cls");
   #endif

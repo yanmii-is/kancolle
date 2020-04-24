@@ -1,19 +1,51 @@
 #include "boat.h"
 
+// Presets
+uint8_t bitmap_TL1[5][5] = {
+  { 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0 }
+};
+uint8_t bitmap_TL2[5][5] = {
+  { 0, 0, 0, 0, 0 },
+  { 0, 0, 0, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 0, 0, 0 }
+};
+uint8_t bitmap_TL3[5][5] = {
+  { 0, 0, 0, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 0, 0, 0 }
+};
+uint8_t bitmap_TL4[5][5] = {
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 0, 0, 0 }
+};
+uint8_t bitmap_TT5[5][5] = {
+  { 0, 0, 0, 0, 0 },
+  { 0, 1, 1, 1, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 0, 0, 0 }
+};
 
-Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Rotation rotation)
+
+Boat* construct_boat(uint8_t x, uint8_t y, Type type, Rotation rotation)
 {
   Boat* ret;
 
-  // Sanity check
-  if (size == 0)
-  {
-    _logf(L_FATAL, "Cannot create a boat with no size or negative size (%d)", size);
-    return NULL;
-  }
-
   // Allocates memory for main Boat structure
   ret = malloc(sizeof(Boat));
+
+  /*
   // Allocated memory for Point objects array
   ret->points = (Point**) malloc(size * sizeof(Point*));
 
@@ -32,25 +64,18 @@ Boat* construct_boat(uint8_t x, uint8_t y, uint8_t size, Rotation rotation)
       ret->points[i] = construct_point(t, y);
     }
   }
+  */
 
-  // Boat size, amount of points
-  ret->size = size;
+  ret->type = type;
+  ret->rotation = rotation;
 
-  _logf(L_INFO, "Boat constructed at (%d, %d) with size %d and rotation %d", x, y, size, rotation);
+  _logf(L_INFO, "Boat constructed at (%d, %d) with type %d and rotation %d", x, y, type, rotation);
   return ret;
 }
 
 void destruct_boat(Boat* boat)
 {
-  // Destruct Boat's Point objects first
-  for (uint8_t i = 0; i < boat->size; i++)
-  {
-    free(boat->points[i]);
-  }
-  // Destruct Point objects array
-  free(boat->points);
-
-  _logf(L_INFO, "Boat destructed with size %d", boat->size);
+  _logf(L_INFO, "Boat destructed with type %hhu and rotation %hhu", boat->type, boat->rotation);
   free(boat);
   return;
 }

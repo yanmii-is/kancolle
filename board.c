@@ -84,6 +84,7 @@ bool add_boat(Board* board, Boat* boat)
     return false;
   }
 
+  /*
   // Verify if boat's points won't overlap any used board coordinates
   for (uint8_t i = 0; i < boat->size; i++)
   {
@@ -103,8 +104,9 @@ bool add_boat(Board* board, Boat* boat)
   board->boats[board->cur_boat] = boat;
   // Internal pointer for boats array
   board->cur_boat++;
+  */
 
-  _logf(L_INFO, "Added boat with size %hhu to board", boat->size);
+  _logf(L_INFO, "Added boat with type %hhu to board", boat->type);
   return true;
 }
 

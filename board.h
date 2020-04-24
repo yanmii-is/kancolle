@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include "boat.h"
 
-
 typedef struct
 {
   uint8_t   height;
