@@ -13,3 +13,5 @@
 #define BOARD_MAX_SIZE 40
 // [false, true]
 #define LOGGING true
+// [false, true]
+#define CLEAR_SCREEN true

@@ -61,6 +61,11 @@ bool read_bool(char *prompt)
 
 void clear()
 {
+  if (!CLEAR_SCREEN)
+  {
+    return;
+  }
+  
   #if defined(_WIN32)
   system("cls");
   #endif
