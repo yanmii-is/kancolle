@@ -1,19 +1,20 @@
 #pragma once
 #include <stdbool.h>
+#include <stdint.h>
 
 // [1-255]
-#define BOAT_MIN_SIZE 1
+extern uint8_t BOAT_MIN_SIZE;
 // [1-255]
-#define BOAT_MAX_SIZE 5
+extern uint8_t BOAT_MAX_SIZE;
 // [1,255]
-#define MAX_BOATS 255
+extern uint8_t MAX_BOATS;
 // [5,100]
-#define BOARD_MIN_SIZE 20
+extern uint8_t BOARD_MIN_SIZE;
 // [5,100]
-#define BOARD_MAX_SIZE 40
+extern uint8_t BOARD_MAX_SIZE;
 // [false, true]
-#define LOGGING true
+extern bool    LOGGING;
 // [false, true]
-#define CLEAR_SCREEN true
+extern bool    CLEAR_SCREEN;
 // [false, true]
-#define REPLAY_ON_HIT false
+extern bool    REPLAY_ON_HIT;
