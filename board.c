@@ -111,8 +111,9 @@ bool add_boat(Board* board, Boat* boat)
 }
 
 // TODO: Different shape checks
-bool can_add_boat(Board* board, uint8_t x, uint8_t y, uint8_t size, Rotation rotation)
+bool can_add_boat(Board* board, uint8_t x, uint8_t y, BoatType type, BoatRotation rotation)
 {
+  /*
   // Out of boundaries
   if (x + size - 1 >= board->height || y + size - 1 >= board->width)
   {
@@ -142,6 +143,7 @@ bool can_add_boat(Board* board, uint8_t x, uint8_t y, uint8_t size, Rotation rot
   }
 
   return true;
+  */
 }
 
 bool verify_state(uint8_t height, uint8_t width, uint8_t** matrix)

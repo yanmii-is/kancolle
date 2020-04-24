@@ -1,6 +1,6 @@
 #include "boat.h"
 
-// Presets
+// Bitmap presets
 uint8_t bitmap_TL1[5][5] = {
   { 0, 0, 0, 0, 0 },
   { 0, 0, 0, 0, 0 },
@@ -10,9 +10,9 @@ uint8_t bitmap_TL1[5][5] = {
 };
 uint8_t bitmap_TL2[5][5] = {
   { 0, 0, 0, 0, 0 },
+  { 0, 0, 1, 0, 0 },
+  { 0, 0, 1, 0, 0 },
   { 0, 0, 0, 0, 0 },
-  { 0, 0, 1, 0, 0 },
-  { 0, 0, 1, 0, 0 },
   { 0, 0, 0, 0, 0 }
 };
 uint8_t bitmap_TL3[5][5] = {
@@ -38,7 +38,7 @@ uint8_t bitmap_TT5[5][5] = {
 };
 
 
-Boat* construct_boat(uint8_t x, uint8_t y, Type type, Rotation rotation)
+Boat* construct_boat(uint8_t x, uint8_t y, BoatType type, BoatRotation rotation)
 {
   Boat* ret;
 

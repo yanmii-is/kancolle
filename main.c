@@ -25,17 +25,18 @@ uint8_t setup_boardsize()
 
 uint8_t* setup_boatamounts(uint8_t boardsz)
 {
-  char prompt[38];
-  uint8_t max_boats = boardsz*boardsz / 25;
-  uint8_t* boats = (uint8_t*) malloc((BOAT_MAX_SIZE + 1) * sizeof(uint8_t));
-  boats[0] = 0;
+  char     prompt[38];
+  uint8_t  max_boats = boardsz * boardsz / 25;
+  uint8_t* boats     = (uint8_t*) malloc(sizeof(BoatType) * sizeof(uint8_t));
+  boats[0]           = 0;
 
   while (boats[0] == 0)
   {
     uint16_t all = 0;
-    for (uint8_t i = BOAT_MIN_SIZE; i <= BOAT_MAX_SIZE; i++)
+
+    for (uint8_t i = 0; i <= sizeof(BoatType); i++)
     {
-      sprintf(prompt, "Choose the amount of size %hhu boats: ", i);
+      sprintf(prompt, "Choose the amount of type %hhu boats: ", i);
       boats[i] = read_u8(prompt);
       while (boats[i] == 0)
       {
@@ -44,6 +45,7 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
       }
       all += boats[i];
     }
+
     boats[0] = all;
 
     // Overflow detected (u16 vs u8), user past the 255 limit or above max_boats limit
@@ -56,7 +58,7 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
   return boats;
 }
 
-Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bool mode)
+Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, bool mode)
 {
   // Maybe we can use something other than s16?
   int16_t x = -1;
@@ -68,11 +70,11 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
     // Manual input
     if (mode)
     {
-      printf("Choose the properties for your next size %d boat\n", size);
+      printf("Choose the properties for your next type %d boat\n", type);
       x = read_u8("Vertical coordinate: ");
       y = read_u8("Horizontal coordinate: ");
-      // Do not ask for rotation on size 1 boats
-      if (size != 1)
+      // Do not ask for rotation on size 1 boats (TYPE_LINEAR_1)
+      if (type != TYPE_LINEAR_1)
       {
         while (d != ROTATION_0 && d != ROTATION_90 && d != ROTATION_180 && d != ROTATION_270)
         {
@@ -98,11 +100,11 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
       }
     }
 
-    if (!can_add_boat(board, x, y, size, d))
+    if (!can_add_boat(board, x, y, type, d))
     {
       if (mode)
       {
-        printf("Not possible to add size %d boat at (%d, %d) with rotation %d\n", size, x, y, d);
+        printf("Not possible to add type %d boat at (%d, %d) with rotation %d\n", type, x, y, d);
       }
       x = -1;
       y = -1;
@@ -110,20 +112,20 @@ Boat* read_boat(Board* board, uint8_t size, uint8_t remaining, uint8_t total, bo
     }
   }
 
-  return construct_boat(x, y, size, d);
+  return construct_boat(x, y, type, d);
 }
 
-void place_boats(Board* board, uint8_t size, uint8_t total, bool mode)
+void place_boats(Board* board, BoatType type, uint8_t total, bool mode)
 {
   if (total < 1)
   {
-    _logf(L_INFO, "No boats of size %d to place", size);
+    _logf(L_INFO, "No boats of type %d to place", type);
     return;
   }
 
   for (uint8_t remaining = total; remaining > 0; remaining--)
   {
-    Boat* boat = read_boat(board, size, remaining, total, mode);
+    Boat* boat = read_boat(board, type, remaining, total, mode);
     if (add_boat(board, boat) == false)
     {
       destruct_boat(boat);
@@ -136,16 +138,16 @@ void place_boats(Board* board, uint8_t size, uint8_t total, bool mode)
   }
 }
 
-void setup_board(uint8_t player, Board* board, uint8_t* boats, bool mode)
+void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
 {
   clear();
   printf("Player %hhu, it's time to set up your board\n", player);
   newline();
   print_board(board, false);
 
-  for (uint8_t i = BOAT_MAX_SIZE; i >= BOAT_MIN_SIZE; i--)
+  for (uint8_t i = 0; i >= sizeof(BoatType); i--)
   {
-    place_boats(board, i, boats[i], mode);
+    place_boats(board, i, boat_count[i], mode);
   }
 }
 
