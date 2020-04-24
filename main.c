@@ -4,6 +4,7 @@
 #if defined(__linux__) || defined(__APPLE__)
 #include <sys/time.h>
 #endif
+#include "boat.h"
 #include "game.h"
 #include "utils.h"
 #include "config.h"
@@ -27,14 +28,14 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
 {
   char     prompt[38];
   uint8_t  max_boats = boardsz * boardsz / 25;
-  uint8_t* boats     = (uint8_t*) malloc(sizeof(BoatType) * sizeof(uint8_t));
+  uint8_t* boats     = (uint8_t*) malloc((TYPE_TSHAPE_5 + 1) * sizeof(uint8_t));
   boats[0]           = 0;
 
   while (boats[0] == 0)
   {
     uint16_t all = 0;
 
-    for (uint8_t i = 0; i <= sizeof(BoatType); i++)
+    for (uint8_t i = 1; i <= TYPE_TSHAPE_5; i++)
     {
       sprintf(prompt, "Choose the amount of type %hhu boats: ", i);
       boats[i] = read_u8(prompt);
@@ -100,6 +101,7 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
       }
     }
 
+    /*
     if (!can_add_boat(board, x, y, type, d))
     {
       if (mode)
@@ -110,9 +112,10 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
       y = -1;
       d = -1;
     }
+    */
   }
 
-  return construct_boat(x, y, type, d);
+  return construct_boat(type, d);
 }
 
 void place_boats(Board* board, BoatType type, uint8_t total, bool mode)
@@ -126,7 +129,7 @@ void place_boats(Board* board, BoatType type, uint8_t total, bool mode)
   for (uint8_t remaining = total; remaining > 0; remaining--)
   {
     Boat* boat = read_boat(board, type, remaining, total, mode);
-    if (add_boat(board, boat) == false)
+    if (/*add_boat(board, boat) == */false)
     {
       destruct_boat(boat);
       remaining++;
@@ -145,7 +148,7 @@ void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
   newline();
   print_board(board, false);
 
-  for (uint8_t i = 0; i >= sizeof(BoatType); i--)
+  for (uint8_t i = TYPE_TSHAPE_5; i >= 1; i--)
   {
     place_boats(board, i, boat_count[i], mode);
   }

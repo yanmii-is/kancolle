@@ -38,38 +38,35 @@ uint8_t bitmap_TT5[5][5] = {
 };
 
 
-Boat* construct_boat(uint8_t x, uint8_t y, BoatType type, BoatRotation rotation)
+Boat* construct_boat(BoatType type, BoatRotation rotation)
 {
-  Boat* ret;
-
-  // Allocates memory for main Boat structure
-  ret = malloc(sizeof(Boat));
-
-  /*
-  // Allocated memory for Point objects array
-  ret->points = (Point**) malloc(size * sizeof(Point*));
-
-  // Construct Point objects and tie the to the current Boat
-  if (rotation == ROTATION_0)
-  {
-    for (uint8_t i = 0, t = y; t < y + size; t++, i++)
-    {
-      ret->points[i] = construct_point(x, t);
-    }
-  }
-  else if (rotation == ROTATION_90)
-  {
-    for (uint8_t i = 0, t = x; t < x + size; t++, i++)
-    {
-      ret->points[i] = construct_point(t, y);
-    }
-  }
-  */
+  Boat* ret = malloc(sizeof(Boat));
 
   ret->type = type;
   ret->rotation = rotation;
 
-  _logf(L_INFO, "Boat constructed at (%d, %d) with type %d and rotation %d", x, y, type, rotation);
+  switch (type)
+  {
+    case TYPE_LINEAR_1:
+      memcpy(bitmap_TL1, ret->bitmap, sizeof(uint8_t) * 5 * 5);
+      break;
+    case TYPE_LINEAR_2:
+      memcpy(bitmap_TL2, ret->bitmap, sizeof(uint8_t) * 5 * 5);
+      break;
+    case TYPE_LINEAR_3:
+      memcpy(bitmap_TL3, ret->bitmap, sizeof(uint8_t) * 5 * 5);
+      break;
+    case TYPE_LINEAR_4:
+      memcpy(bitmap_TL4, ret->bitmap, sizeof(uint8_t) * 5 * 5);
+      break;
+    case TYPE_TSHAPE_5:
+      memcpy(bitmap_TT5, ret->bitmap, sizeof(uint8_t) * 5 * 5);
+      break;
+    default:
+      _logf(L_FATAL, "Attempted construction boat with invalid or unsupported type %d", type);
+  }
+
+  _logf(L_INFO, "Boat constructed with type %d and rotation %d", type, rotation);
   return ret;
 }
 
