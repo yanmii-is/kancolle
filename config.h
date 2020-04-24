@@ -15,3 +15,5 @@
 #define LOGGING true
 // [false, true]
 #define CLEAR_SCREEN true
+// [false, true]
+#define REPLAY_ON_HIT false

@@ -194,6 +194,11 @@ void player_move(uint8_t player, Game* game)
     break;
   }
 
+  if (verify_state(board->height, board->width, board->matrix))
+  {
+    game->state = true;
+  }
+
   if (board->matrix[x][y] == 0)
   {
     printf("You hit the sea...\n");
@@ -203,12 +208,14 @@ void player_move(uint8_t player, Game* game)
   {
     printf("You hit something!\n");
     board->matrix[x][y] = 'X';
+    // Player gets to play again on successful hit if the setting is enabled
+    if (REPLAY_ON_HIT && !game->state)
+    {
+      player_move(player, game);
+    }
   }
 
-  if (verify_state(board->height, board->width, board->matrix))
-  {
-    game->state = true;
-  }
+
 
   return;
 }
