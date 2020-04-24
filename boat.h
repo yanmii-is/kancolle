@@ -29,3 +29,5 @@ extern uint8_t bitmap_TT5[5][5];
 
 Boat* construct_boat (BoatType type, BoatRotation rotation);
 void  destruct_boat  (Boat* boat);
+void  print_bitmap   (Boat* boat);
+void  rotate_bitmap  (Boat* boat);

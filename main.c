@@ -61,45 +61,45 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
 
 Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, bool mode)
 {
-  // Maybe we can use something other than s16?
+  Boat* ret             = construct_boat(type, 0);
+  BoatRotation rotation = 0;
+  bool rotate           = true;
+
+  // Manual rotation
+  if (mode && type != TYPE_LINEAR_1)
+  {
+    while (rotate)
+    {
+      // Print default bitmap
+      print_bitmap(ret);
+      rotate = read_bool("Would you like to rotate your boat? (0 = no, 1 = yes)\n");
+
+      if (!rotate)
+      {
+        break;
+      }
+
+      rotate_bitmap(ret);
+      rotation = (rotation == 0) ? 3 : rotation - 1;
+    }
+  }
+  // Random rotation
+  else
+  {
+    while (rand() % 2 == 1)
+    {
+      rotate_bitmap(ret);
+      rotation = (rotation == 0) ? 3 : rotation - 1;
+    }
+  }
+
   int16_t x = -1;
   int16_t y = -1;
-  int8_t  d = -1;
 
   while (x < 0 || y < 0 || x >= board->height || y >= board->width)
   {
-    // Manual input
-    if (mode)
-    {
-      printf("Choose the properties for your next type %d boat\n", type);
-      x = read_u8("Vertical coordinate: ");
-      y = read_u8("Horizontal coordinate: ");
-      // Do not ask for rotation on size 1 boats (TYPE_LINEAR_1)
-      if (type != TYPE_LINEAR_1)
-      {
-        while (d != ROTATION_0 && d != ROTATION_90 && d != ROTATION_180 && d != ROTATION_270)
-        {
-          d = read_u8("What rotation do you want to apply to this boat (0 = 0º, 1 = 90º, 2 = 180º, 3 = 270º): ");
-          if (d != ROTATION_0 && d != ROTATION_90 && d != ROTATION_180 && d != ROTATION_270)
-          {
-            printf("Invalid direction\n");
-          }
-        }
-      }
-      else
-      {
-        d = ROTATION_0;
-      }
-    }
-    // Random input
-    else {
-      while (x == -1 || y == -1)
-      {
-        x = rand() % board->height;
-        y = rand() % board->width;
-        d = rand() % 2;
-      }
-    }
+    x = read_u8("Vertical coordinate: ");
+    y = read_u8("Horizontal coordinate: ");
 
     /*
     if (!can_add_boat(board, x, y, type, d))
@@ -115,7 +115,7 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
     */
   }
 
-  return construct_boat(type, d);
+  return ret;
 }
 
 void place_boats(Board* board, BoatType type, uint8_t total, bool mode)
