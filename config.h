@@ -6,8 +6,6 @@
 extern uint8_t BOAT_MIN_SIZE;
 // [1-255]
 extern uint8_t BOAT_MAX_SIZE;
-// [1,255]
-extern uint8_t MAX_BOATS;
 // [5,100]
 extern uint8_t BOARD_MIN_SIZE;
 // [5,100]

@@ -23,9 +23,10 @@ uint8_t setup_boardsize()
   return ret;
 }
 
-uint8_t* setup_boatamounts()
+uint8_t* setup_boatamounts(uint8_t boardsz)
 {
   char prompt[38];
+  uint8_t max_boats = boardsz*boardsz / 25;
   uint8_t* boats = (uint8_t*) malloc((BOAT_MAX_SIZE + 1) * sizeof(uint8_t));
   boats[0] = 0;
 
@@ -45,10 +46,10 @@ uint8_t* setup_boatamounts()
     }
     boats[0] = all;
 
-    // Overflow detected (u16 vs u8), user past the 255 limit or above MAX_BOATS limit
-    if (boats[0] != all || boats[0] > MAX_BOATS)
+    // Overflow detected (u16 vs u8), user past the 255 limit or above max_boats limit
+    if (boats[0] != all || boats[0] > max_boats)
     {
-      printf("You can't have more than %d boats on your game\n", MAX_BOATS);
+      printf("You can't have more than %d boats on your game\n", max_boats);
       boats[0] = 0;
     }
   }
@@ -232,7 +233,7 @@ int main(int argc, char *argv[])
   // Game initial setup: config, board size, boat amount
   bool     config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
   uint8_t  boardsz = setup_boardsize();
-  uint8_t* boats   = setup_boatamounts();
+  uint8_t* boats   = setup_boatamounts(boardsz);
   Game*    game    = construct_game(boardsz, boardsz, boats);
 
   // Setup both players' boards

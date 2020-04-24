@@ -5,6 +5,7 @@ Game* construct_game(uint8_t height, uint8_t width, uint8_t* boats)
 {
   Game* ret;
   uint8_t sum;
+  uint8_t max_boats = height * width / 25;
 
   // Sanity check: board limits
   if (height == 0 || width == 0)
@@ -20,10 +21,10 @@ Game* construct_game(uint8_t height, uint8_t width, uint8_t* boats)
     return NULL;
   }
 
-  // Sanity check: boats below MAX_SIZE config
-  if (sum > MAX_BOATS)
+  // Sanity check: boats below max_size config
+  if (sum > max_boats)
   {
-    _logf(L_FATAL, "Cannot create a game with more boats (%d) than the maximum limit (%d)", sum, MAX_BOATS);
+    _logf(L_FATAL, "Cannot create a game with more boats (%d) than the maximum limit (%d)", sum, max_boats);
     return NULL;
   }
 
