@@ -1,40 +1,22 @@
 #include "game.h"
 
 
-Game* construct_game(uint8_t height, uint8_t width, uint8_t* boats)
+Game* construct_game(uint8_t height, uint8_t width)
 {
   Game* ret;
-  uint8_t sum;
-  uint8_t max_boats = height * width / 25;
-
-  // Sanity check: board limits
-  if (height == 0 || width == 0)
-  {
-    _logf(L_FATAL, "Cannot create a game with zero or negative size boards (%hhu, %hhu)", height, width);
-    return NULL;
-  }
-
-  // Sanity check: existance of boats
-  if (boats[0] == 0)
-  {
-    _logf(L_FATAL, "Cannot create a game with no boats");
-    return NULL;
-  }
-
-  // Sanity check: boats below max_size config
-  if (sum > max_boats)
-  {
-    _logf(L_FATAL, "Cannot create a game with more boats (%d) than the maximum limit (%d)", sum, max_boats);
-    return NULL;
-  }
 
   ret = malloc(sizeof(Game));
   ret->state = false;
-  ret->boats = boats;
-  ret->board_p1 = construct_board(height, width, boats[0]);
-  ret->board_p2 = construct_board(height, width, boats[0]);
+  ret->board_p1 = construct_board(height, width);
+  ret->board_p2 = construct_board(height, width);
 
-  _logf(L_INFO, "Game created with %hhu boats", boats[0]);
+  if (ret->board_p1 == NULL || ret->board_p2 == NULL)
+  {
+    _logf(L_FATAL, "Board creation failed, cannot initialize game");
+    return NULL;
+  }
+
+  _logf(L_INFO, "Game created");
   return ret;
 }
 
@@ -42,6 +24,7 @@ void destruct_game(Game* game)
 {
   destruct_board(game->board_p1);
   destruct_board(game->board_p2);
+
   _logf(L_INFO, "Game with state %s destructed", game->state ? "true" : "false");
   free(game);
   return;

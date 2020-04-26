@@ -6,16 +6,13 @@
 
 typedef struct
 {
-  uint8_t   height;
-  uint8_t   width;
-  uint8_t** matrix;
-  Boat**    boats;
-  uint8_t   cur_boat;
+  uint8_t  height;
+  uint8_t  width;
+  Cell**   matrix;
 } Board;
 
-Board* construct_board(uint8_t height, uint8_t width, uint16_t boats);
-void destruct_board(Board* board);
-void print_board(Board* board, bool obfuscate);
-bool add_boat(Board* board, Boat* boat);
-bool can_add_boat(Board* board, uint8_t x, uint8_t y, BoatType type, BoatRotation rotation);
-bool verify_state(uint8_t height, uint8_t width, uint8_t** matrix);
+Board* construct_board (uint8_t height, uint8_t width);
+void destruct_board    (Board* board);
+void print_board       (Board* board, bool obfuscate);
+bool add_boat          (Board* board, Boat* boat);
+bool verify_state      (uint8_t height, uint8_t width, Cell** matrix);

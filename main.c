@@ -1,9 +1,3 @@
-#if defined(_WIN32)
-#include <windows.h>
-#endif
-#if defined(__linux__) || defined(__APPLE__)
-#include <sys/time.h>
-#endif
 #include "boat.h"
 #include "game.h"
 #include "utils.h"
@@ -178,7 +172,7 @@ void player_move(uint8_t player, Game* game)
       printf("Invalid coordinates, the board is not that big!\n");
       continue;
     }
-    else if (board->matrix[x][y] == 'x' || board->matrix[x][y] == 'X')
+    else if (board->matrix[x][y].shot == 1 || board->matrix[x][y].shot == 2)
     {
       printf("You already shot there previously!\n");
       continue;
@@ -192,23 +186,22 @@ void player_move(uint8_t player, Game* game)
     game->state = true;
   }
 
-  if (board->matrix[x][y] == 0)
+  if (board->matrix[x][y].shot == 0)
   {
     printf("You hit the sea...\n");
-    board->matrix[x][y] = 'x';
+    board->matrix[x][y].shot = 1;
   }
   else
   {
     printf("You hit something!\n");
-    board->matrix[x][y] = 'X';
+    board->matrix[x][y].shot = 2;
+
     // Player gets to play again on successful hit if the setting is enabled
     if (REPLAY_ON_HIT && !game->state)
     {
       player_move(player, game);
     }
   }
-
-
 
   return;
 }
@@ -226,7 +219,7 @@ int main(int argc, char *argv[])
   bool     config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
   uint8_t  boardsz = setup_boardsize();
   uint8_t* boats   = setup_boatamounts(boardsz);
-  Game*    game    = construct_game(boardsz, boardsz, boats);
+  Game*    game    = construct_game(boardsz, boardsz);
 
   // Setup both players' boards
   setup_board(1, game->board_p1, boats, config);
