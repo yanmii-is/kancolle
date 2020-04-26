@@ -44,6 +44,7 @@ Boat* construct_boat(BoatType type, BoatRotation rotation)
 
   ret->type = type;
   ret->rotation = rotation;
+  ret->damage = 0;
 
   switch (type)
   {

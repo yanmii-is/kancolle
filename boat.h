@@ -19,6 +19,7 @@ typedef struct
   uint8_t       bitmap[5][5];
   BoatType      type;
   BoatRotation  rotation;
+  uint8_t       damage;
 } Boat;
 
 extern uint8_t bitmap_TL1[5][5];
