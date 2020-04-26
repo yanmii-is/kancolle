@@ -136,7 +136,7 @@ bool verify_state(Board* board)
       // Game still not over (found Boat Cell without hit)
       if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
       {
-        _logf(L_INFO, "verify_state: Found %c at %hhu, %hhu", board->matrix[x * board->height + y].shot, x, y);
+        _logf(L_INFO, "verify_state: Found %hhu at %hhu, %hhu", board->matrix[x * board->height + y].shot, x, y);
         return false;
       }
     }

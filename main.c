@@ -172,7 +172,7 @@ void player_move(uint8_t player, Game* game)
       printf("Invalid coordinates, the board is not that big!\n");
       continue;
     }
-    else if (board->matrix[x * board->height + y].shot == 1 || board->matrix[x * board->height + y].shot == 2)
+    else if (board->matrix[x * board->height + y].shot != 0)
     {
       printf("You already shot there previously!\n");
       continue;
@@ -186,7 +186,7 @@ void player_move(uint8_t player, Game* game)
     game->state = true;
   }
 
-  if (board->matrix[x * board->height + y].shot == 0)
+  if (board->matrix[x * board->height + y].boat == 0x0)
   {
     printf("You hit the sea...\n");
     board->matrix[x * board->height + y].shot = 1;
