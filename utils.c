@@ -54,7 +54,7 @@ bool read_bool(char *prompt)
     }
     else
     {
-      printf("Input error, you must input a valid boolean [0,1]\n");
+      printf("Input error (%c %c %c), you must input a valid boolean [0,1]\n", in[0], in[1], in[2]);
     }
   }
 }
