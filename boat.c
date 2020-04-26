@@ -117,7 +117,7 @@ void print_bitmap(Boat* boat)
 }
 
 // Clockwise rotation (90º)
-void rotate_bitmap(Boat* boat)
+void rotate_boat(Boat* boat)
 {
   uint8_t rotated[5][5];
 
@@ -130,4 +130,6 @@ void rotate_bitmap(Boat* boat)
   }
 
   memcpy(&boat->bitmap, &rotated, sizeof(uint8_t) * 5 * 5);
+
+  boat->rotation = (boat->rotation == 0) ? 3 : boat->rotation - 1;
 }

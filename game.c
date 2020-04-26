@@ -42,7 +42,7 @@ void destruct_game(Game* game)
 {
   destruct_board(game->board_p1);
   destruct_board(game->board_p2);
-  _logf(L_INFO, "Game with state %s and limits destructed", game->state ? "true" : "false");
+  _logf(L_INFO, "Game with state %s destructed", game->state ? "true" : "false");
   free(game);
   return;
 }

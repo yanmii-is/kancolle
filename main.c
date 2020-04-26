@@ -64,6 +64,8 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
   Boat* ret             = construct_boat(type, 0);
   BoatRotation rotation = 0;
   bool rotate           = true;
+  int16_t x             = -1;
+  int16_t y             = -1;
 
   // Manual rotation
   if (mode && type != TYPE_LINEAR_1)
@@ -79,8 +81,7 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
         break;
       }
 
-      rotate_bitmap(ret);
-      rotation = (rotation == 0) ? 3 : rotation - 1;
+      rotate_boat(ret);
     }
   }
   // Random rotation
@@ -88,69 +89,55 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
   {
     while (rand() % 2 == 1)
     {
-      rotate_bitmap(ret);
-      rotation = (rotation == 0) ? 3 : rotation - 1;
+      rotate_boat(ret);
     }
   }
 
-  int16_t x = -1;
-  int16_t y = -1;
-
+  // Coordinates
   while (x < 0 || y < 0 || x >= board->height || y >= board->width)
   {
-    x = read_u8("Vertical coordinate: ");
-    y = read_u8("Horizontal coordinate: ");
+    if (mode)
+    {
+      printf("Choose the coordinates for your boat\n");
+      printf("Note: You must input the coordinates for the UPMOST LEFT coordinate of the 5x5 boat matrix\n\n");
+      x = read_u8("Vertical coordinate: ");
+      y = read_u8("Horizontal coordinate: ");
+    }
+    else
+    {
+      x = rand() % (board->height - 1);
+      y = rand() % (board->width  - 1);
+    }
 
-    /*
-    if (!can_add_boat(board, x, y, type, d))
+    // Add boat
+    if (/*!add_boat(board, boat)*/ false)
     {
       if (mode)
       {
-        printf("Not possible to add type %d boat at (%d, %d) with rotation %d\n", type, x, y, d);
+        printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)", x, y, x+5, y+5);
       }
       x = -1;
       y = -1;
-      d = -1;
     }
-    */
   }
 
   return ret;
-}
-
-void place_boats(Board* board, BoatType type, uint8_t total, bool mode)
-{
-  if (total < 1)
-  {
-    _logf(L_INFO, "No boats of type %d to place", type);
-    return;
-  }
-
-  for (uint8_t remaining = total; remaining > 0; remaining--)
-  {
-    Boat* boat = read_boat(board, type, remaining, total, mode);
-    if (/*add_boat(board, boat) == */false)
-    {
-      destruct_boat(boat);
-      remaining++;
-      continue;
-    }
-		newline();
-    print_board(board, false);
-    newline();
-  }
 }
 
 void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
 {
   clear();
   printf("Player %hhu, it's time to set up your board\n", player);
-  newline();
-  print_board(board, false);
 
-  for (uint8_t i = TYPE_TSHAPE_5; i >= 1; i--)
+  for (uint8_t type = TYPE_TSHAPE_5; type >= 1; type--)
   {
-    place_boats(board, i, boat_count[i], mode);
+    for (uint8_t remaining = boat_count[type]; remaining > 0; remaining--)
+    {
+      newline();
+      print_board(board, false);
+      newline();
+      Boat* boat = read_boat(board, type, remaining, boat_count[type], mode);
+    }
   }
 }
 
