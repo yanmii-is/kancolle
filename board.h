@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "boat.h"
+#include "cell.h"
 
 typedef struct
 {
