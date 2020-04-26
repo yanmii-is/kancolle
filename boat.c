@@ -78,6 +78,7 @@ void destruct_boat(Boat* boat)
   return;
 }
 
+// 0: Empty, 1: NoHit, 2: Hit, 3: Miss
 void print_bitmap(Boat* boat)
 {
   // Bitmap headers
@@ -107,7 +108,13 @@ void print_bitmap(Boat* boat)
           printf("~~ ");
           break;
         case 1:
-          printf("XX ");
+          printf("BB ");
+          break;
+        case 2:
+          printf("±± ");
+          break;
+        case 3:
+          printf("xx ");
           break;
         default:
           printf("?? ");
