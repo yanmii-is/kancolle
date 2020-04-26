@@ -172,7 +172,7 @@ void player_move(uint8_t player, Game* game)
       printf("Invalid coordinates, the board is not that big!\n");
       continue;
     }
-    else if (board->matrix[x][y].shot == 1 || board->matrix[x][y].shot == 2)
+    else if (board->matrix[x * board->height + y].shot == 1 || board->matrix[x * board->height + y].shot == 2)
     {
       printf("You already shot there previously!\n");
       continue;
@@ -181,20 +181,20 @@ void player_move(uint8_t player, Game* game)
     break;
   }
 
-  if (verify_state(board->height, board->width, board->matrix))
+  if (verify_state(board))
   {
     game->state = true;
   }
 
-  if (board->matrix[x][y].shot == 0)
+  if (board->matrix[x * board->height + y].shot == 0)
   {
     printf("You hit the sea...\n");
-    board->matrix[x][y].shot = 1;
+    board->matrix[x * board->height + y].shot = 1;
   }
   else
   {
     printf("You hit something!\n");
-    board->matrix[x][y].shot = 2;
+    board->matrix[x * board->height + y].shot = 2;
 
     // Player gets to play again on successful hit if the setting is enabled
     if (REPLAY_ON_HIT && !game->state)

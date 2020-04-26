@@ -14,11 +14,7 @@ Board* construct_board(uint8_t height, uint8_t width)
   ret = malloc(sizeof(Board));
   ret->height = height;
   ret->width = width;
-  ret->matrix = (Cell**) malloc(width * sizeof(Cell*));
-  for (uint8_t i = 0; i < height; i++)
-  {
-    ret->matrix[i] = (Cell*) malloc(height * sizeof(Cell));
-  }
+  ret->matrix = (Cell*) malloc(width * height * sizeof(Cell));
 
   _logf(L_INFO, "Board created with size %hhux%hhu", height, width);
   return ret;
@@ -55,21 +51,21 @@ void print_board(Board* board, bool obfuscate)
     printf("%02hhu | ", x);
     for (uint8_t y = 0; y < board->width; y++)
     {
-      if (board->matrix[x][y].shot == 0)
+      if (board->matrix[x * board->height + y].shot == 0)
       {
         printf("~~ ");
       }
-      else if (board->matrix[x][y].shot == 1)
+      else if (board->matrix[x * board->height + y].shot == 1)
       {
         printf("BB ");
       }
-      else if (board->matrix[x][y].shot == 2)
+      else if (board->matrix[x * board->height + y].shot == 2)
       {
         printf("±± ");
       }
       else if (!obfuscate)
       {
-        printf("%hhu%hhu ", board->matrix[x][y].shot, board->matrix[x][y].shot);
+        printf("%hhu%hhu ", board->matrix[x * board->height + y].shot, board->matrix[x * board->height + y].shot);
       }
       else if (obfuscate)
       {
@@ -113,16 +109,16 @@ bool add_boat(Board* board, Boat* boat)
   return true;
 }
 
-bool verify_state(uint8_t height, uint8_t width, Cell** matrix)
+bool verify_state(Board* board)
 {
-  for (int x = 0; x < height; x++)
+  for (int x = 0; x < board->height; x++)
   {
-    for (int y = 0; y < width; y++)
+    for (int y = 0; y < board->width; y++)
     {
       // Game still not over (found Boat Cell without hit)
-      if (matrix[x][y].boat != 0x0 && matrix[x][y].shot == 0)
+      if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
       {
-        _logf(L_INFO, "verify_state: Found %c at %hhu, %hhu", matrix[x][y].shot, x, y);
+        _logf(L_INFO, "verify_state: Found %c at %hhu, %hhu", board->matrix[x * board->height + y].shot, x, y);
         return false;
       }
     }

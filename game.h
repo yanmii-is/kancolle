@@ -9,11 +9,11 @@
 
 typedef struct
 {
-  bool     state;
-  Board*   board_p1;
-  Board*   board_p2;
+  bool    state;
+  Board*  board_p1;
+  Board*  board_p2;
 } Game;
 
-Game* construct_game(uint8_t height, uint8_t width);
-void destruct_game(Game* game);
-void print_game(Game* game);
+Game* construct_game  (uint8_t height, uint8_t width);
+void destruct_game    (Game* game);
+void print_game       (Game* game);
