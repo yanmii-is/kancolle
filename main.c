@@ -104,11 +104,11 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
     }
 
     // Add boat
-    if (/*!add_boat(board, boat)*/ false)
+    if (!add_boat(board, ret, x, y))
     {
       if (mode)
       {
-        printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)", x, y, x+5, y+5);
+        printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)\n", x, y, x+5, y+5);
       }
       x = -1;
       y = -1;
