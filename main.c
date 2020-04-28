@@ -55,35 +55,35 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
 
 Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, bool mode)
 {
-  Boat* ret             = construct_boat(type, 0);
+  Boat* ret             = boat_construct(type, 0);
   BoatRotation rotation = 0;
-  bool rotate           = true;
+  bool rotate           = false;
   int16_t x             = -1;
   int16_t y             = -1;
 
-  // Manual rotation
-  if (mode && type != TYPE_LINEAR_1)
+  // Rotation
+  if (type != TYPE_LINEAR_1)
   {
-    while (rotate)
+    while (true)
     {
-      // Print default bitmap
-      print_bitmap(ret);
-      rotate = read_bool("Would you like to rotate your boat? (0 = no, 1 = yes)\n");
+      if (mode)
+      {
+        // Manual rotation
+        boat_print(ret);
+        rotate = read_bool("Would you like to rotate your boat? (0 = no, 1 = yes)\n");
+      }
+      else
+      {
+        // Random rotation
+        rotate = rand() % 2 == 1;
+      }
 
       if (!rotate)
       {
         break;
       }
 
-      rotate_boat(ret);
-    }
-  }
-  // Random rotation
-  else
-  {
-    while (rand() % 2 == 1)
-    {
-      rotate_boat(ret);
+      boat_rotate(ret);
     }
   }
 
@@ -92,6 +92,7 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
   {
     if (mode)
     {
+      // Manual coordinates
       printf("Choose the coordinates for your boat\n");
       printf("Note: You must input the coordinates for the UPMOST LEFT coordinate of the 5x5 boat matrix\n\n");
       x = read_u8("Vertical coordinate: ");
@@ -99,16 +100,16 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
     }
     else
     {
+      // Random coordinates
       x = rand() % (board->height - 1);
       y = rand() % (board->width  - 1);
     }
 
-    // Add boat
     if (!add_boat(board, ret, x, y))
     {
       if (mode)
       {
-        printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)\n", x, y, x+5, y+5);
+        printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)\n", x, y, x + 4, y + 4);
       }
       x = -1;
       y = -1;

@@ -22,13 +22,13 @@ extern uint8_t bitmap_TT5[5][5];
 
 typedef struct
 {
-  uint8_t       bitmap[5][5];
   BoatType      type;
   BoatRotation  rotation;
+  uint8_t       bitmap[5][5];  // 0: Empty, 1: NoHit, 2: Hit, 3: Miss
   uint8_t       damage;
 } Boat;
 
-Boat* construct_boat  (BoatType type, BoatRotation rotation);
-void  destruct_boat   (Boat* boat);
-void  print_bitmap    (Boat* boat);
-void  rotate_boat     (Boat* boat);
+Boat* boat_construct  (BoatType type, BoatRotation rotation);
+void  boat_destruct   (Boat* boat);
+void  boat_print      (Boat* boat);
+void  boat_rotate     (Boat* boat);

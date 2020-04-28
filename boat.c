@@ -38,7 +38,7 @@ uint8_t bitmap_TT5[5][5] = {
 };
 
 
-Boat* construct_boat(BoatType type, BoatRotation rotation)
+Boat* boat_construct(BoatType type, BoatRotation rotation)
 {
   Boat* ret = malloc(sizeof(Boat));
 
@@ -71,15 +71,14 @@ Boat* construct_boat(BoatType type, BoatRotation rotation)
   return ret;
 }
 
-void destruct_boat(Boat* boat)
+void boat_destruct(Boat* boat)
 {
   _logf(L_INFO, "Boat destructed with type %hhu and rotation %hhu", boat->type, boat->rotation);
   free(boat);
   return;
 }
 
-// 0: Empty, 1: NoHit, 2: Hit, 3: Miss
-void print_bitmap(Boat* boat)
+void boat_print(Boat* boat)
 {
   // Bitmap headers
   printf("   | ");
@@ -125,7 +124,7 @@ void print_bitmap(Boat* boat)
 }
 
 // Clockwise rotation (90º)
-void rotate_boat(Boat* boat)
+void boat_rotate(Boat* boat)
 {
   uint8_t rotated[5][5];
 
