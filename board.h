@@ -7,9 +7,9 @@
 
 typedef struct
 {
-  u8  height;
-  u8  width;
-  Cell*    matrix;
+  u8     height;
+  u8     width;
+  Cell*  matrix;
 } Board;
 
 Board* board_construct  (u8 height, u8 width);

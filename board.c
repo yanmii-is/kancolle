@@ -11,9 +11,9 @@ Board* board_construct(u8 height, u8 width)
     return NULL;
   }
 
-  ret = malloc(sizeof(Board));
+  ret         = malloc(sizeof(Board));
   ret->height = height;
-  ret->width = width;
+  ret->width  = width;
   ret->matrix = (Cell*) malloc(width * height * sizeof(Cell));
 
   for (u8 x = 0; x < height; x++)

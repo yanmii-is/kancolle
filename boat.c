@@ -40,11 +40,12 @@ u8 bitmap_TT5[5][5] = {
 
 Boat* boat_construct(BoatType type, BoatRotation rotation)
 {
-  Boat* ret = malloc(sizeof(Boat));
+  Boat* ret;
 
-  ret->type = type;
+  ret           = malloc(sizeof(Boat));
+  ret->type     = type;
   ret->rotation = rotation;
-  ret->damage = 0;
+  ret->damage   = 0;
 
   switch (type)
   {

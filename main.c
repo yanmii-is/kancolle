@@ -138,20 +138,18 @@ void setup_board(u8 player, Board* board, u8* boat_count, bool mode)
 bool player_move(Game* game, u8 player)
 {
   Board* board;
-  u8 x, y;
+  u8     x;
+  u8     y;
 
-  if (player == 1)
+  switch (player)
   {
-    board = game->board_p2;
-  }
-  else if (player == 2)
-  {
-    board = game->board_p1;
-  }
-  else
-  {
-    _logf(L_FATAL, "Tried running player_move with player %hhu", player);
-    return false;
+    case 1:
+      board = game->board_p1;
+    case 2:
+      board = game->board_p2;
+    default:
+      _logf(L_FATAL, "Tried running player_move with player %hhu", player);
+      return false;
   }
 
   clear();
@@ -194,10 +192,10 @@ int main(int argc, char *argv[])
   clear();
 
   // Game initial setup: config, board size, boat amount
-  bool     config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
-  u8  boardsz = setup_boardsize();
-  u8* boats   = setup_boatamounts(boardsz);
-  Game*    game    = game_construct(boardsz, boardsz);
+  bool  config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
+  u8    boardsz = setup_boardsize();
+  u8*   boats   = setup_boatamounts(boardsz);
+  Game* game    = game_construct(boardsz, boardsz);
 
   // Setup both players' boards
   setup_board(1, game->board_p1, boats, config);

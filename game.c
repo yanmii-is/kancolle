@@ -5,8 +5,8 @@ Game* game_construct(u8 height, u8 width)
 {
   Game* ret;
 
-  ret = malloc(sizeof(Game));
-  ret->state = 0;
+  ret           = malloc(sizeof(Game));
+  ret->state    = 0;
   ret->board_p1 = board_construct(height, width);
   ret->board_p2 = board_construct(height, width);
 

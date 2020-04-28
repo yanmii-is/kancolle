@@ -14,8 +14,8 @@ u8 read_u8(char *prompt)
 {
   // 3 byte input + 1 byte newline + 1 byte terminator
   char in[5];
-  // We use an u16 as a temporary buffer to detect OOB input
-  int16_t ret = -1;
+  // We use a s16 as a temporary buffer to detect OOB input
+  s16  ret = -1;
 
   while (ret < 0)
   {
