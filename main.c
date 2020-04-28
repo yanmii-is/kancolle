@@ -198,14 +198,78 @@ return_code player_move(Game* game, u8 player)
   return code;
 }
 
+void change_settings()
+{
+  u8 menu;
+  menu = 0;
+
+  while (true)
+  {
+    clear();
+    printf("Current settings:\n");
+    newline();
+    printf("LOGGING = %s\n"         , LOGGING       ? "true" : "false");
+    printf("CLEAR_SCREEN = %s\n"    , CLEAR_SCREEN  ? "true" : "false");
+    printf("REPLAY_ON_HIT = %s\n"   , REPLAY_ON_HIT ? "true" : "false");
+    newline();
+    printf("1) Toggle LOGGING\n");
+    printf("2) Toggle CLEAR_SCREEN\n");
+    printf("3) Toggle REPLAY_ON_HIT\n");
+    printf("9) Return to Main Menu\n");
+    newline();
+    menu = read_u8("Choose a number: ");
+
+    switch (menu)
+    {
+      case 1:
+        LOGGING = !LOGGING;
+        break;
+      case 2:
+        CLEAR_SCREEN = !CLEAR_SCREEN;
+        break;
+      case 3:
+        REPLAY_ON_HIT = !REPLAY_ON_HIT;
+        break;
+      case 9:
+        return;
+      default:
+        printf("Invalid number\n");
+    }
+  }
+}
 
 int main(int argc, char *argv[])
 {
+  u8 menu;
+  menu = 0;
+
   // Define seed for randomization
   srand(time(NULL));
 
   // Clear the user's screen
   clear();
+
+  while (menu != 1)
+  {
+    printf("Welcome to Kancolle Game!\n");
+    newline();
+    printf("1) New Game\n");
+    printf("2) Settings\n");
+    printf("3) Exit Game\n");
+    newline();
+    menu = read_u8("Choose a number: ");
+
+    // Settings
+    if (menu == 2)
+    {
+      change_settings();
+    }
+    // Exit Game
+    if (menu == 3)
+    {
+      exit(0);
+    }
+  }
 
   // Game initial setup: config, board size, boat amount
   bool  config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
