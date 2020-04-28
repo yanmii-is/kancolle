@@ -195,6 +195,7 @@ void player_move(uint8_t player, Game* game)
   {
     printf("You hit something!\n");
     board->matrix[x * board->height + y].shot = 2;
+    board->matrix[x * board->height + y].boat.damage++;
 
     // Player gets to play again on successful hit if the setting is enabled
     if (REPLAY_ON_HIT && !game->state)
