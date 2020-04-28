@@ -1,7 +1,7 @@
 #include "board.h"
 
 
-Board* board_construct(uint8_t height, uint8_t width)
+Board* board_construct(u8 height, u8 width)
 {
   Board* ret;
 
@@ -16,9 +16,9 @@ Board* board_construct(uint8_t height, uint8_t width)
   ret->width = width;
   ret->matrix = (Cell*) malloc(width * height * sizeof(Cell));
 
-  for (int x = 0; x < height; x++)
+  for (u8 x = 0; x < height; x++)
   {
-    for (int y = 0; y < width; y++)
+    for (u8 y = 0; y < width; y++)
     {
       ret->matrix[x * height + y].boat = 0x0;
       ret->matrix[x * height + y].shot = 0;
@@ -41,14 +41,14 @@ void board_print(Board* board, bool obfuscate)
 {
   // Table headers
   printf("   | ");
-  for (uint8_t x = 0; x < board->height; x++)
+  for (u8 x = 0; x < board->height; x++)
   {
     printf("%02hhu ", x);
   }
   printf("\n");
 
   printf("---+");
-  for (uint8_t x = 0; x < board->height; x++)
+  for (u8 x = 0; x < board->height; x++)
   {
     printf("---");
   }
@@ -56,10 +56,10 @@ void board_print(Board* board, bool obfuscate)
 
 
   // Table content
-  for (uint8_t x = 0; x < board->height; x++)
+  for (u8 x = 0; x < board->height; x++)
   {
     printf("%02hhu | ", x);
-    for (uint8_t y = 0; y < board->width; y++)
+    for (u8 y = 0; y < board->width; y++)
     {
       if (board->matrix[x * board->height + y].boat == 0x0 && board->matrix[x * board->height + y].shot == 0)
       {
@@ -86,7 +86,7 @@ void board_print(Board* board, bool obfuscate)
   }
 }
 
-bool board_add(Board* board, Boat* boat, uint8_t x, uint8_t y)
+bool board_add(Board* board, Boat* boat, u8 x, u8 y)
 {
   if (board == NULL || boat == NULL)
   {
@@ -94,9 +94,9 @@ bool board_add(Board* board, Boat* boat, uint8_t x, uint8_t y)
   }
 
   // Verify if Boat won't overlap any used Board coordinates
-  for (uint8_t i = x; i <= x+5; i++)
+  for (u8 i = x; i <= x+5; i++)
   {
-    for (uint8_t j = y; j <= y+5; j++)
+    for (u8 j = y; j <= y+5; j++)
     {
       // Ignore unused Boat bitmap coordinates
       if (boat->bitmap[i-x][j-y] == 0)
@@ -113,9 +113,9 @@ bool board_add(Board* board, Boat* boat, uint8_t x, uint8_t y)
   }
 
   // Update Board's Cell matrix
-  for (uint8_t i = x; i <= x+5; i++)
+  for (u8 i = x; i <= x+5; i++)
   {
-    for (uint8_t j = y; j <= y+5; j++)
+    for (u8 j = y; j <= y+5; j++)
     {
       if (boat->bitmap[i-x][j-y] == 1)
       {
@@ -128,7 +128,7 @@ bool board_add(Board* board, Boat* boat, uint8_t x, uint8_t y)
   return true;
 }
 
-bool board_attack(Board* board, uint8_t x, uint8_t y)
+bool board_attack(Board* board, u8 x, u8 y)
 {
   if (board->matrix[x * board->height + y].boat == 0x0)
   {

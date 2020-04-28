@@ -10,7 +10,7 @@
 //       and the remaining of the input will fall through
 //       to the next read functions on the program.
 
-uint8_t read_u8(char *prompt)
+u8 read_u8(char *prompt)
 {
   // 3 byte input + 1 byte newline + 1 byte terminator
   char in[5];
@@ -31,7 +31,7 @@ uint8_t read_u8(char *prompt)
     }
   }
 
-  return (uint8_t) ret;
+  return (u8) ret;
 }
 
 bool read_bool(char *prompt)

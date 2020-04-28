@@ -1,12 +1,13 @@
+#include "stdafx.h"
 #include "boat.h"
 #include "game.h"
 #include "utils.h"
 #include "config.h"
 
 
-uint8_t setup_boardsize()
+u8 setup_boardsize()
 {
-  uint8_t ret = 0;
+  u8 ret = 0;
   while (ret < BOARD_MIN_SIZE || ret > BOARD_MAX_SIZE)
   {
     ret = read_u8("Choose the board size: ");
@@ -18,18 +19,18 @@ uint8_t setup_boardsize()
   return ret;
 }
 
-uint8_t* setup_boatamounts(uint8_t boardsz)
+u8* setup_boatamounts(u8 boardsz)
 {
-  char     prompt[38];
-  uint8_t  max_boats = boardsz * boardsz / 25;
-  uint8_t* boats     = (uint8_t*) malloc((TYPE_TSHAPE_5 + 1) * sizeof(uint8_t));
-  boats[0]           = 0;
+  char prompt[38];
+  u8   max_boats = boardsz * boardsz / 25;
+  u8*  boats     = (u8*) malloc((TYPE_TSHAPE_5 + 1) * sizeof(u8));
+  boats[0]       = 0;
 
   while (boats[0] == 0)
   {
-    uint16_t all = 0;
+    u16 all = 0;
 
-    for (uint8_t i = 1; i <= TYPE_TSHAPE_5; i++)
+    for (u8 i = 1; i <= TYPE_TSHAPE_5; i++)
     {
       sprintf(prompt, "Choose the amount of type %hhu boats: ", i);
       boats[i] = read_u8(prompt);
@@ -53,13 +54,13 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
   return boats;
 }
 
-void read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, bool mode)
+void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
 {
   Boat* boat            = boat_construct(type, 0);
   BoatRotation rotation = 0;
   bool rotate           = false;
-  int16_t x             = -1;
-  int16_t y             = -1;
+  s16 x                 = -1;
+  s16 y                 = -1;
 
   // Rotation
   if (type != TYPE_LINEAR_1)
@@ -117,14 +118,14 @@ void read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, bo
   }
 }
 
-void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
+void setup_board(u8 player, Board* board, u8* boat_count, bool mode)
 {
   clear();
   printf("Player %hhu, it's time to set up your board\n", player);
 
-  for (uint8_t type = TYPE_TSHAPE_5; type >= 1; type--)
+  for (u8 type = TYPE_TSHAPE_5; type >= 1; type--)
   {
-    for (uint8_t remaining = boat_count[type]; remaining > 0; remaining--)
+    for (u8 remaining = boat_count[type]; remaining > 0; remaining--)
     {
       newline();
       board_print(board, false);
@@ -134,10 +135,10 @@ void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
   }
 }
 
-bool player_move(Game* game, uint8_t player)
+bool player_move(Game* game, u8 player)
 {
   Board* board;
-  uint8_t x, y;
+  u8 x, y;
 
   if (player == 1)
   {
@@ -194,8 +195,8 @@ int main(int argc, char *argv[])
 
   // Game initial setup: config, board size, boat amount
   bool     config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
-  uint8_t  boardsz = setup_boardsize();
-  uint8_t* boats   = setup_boatamounts(boardsz);
+  u8  boardsz = setup_boardsize();
+  u8* boats   = setup_boatamounts(boardsz);
   Game*    game    = game_construct(boardsz, boardsz);
 
   // Setup both players' boards

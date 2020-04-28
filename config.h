@@ -1,11 +1,11 @@
 #pragma once
+#include "stdafx.h"
 #include <stdbool.h>
-#include <stdint.h>
 
 // [5,100]
-extern uint8_t BOARD_MIN_SIZE;
+extern u8      BOARD_MIN_SIZE;
 // [5,100]
-extern uint8_t BOARD_MAX_SIZE;
+extern u8      BOARD_MAX_SIZE;
 // [false, true]
 extern bool    LOGGING;
 // [false, true]

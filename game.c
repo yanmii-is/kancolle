@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-Game* game_construct(uint8_t height, uint8_t width)
+Game* game_construct(u8 height, u8 width)
 {
   Game* ret;
 
@@ -39,7 +39,7 @@ void game_print(Game* game)
   // print_board(game->board_p2);
 }
 
-bool game_verify(Game* game, uint8_t player)
+bool game_verify(Game* game, u8 player)
 {
   Board* board;
 
@@ -50,9 +50,9 @@ bool game_verify(Game* game, uint8_t player)
 
   board = (player == 1) ? game->board_p1 : game->board_p2;
 
-  for (int x = 0; x < board->height; x++)
+  for (u8 x = 0; x < board->height; x++)
   {
-    for (int y = 0; y < board->width; y++)
+    for (u8 y = 0; y < board->width; y++)
     {
       // Game still not over (found Boat Cell without hit)
       if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
