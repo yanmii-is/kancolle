@@ -73,7 +73,7 @@ Boat* boat_construct(BoatType type, BoatRotation rotation)
 
 void boat_destruct(Boat* boat)
 {
-  _logf(L_INFO, "Boat destructed with type %hhu and rotation %hhu", boat->type, boat->rotation);
+  _logf(L_INFO, "Boat destructed with type %d and rotation %d", boat->type, boat->rotation);
   free(boat);
   return;
 }

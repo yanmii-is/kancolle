@@ -12,7 +12,7 @@ uint8_t setup_boardsize()
     ret = read_u8("Choose the board size: ");
     if (ret < BOARD_MIN_SIZE || ret > BOARD_MAX_SIZE)
     {
-      printf("Invalid size (%dx%d), a board must be between %dx%d and %dx%d\n", ret, ret, BOARD_MIN_SIZE, BOARD_MIN_SIZE, BOARD_MAX_SIZE, BOARD_MAX_SIZE);
+      printf("Invalid size (%hhux%hhu), a board must be between %hhux%hhu and %hhux%hhu\n", ret, ret, BOARD_MIN_SIZE, BOARD_MIN_SIZE, BOARD_MAX_SIZE, BOARD_MAX_SIZE);
     }
   }
   return ret;
@@ -46,7 +46,7 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
     // Overflow detected (u16 vs u8), user past the 255 limit or above max_boats limit
     if (boats[0] != all || boats[0] > max_boats)
     {
-      printf("You can't have more than %d boats on your game\n", max_boats);
+      printf("You can't have more than %hhu boats on your game\n", max_boats);
       boats[0] = 0;
     }
   }
@@ -212,7 +212,7 @@ int main(int argc, char *argv[])
       game_verify(game, player);
       if (game->state != 0)
       {
-        printf("Player %d has won\n", game->state);
+        printf("Player %hhu has won\n", game->state);
         break;
       }
       // Player gets to play again on successful hit if the setting is enabled
