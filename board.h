@@ -12,8 +12,7 @@ typedef struct
   Cell*  matrix;
 } Board;
 
-Board* board_construct  (u8 height, u8 width);
-void   board_destruct   (Board* board);
-void   board_print      (Board* board, bool obfuscate);
-bool   board_add        (Board* board, Boat* boat, u8 x, u8 y);
-bool   board_attack     (Board* board, u8 x, u8 y);
+Board*       board_construct  (u8 height, u8 width);
+return_code  board_destruct   (Board* board);
+return_code  board_print      (Board* board, bool obfuscate);
+return_code  board_add        (Board* board, Boat* boat, u8 x, u8 y);

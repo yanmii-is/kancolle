@@ -13,7 +13,8 @@ u8 setup_boardsize()
     ret = read_u8("Choose the board size: ");
     if (ret < BOARD_MIN_SIZE || ret > BOARD_MAX_SIZE)
     {
-      printf("Invalid size (%hhux%hhu), a board must be between %hhux%hhu and %hhux%hhu\n", ret, ret, BOARD_MIN_SIZE, BOARD_MIN_SIZE, BOARD_MAX_SIZE, BOARD_MAX_SIZE);
+      printf("Invalid size (%hhux%hhu), a board must be between %hhux%hhu and %hhux%hhu\n",
+             ret, ret, BOARD_MIN_SIZE, BOARD_MIN_SIZE, BOARD_MAX_SIZE, BOARD_MAX_SIZE);
     }
   }
   return ret;
@@ -106,7 +107,7 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
       y = rand() % (board->width  - 1);
     }
 
-    if (!board_add(board, boat, x, y))
+    if (board_add(board, boat, x, y) != RETURN_OK)
     {
       if (mode)
       {
@@ -135,18 +136,21 @@ void setup_board(u8 player, Board* board, u8* boat_count, bool mode)
   }
 }
 
-bool player_move(Game* game, u8 player)
+return_code player_move(Game* game, u8 player)
 {
-  Board* board;
-  u8     x;
-  u8     y;
+  Board*      board;
+  return_code code;
+  u8          x;
+  u8          y;
 
   switch (player)
   {
     case 1:
       board = game->board_p1;
+      break;
     case 2:
       board = game->board_p2;
+      break;
     default:
       _logf(L_FATAL, "Tried running player_move with player %hhu", player);
       return false;
@@ -159,27 +163,39 @@ bool player_move(Game* game, u8 player)
   newline();
   printf("Choose where you want to strike on your opponents' board: \n");
 
-  while (true)
+  code = RETURN_OK;
+
+  while (code != GAME_ATTACK_HIT_SEA && code != GAME_ATTACK_HIT_BOAT)
   {
     x = read_u8("Vertical coordinate: ");
     y = read_u8("Horizontal coordinate: ");
 
-    // Check whether the given coordinates are outside of the board
-    if (x >= board->height || y >= board->width)
-    {
-      printf("Invalid coordinates, the board is not that big!\n");
-      continue;
-    }
-    else if (board->matrix[x * board->height + y].shot != 0)
-    {
-      printf("You already shot there previously!\n");
-      continue;
-    }
+    code = game_attack(game, player, x, y);
 
-    break;
+    switch (code)
+    {
+      case GAME_INVALID_GAME:
+      case GAME_INVALID_PLAYER:
+        _logf(L_FATAL, "Internal error: invalid argument on player_move (0x%X)", code);
+        break;
+      case GAME_INVALID_COORDINATES:
+        printf("Invalid coordinates, the board is not that big!\n");
+        break;
+      case GAME_ATTACK_ALREADY_HIT:
+        printf("You already shot there previously!\n");
+        break;
+      case GAME_ATTACK_HIT_SEA:
+        printf("You hit the sea...\n");
+        break;
+      case GAME_ATTACK_HIT_BOAT:
+        printf("You hit something!\n");
+        break;
+      default:
+        _logf(L_FATAL, "Internal error: unhandled error code on player_move (0x%X)", code);
+    }
   }
 
-  return board_attack(board, x, y);
+  return code;
 }
 
 
@@ -202,24 +218,20 @@ int main(int argc, char *argv[])
   setup_board(2, game->board_p2, boats, config);
 
   // Gameplay
-  bool hit = false;
   while (game->state == 0)
   {
     for (int player = 1; player <= 2; player++)
     {
-      hit = player_move(game, player);
-      game_verify(game, player);
       if (game->state != 0)
       {
         printf("Player %hhu has won\n", game->state);
         break;
       }
       // Player gets to play again on successful hit if the setting is enabled
-      if (hit && REPLAY_ON_HIT)
+      if (player_move(game, player) == GAME_ATTACK_HIT_BOAT && REPLAY_ON_HIT)
       {
         player--;
       }
-      hit = false;
     }
   }
 

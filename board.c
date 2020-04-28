@@ -29,16 +29,27 @@ Board* board_construct(u8 height, u8 width)
   return ret;
 }
 
-void board_destruct(Board* board)
+return_code board_destruct(Board* board)
 {
+  if (board == NULL)
+  {
+    return BOARD_INVALID_BOARD;
+  }
+
   _logf(L_INFO, "Board (%hhu, %hhu) destructed", board->height, board->width);
   free(board->matrix);
   free(board);
-  return;
+
+  return RETURN_OK;
 }
 
-void board_print(Board* board, bool obfuscate)
+return_code board_print(Board* board, bool obfuscate)
 {
+  if (board == NULL)
+  {
+    return BOARD_INVALID_BOARD;
+  }
+
   // Table headers
   printf("   | ");
   for (u8 x = 0; x < board->height; x++)
@@ -86,11 +97,21 @@ void board_print(Board* board, bool obfuscate)
   }
 }
 
-bool board_add(Board* board, Boat* boat, u8 x, u8 y)
+return_code board_add(Board* board, Boat* boat, u8 x, u8 y)
 {
-  if (board == NULL || boat == NULL)
+  if (board == NULL)
   {
-    return false;
+    return BOARD_INVALID_BOARD;
+  }
+
+  if (boat == NULL)
+  {
+    return BOARD_INVALID_BOAT;
+  }
+
+  if (x >= board->height || y >= board->width)
+  {
+    return BOARD_INVALID_COORDINATES;
   }
 
   // Verify if Boat won't overlap any used Board coordinates
@@ -107,7 +128,7 @@ bool board_add(Board* board, Boat* boat, u8 x, u8 y)
       // Boat overlap detected, pointer to Boat already exists
       if (board->matrix[i * board->height + j].boat != 0x0)
       {
-        return false;
+        return BOARD_ADD_OVERLAP;
       }
     }
   }
@@ -125,22 +146,6 @@ bool board_add(Board* board, Boat* boat, u8 x, u8 y)
   }
 
   _logf(L_INFO, "Added boat with type %hhu to board", boat->type);
-  return true;
-}
 
-bool board_attack(Board* board, u8 x, u8 y)
-{
-  if (board->matrix[x * board->height + y].boat == 0x0)
-  {
-    printf("You hit the sea...\n");
-    board->matrix[x * board->height + y].shot = 1;
-    return false;
-  }
-  else
-  {
-    printf("You hit something!\n");
-    board->matrix[x * board->height + y].shot = 2;
-    board->matrix[x * board->height + y].boat->damage++;
-    return true;
-  }
+  return RETURN_OK;
 }

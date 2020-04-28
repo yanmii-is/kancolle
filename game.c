@@ -20,32 +20,86 @@ Game* game_construct(u8 height, u8 width)
   return ret;
 }
 
-void game_destruct(Game* game)
+return_code game_destruct(Game* game)
 {
+  if (game == NULL)
+  {
+    return GAME_INVALID_GAME;
+  }
+
   board_destruct(game->board_p1);
   board_destruct(game->board_p2);
 
   _logf(L_INFO, "Game with state %hhu destructed", game->state);
   free(game);
-  return;
+
+  return RETURN_OK;
 }
 
-void game_print(Game* game)
+return_code game_print(Game* game)
 {
+  if (game == NULL)
+  {
+    return GAME_INVALID_GAME;
+  }
+
   printf("State: %hhu\n", game->state);
-  // printf("Board 1:\n");
-  // print_board(game->board_p1);
-  // printf("Board 2:\n");
-  // print_board(game->board_p2);
+
+  return RETURN_OK;
 }
 
-bool game_verify(Game* game, u8 player)
+return_code game_attack(Game* game, u8 player, u8 x, u8 y)
 {
   Board* board;
 
+  if (game == NULL)
+  {
+    return GAME_INVALID_GAME;
+  }
+
   if (player != 1 && player != 2)
   {
-    return false;
+    return GAME_INVALID_PLAYER;
+  }
+
+  board = (player == 1) ? game->board_p1 : game->board_p2;
+
+  if (x >= board->height || y >= board->width)
+  {
+    return GAME_INVALID_COORDINATES;
+  }
+
+  if (board->matrix[x * board->height + y].shot != 0)
+  {
+    return GAME_ATTACK_ALREADY_HIT;
+  }
+
+  if (board->matrix[x * board->height + y].boat == 0x0)
+  {
+    board->matrix[x * board->height + y].shot = 1;
+    return GAME_ATTACK_HIT_SEA;
+  }
+  else
+  {
+    board->matrix[x * board->height + y].shot = 2;
+    board->matrix[x * board->height + y].boat->damage++;
+    game_verify(game, player);
+    return GAME_ATTACK_HIT_BOAT;
+  }
+}
+
+return_code game_verify(Game* game, u8 player)
+{
+  Board* board;
+
+  if (game == NULL)
+  {
+    return GAME_INVALID_GAME;
+  }
+
+  if (player != 1 && player != 2)
+  {
+    return GAME_INVALID_PLAYER;
   }
 
   board = (player == 1) ? game->board_p1 : game->board_p2;
@@ -58,11 +112,12 @@ bool game_verify(Game* game, u8 player)
       if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
       {
         _logf(L_INFO, "verify_state: Found %hhu at %hhu, %hhu", board->matrix[x * board->height + y].shot, x, y);
-        return false;
+        game->state = false;
+        return RETURN_OK;
       }
     }
   }
   // Game over
   game->state = true;
-  return true;
+  return RETURN_OK;
 }

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "log.h"
+#include "utils.h"
 
 typedef enum {
   ROTATION_0, ROTATION_90, ROTATION_180, ROTATION_270
@@ -27,7 +28,7 @@ typedef struct
   u8            damage;
 } Boat;
 
-Boat* boat_construct  (BoatType type, BoatRotation rotation);
-void  boat_destruct   (Boat* boat);
-void  boat_print      (Boat* boat);
-void  boat_rotate     (Boat* boat);
+Boat*        boat_construct  (BoatType type, BoatRotation rotation);
+return_code  boat_destruct   (Boat* boat);
+return_code  boat_print      (Boat* boat);
+return_code  boat_rotate     (Boat* boat);

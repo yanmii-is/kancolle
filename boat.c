@@ -66,35 +66,47 @@ Boat* boat_construct(BoatType type, BoatRotation rotation)
       break;
     default:
       _logf(L_FATAL, "Attempted construction boat with invalid or unsupported type %d", type);
+      return NULL;
   }
 
   _logf(L_INFO, "Boat constructed with type %d and rotation %d", type, rotation);
   return ret;
 }
 
-void boat_destruct(Boat* boat)
+return_code boat_destruct(Boat* boat)
 {
+  if (boat == NULL)
+  {
+    return BOAT_INVALID_BOAT;
+  }
+
   _logf(L_INFO, "Boat destructed with type %d and rotation %d", boat->type, boat->rotation);
   free(boat);
-  return;
+
+  return RETURN_OK;
 }
 
-void boat_print(Boat* boat)
+return_code boat_print(Boat* boat)
 {
+  if (boat == NULL)
+  {
+    return BOAT_INVALID_BOAT;
+  }
+
   // Bitmap headers
   printf("   | ");
   for (u8 x = 0; x < 5; x++)
   {
     printf("%02hhu ", x);
   }
-  printf("\n");
+  newline();
 
   printf("---+");
   for (u8 x = 0; x < 5; x++)
   {
     printf("---");
   }
-  printf("\n");
+  newline();
 
   // Bitmap content
   for (u8 x = 0; x < 5; x++)
@@ -120,14 +132,19 @@ void boat_print(Boat* boat)
           printf("?? ");
       }
     }
-    printf("\n");
+    newline();
   }
 }
 
 // Clockwise rotation (90º)
-void boat_rotate(Boat* boat)
+return_code boat_rotate(Boat* boat)
 {
   u8 rotated[5][5];
+
+  if (boat == NULL)
+  {
+    return BOAT_INVALID_BOAT;
+  }
 
   for (u8 i = 0; i < 5; i++)
   {
@@ -137,7 +154,10 @@ void boat_rotate(Boat* boat)
     }
   }
 
+  // Copy the rotated matrix to the source one
   memcpy(&boat->bitmap, &rotated, sizeof(u8) * 5 * 5);
-
+  // Update Boat's internal rotation
   boat->rotation = (boat->rotation == 0) ? 3 : boat->rotation - 1;
+
+  return RETURN_OK;
 }

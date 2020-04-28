@@ -13,7 +13,8 @@ typedef struct
   Board*  board_p2;
 } Game;
 
-Game* game_construct  (u8 height, u8 width);
-void  game_destruct   (Game* game);
-void  game_print      (Game* game);
-bool  game_verify     (Game* game, u8 player);
+Game*        game_construct  (u8 height, u8 width);
+return_code  game_destruct   (Game* game);
+return_code  game_print      (Game* game);
+return_code  game_verify     (Game* game, u8 player);
+return_code  game_attack     (Game* game, u8 player, u8 x, u8 y);
