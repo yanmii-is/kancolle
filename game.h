@@ -14,7 +14,7 @@ typedef struct
   Board*   board_p2;
 } Game;
 
-Game* construct_game  (uint8_t height, uint8_t width);
-void destruct_game    (Game* game);
-void print_game       (Game* game);
-bool verify_state     (Game* game, uint8_t player);
+Game* game_construct  (uint8_t height, uint8_t width);
+void  game_destruct   (Game* game);
+void  game_print      (Game* game);
+bool  game_verify     (Game* game, uint8_t player);

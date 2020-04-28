@@ -1,7 +1,7 @@
 #include "game.h"
 
 
-Game* construct_game(uint8_t height, uint8_t width)
+Game* game_construct(uint8_t height, uint8_t width)
 {
   Game* ret;
 
@@ -20,7 +20,7 @@ Game* construct_game(uint8_t height, uint8_t width)
   return ret;
 }
 
-void destruct_game(Game* game)
+void game_destruct(Game* game)
 {
   board_destruct(game->board_p1);
   board_destruct(game->board_p2);
@@ -30,7 +30,7 @@ void destruct_game(Game* game)
   return;
 }
 
-void print_game(Game* game)
+void game_print(Game* game)
 {
   printf("State: %hhu\n", game->state);
   // printf("Board 1:\n");
@@ -39,7 +39,7 @@ void print_game(Game* game)
   // print_board(game->board_p2);
 }
 
-bool verify_state(Game* game, uint8_t player)
+bool game_verify(Game* game, uint8_t player)
 {
   Board* board;
 

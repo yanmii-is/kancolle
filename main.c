@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
   bool     config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
   uint8_t  boardsz = setup_boardsize();
   uint8_t* boats   = setup_boatamounts(boardsz);
-  Game*    game    = construct_game(boardsz, boardsz);
+  Game*    game    = game_construct(boardsz, boardsz);
 
   // Setup both players' boards
   setup_board(1, game->board_p1, boats, config);
@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
     for (int player = 1; player <= 2; player++)
     {
       hit = player_move(game, player);
-      verify_state(game, player);
+      game_verify(game, player);
       if (game->state != 0)
       {
         printf("Player %d has won\n", game->state);
@@ -225,6 +225,6 @@ int main(int argc, char *argv[])
   }
 
   // Destruct objects and gracefully terminate
-  destruct_game(game);
+  game_destruct(game);
   return 0;
 }
