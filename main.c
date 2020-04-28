@@ -53,9 +53,9 @@ uint8_t* setup_boatamounts(uint8_t boardsz)
   return boats;
 }
 
-Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, bool mode)
+void read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, bool mode)
 {
-  Boat* ret             = boat_construct(type, 0);
+  Boat* boat            = boat_construct(type, 0);
   BoatRotation rotation = 0;
   bool rotate           = false;
   int16_t x             = -1;
@@ -69,7 +69,7 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
       if (mode)
       {
         // Manual rotation
-        boat_print(ret);
+        boat_print(boat);
         rotate = read_bool("Would you like to rotate your boat? (0 = no, 1 = yes)\n");
       }
       else
@@ -83,7 +83,7 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
         break;
       }
 
-      boat_rotate(ret);
+      boat_rotate(boat);
     }
   }
 
@@ -105,7 +105,7 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
       y = rand() % (board->width  - 1);
     }
 
-    if (!add_boat(board, ret, x, y))
+    if (!board_add(board, boat, x, y))
     {
       if (mode)
       {
@@ -115,8 +115,6 @@ Boat* read_boat(Board* board, BoatType type, uint8_t remaining, uint8_t total, b
       y = -1;
     }
   }
-
-  return ret;
 }
 
 void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
@@ -129,9 +127,9 @@ void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
     for (uint8_t remaining = boat_count[type]; remaining > 0; remaining--)
     {
       newline();
-      print_board(board, false);
+      board_print(board, false);
       newline();
-      Boat* boat = read_boat(board, type, remaining, boat_count[type], mode);
+      read_boat(board, type, remaining, boat_count[type], mode);
     }
   }
 }
@@ -158,8 +156,8 @@ bool player_move(Game* game, uint8_t player)
   clear();
   printf("Player %hhu, it's your turn!\n", player);
   newline();
-  print_board(board, true);
-  newline();\
+  board_print(board, true);
+  newline();
   printf("Choose where you want to strike on your opponents' board: \n");
 
   while (true)
@@ -182,7 +180,7 @@ bool player_move(Game* game, uint8_t player)
     break;
   }
 
-  return attack_board(board, x, y);
+  return board_attack(board, x, y);
 }
 
 

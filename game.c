@@ -6,9 +6,9 @@ Game* construct_game(uint8_t height, uint8_t width)
   Game* ret;
 
   ret = malloc(sizeof(Game));
-  ret->state = false;
-  ret->board_p1 = construct_board(height, width);
-  ret->board_p2 = construct_board(height, width);
+  ret->state = 0;
+  ret->board_p1 = board_construct(height, width);
+  ret->board_p2 = board_construct(height, width);
 
   if (ret->board_p1 == NULL || ret->board_p2 == NULL)
   {
@@ -22,17 +22,17 @@ Game* construct_game(uint8_t height, uint8_t width)
 
 void destruct_game(Game* game)
 {
-  destruct_board(game->board_p1);
-  destruct_board(game->board_p2);
+  board_destruct(game->board_p1);
+  board_destruct(game->board_p2);
 
-  _logf(L_INFO, "Game with state %s destructed", game->state ? "true" : "false");
+  _logf(L_INFO, "Game with state %hhu destructed", game->state);
   free(game);
   return;
 }
 
 void print_game(Game* game)
 {
-  printf("State: %s\n", game->state ? "true" : "false");
+  printf("State: %hhu\n", game->state);
   // printf("Board 1:\n");
   // print_board(game->board_p1);
   // printf("Board 2:\n");

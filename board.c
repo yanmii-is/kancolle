@@ -1,7 +1,7 @@
 #include "board.h"
 
 
-Board* construct_board(uint8_t height, uint8_t width)
+Board* board_construct(uint8_t height, uint8_t width)
 {
   Board* ret;
 
@@ -29,14 +29,15 @@ Board* construct_board(uint8_t height, uint8_t width)
   return ret;
 }
 
-void destruct_board(Board* board)
+void board_destruct(Board* board)
 {
   _logf(L_INFO, "Board (%hhu, %hhu) destructed", board->height, board->width);
+  free(board->matrix);
   free(board);
   return;
 }
 
-void print_board(Board* board, bool obfuscate)
+void board_print(Board* board, bool obfuscate)
 {
   // Table headers
   printf("   | ");
@@ -85,7 +86,7 @@ void print_board(Board* board, bool obfuscate)
   }
 }
 
-bool add_boat(Board* board, Boat* boat, uint8_t x, uint8_t y)
+bool board_add(Board* board, Boat* boat, uint8_t x, uint8_t y)
 {
   if (board == NULL || boat == NULL)
   {
@@ -127,7 +128,7 @@ bool add_boat(Board* board, Boat* boat, uint8_t x, uint8_t y)
   return true;
 }
 
-bool attack_board(Board* board, uint8_t x, uint8_t y)
+bool board_attack(Board* board, uint8_t x, uint8_t y)
 {
   if (board->matrix[x * board->height + y].boat == 0x0)
   {
