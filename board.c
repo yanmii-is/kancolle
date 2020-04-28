@@ -127,20 +127,19 @@ bool add_boat(Board* board, Boat* boat, uint8_t x, uint8_t y)
   return true;
 }
 
-bool verify_state(Board* board)
+bool attack_board(Board* board, uint8_t x, uint8_t y)
 {
-  for (int x = 0; x < board->height; x++)
+  if (board->matrix[x * board->height + y].boat == 0x0)
   {
-    for (int y = 0; y < board->width; y++)
-    {
-      // Game still not over (found Boat Cell without hit)
-      if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
-      {
-        _logf(L_INFO, "verify_state: Found %hhu at %hhu, %hhu", board->matrix[x * board->height + y].shot, x, y);
-        return false;
-      }
-    }
+    printf("You hit the sea...\n");
+    board->matrix[x * board->height + y].shot = 1;
+    return false;
   }
-  // Game over
-  return true;
+  else
+  {
+    printf("You hit something!\n");
+    board->matrix[x * board->height + y].shot = 2;
+    board->matrix[x * board->height + y].boat->damage++;
+    return true;
+  }
 }

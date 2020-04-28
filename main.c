@@ -135,7 +135,7 @@ void setup_board(uint8_t player, Board* board, uint8_t* boat_count, bool mode)
   }
 }
 
-void player_move(uint8_t player, Game* game)
+bool player_move(Game* game, uint8_t player)
 {
   Board* board;
   uint8_t x, y;
@@ -151,7 +151,7 @@ void player_move(uint8_t player, Game* game)
   else
   {
     _logf(L_FATAL, "Tried running player_move with player %hhu", player);
-    return;
+    return false;
   }
 
   clear();
@@ -181,30 +181,7 @@ void player_move(uint8_t player, Game* game)
     break;
   }
 
-  if (verify_state(board))
-  {
-    game->state = true;
-  }
-
-  if (board->matrix[x * board->height + y].boat == 0x0)
-  {
-    printf("You hit the sea...\n");
-    board->matrix[x * board->height + y].shot = 1;
-  }
-  else
-  {
-    printf("You hit something!\n");
-    board->matrix[x * board->height + y].shot = 2;
-    board->matrix[x * board->height + y].boat.damage++;
-
-    // Player gets to play again on successful hit if the setting is enabled
-    if (REPLAY_ON_HIT && !game->state)
-    {
-      player_move(player, game);
-    }
-  }
-
-  return;
+  return attack_board(board, x, y);
 }
 
 
@@ -227,19 +204,24 @@ int main(int argc, char *argv[])
   setup_board(2, game->board_p2, boats, config);
 
   // Gameplay
-  while (!game->state)
+  bool hit = false;
+  while (game->state == 0)
   {
-    player_move(1, game);
-    if (game->state)
+    for (int player = 1; player <= 2; player++)
     {
-      printf("Player 1 has won\n");
-      break;
-    }
-    player_move(2, game);
-    if (game->state)
-    {
-      printf("Player 2 has won\n");
-      break;
+      hit = player_move(game, player);
+      verify_state(game, player);
+      if (game->state != 0)
+      {
+        printf("Player %d has won\n", game->state);
+        break;
+      }
+      // Player gets to play again on successful hit if the setting is enabled
+      if (hit && REPLAY_ON_HIT)
+      {
+        player--;
+      }
+      hit = false;
     }
   }
 

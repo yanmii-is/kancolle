@@ -38,3 +38,31 @@ void print_game(Game* game)
   // printf("Board 2:\n");
   // print_board(game->board_p2);
 }
+
+bool verify_state(Game* game, uint8_t player)
+{
+  Board* board;
+
+  if (player != 1 && player != 2)
+  {
+    return false;
+  }
+
+  board = (player == 1) ? game->board_p1 : game->board_p2;
+
+  for (int x = 0; x < board->height; x++)
+  {
+    for (int y = 0; y < board->width; y++)
+    {
+      // Game still not over (found Boat Cell without hit)
+      if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
+      {
+        _logf(L_INFO, "verify_state: Found %hhu at %hhu, %hhu", board->matrix[x * board->height + y].shot, x, y);
+        return false;
+      }
+    }
+  }
+  // Game over
+  game->state = true;
+  return true;
+}
