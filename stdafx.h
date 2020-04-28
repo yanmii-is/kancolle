@@ -19,5 +19,6 @@ typedef enum {
   BOARD_INVALID_BOAT        = 0xB002,
   BOARD_INVALID_COORDINATES = 0xB003,
   BOARD_ADD_OVERLAP         = 0xB004,
+  BOARD_ADD_OUT_OF_BOUNDS   = 0xB005,
   BOAT_INVALID_BOAT         = 0xC001
 } return_code;

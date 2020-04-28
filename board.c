@@ -115,10 +115,16 @@ return_code board_add(Board* board, Boat* boat, u8 x, u8 y)
   }
 
   // Verify if Boat won't overlap any used Board coordinates
-  for (u8 i = x; i <= x+5; i++)
+  for (u8 i = x; i < x+5; i++)
   {
-    for (u8 j = y; j <= y+5; j++)
+    for (u8 j = y; j < y+5; j++)
     {
+      // Trying to add boat out of bounds
+      if (boat->bitmap[i-x][j-y] != 0 && (i >= board->height || j >= board->width))
+      {
+        return BOARD_ADD_OUT_OF_BOUNDS;
+      }
+
       // Ignore unused Boat bitmap coordinates
       if (boat->bitmap[i-x][j-y] == 0)
       {
@@ -134,9 +140,9 @@ return_code board_add(Board* board, Boat* boat, u8 x, u8 y)
   }
 
   // Update Board's Cell matrix
-  for (u8 i = x; i <= x+5; i++)
+  for (u8 i = x; i < x+5; i++)
   {
-    for (u8 j = y; j <= y+5; j++)
+    for (u8 j = y; j < y+5; j++)
     {
       if (boat->bitmap[i-x][j-y] == 1)
       {
