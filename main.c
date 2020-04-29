@@ -119,10 +119,11 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
   }
 }
 
-void setup_board(u8 player, Board* board, u8* boat_count, bool mode)
+void setup_board(u8 player, Board* board, u8* boat_count)
 {
   clear();
   printf("Player %hhu, it's time to set up your board\n", player);
+  bool config = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
 
   for (u8 type = TYPE_TSHAPE_5; type >= 1; type--)
   {
@@ -131,7 +132,7 @@ void setup_board(u8 player, Board* board, u8* boat_count, bool mode)
       newline();
       board_print(board, false);
       newline();
-      read_boat(board, type, remaining, boat_count[type], mode);
+      read_boat(board, type, remaining, boat_count[type], config);
     }
   }
 }
@@ -249,6 +250,7 @@ int main(int argc, char *argv[])
   // Clear the user's screen
   clear();
 
+  // Menu
   while (menu != 1)
   {
     printf("Welcome to Kancolle Game!\n");
@@ -272,20 +274,20 @@ int main(int argc, char *argv[])
   }
 
   // Game initial setup: config, board size, boat amount
-  bool  config  = read_bool("Choose the configuration type (0 = random, 1 = manual): ");
   u8    boardsz = setup_boardsize();
   u8*   boats   = setup_boatamounts(boardsz);
   Game* game    = game_construct(boardsz, boardsz);
 
   // Setup both players' boards
-  setup_board(1, game->board_p1, boats, config);
-  setup_board(2, game->board_p2, boats, config);
+  setup_board(1, game->board_p1, boats);
+  setup_board(2, game->board_p2, boats);
 
   // Gameplay
   while (game->state == 0)
   {
-    for (int player = 1; player <= 2; player++)
+    for (u8 player = 1; player <= 2; player++)
     {
+      // Check if player has won
       if (game->state != 0)
       {
         printf("Player %hhu has won\n", game->state);
@@ -300,6 +302,7 @@ int main(int argc, char *argv[])
   }
 
   // Destruct objects and gracefully terminate
+  free(boats);
   game_destruct(game);
   return 0;
 }
