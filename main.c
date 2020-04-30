@@ -289,23 +289,17 @@ int main(int argc, char *argv[])
   setup_board(2, game->board_p2, boats);
 
   // Gameplay
-  while (game->state == 0)
+  for (u8 player = 1; player <= 2 && game->state == 0; player++)
   {
-    for (u8 player = 1; player <= 2; player++)
+    // Player gets to play again on successful hit if the setting is enabled
+    if (player_move(game, player) == GAME_ATTACK_HIT_BOAT && REPLAY_ON_HIT)
     {
-      // Check if player has won
-      if (game->state != 0)
-      {
-        printf("Player %hhu has won\n", game->state);
-        break;
-      }
-      // Player gets to play again on successful hit if the setting is enabled
-      if (player_move(game, player) == GAME_ATTACK_HIT_BOAT && REPLAY_ON_HIT)
-      {
-        player--;
-      }
+      player--;
     }
   }
+
+  // Announce player who won
+  printf("Player %hhu has won\n", game->state);
 
   // Destruct objects and gracefully terminate
   free(boats);
