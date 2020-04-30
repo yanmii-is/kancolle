@@ -1,7 +1,7 @@
 #pragma once
+#include "stdafx.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include "log.h"
 
 u8   read_u8    (char *prompt);

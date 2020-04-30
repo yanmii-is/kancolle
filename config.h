@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include <stdbool.h>
 
 // [5,100]
 extern u8   BOARD_MIN_SIZE;
