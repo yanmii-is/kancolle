@@ -129,9 +129,12 @@ void setup_board(u8 player, Board* board, u8* boat_count)
   {
     for (u8 remaining = boat_count[type]; remaining > 0; remaining--)
     {
-      newline();
-      board_print(board, false);
-      newline();
+      if (config)
+      {
+        newline();
+        board_print(board, false);
+        newline();
+      }
       read_boat(board, type, remaining, boat_count[type], config);
     }
   }
