@@ -95,6 +95,8 @@ return_code board_print(Board* board, bool obfuscate)
     }
     printf("\n");
   }
+
+  return RETURN_OK;
 }
 
 return_code board_add(Board* board, Boat* boat, s16 x, s16 y)

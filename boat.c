@@ -134,6 +134,8 @@ return_code boat_print(Boat* boat)
     }
     newline();
   }
+
+  return RETURN_OK;
 }
 
 // Clockwise rotation (90º)

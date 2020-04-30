@@ -58,7 +58,6 @@ u8* setup_boatamounts(u8 boardsz)
 void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
 {
   Boat* boat            = boat_construct(type, 0);
-  BoatRotation rotation = 0;
   bool rotate           = false;
   s16 x                 = -1;
   s16 y                 = -1;
