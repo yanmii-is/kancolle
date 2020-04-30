@@ -8,9 +8,9 @@
 
 typedef struct
 {
-  u8      state;
-  Board*  board_p1;
-  Board*  board_p2;
+	u8      state;
+	Board*  board_p1;
+	Board*  board_p2;
 } Game;
 
 Game*        game_construct  (u8 height, u8 width);

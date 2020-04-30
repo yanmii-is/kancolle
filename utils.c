@@ -12,69 +12,69 @@
 
 u8 read_u8(char *prompt)
 {
-  // 3 byte input + 1 byte newline + 1 byte terminator
-  char in[5];
-  // We use a s16 as a temporary buffer to detect OOB input
-  s16  ret = -1;
+	// 3 byte input + 1 byte newline + 1 byte terminator
+	char in[5];
+	// We use a s16 as a temporary buffer to detect OOB input
+	s16  ret = -1;
 
-  while (ret < 0)
-  {
-    printf(prompt);
-    fgets(in, sizeof(in), stdin);
-    ret = atoi(in);
+	while (ret < 0)
+	{
+		printf(prompt);
+		fgets(in, sizeof(in), stdin);
+		ret = atoi(in);
 
-    // Detect OOB input
-    if (ret < 0 || ret > 255)
-    {
-      printf("Input error, you must input a valid number [0,255]\n");
-      ret = -1;
-    }
-  }
+		// Detect OOB input
+		if (ret < 0 || ret > 255)
+		{
+			printf("Input error, you must input a valid number [0,255]\n");
+			ret = -1;
+		}
+	}
 
-  return (u8) ret;
+	return (u8) ret;
 }
 
 bool read_bool(char *prompt)
 {
-  // 1 byte input + 1 byte newline + 1 byte terminator
-  char in[3];
+	// 1 byte input + 1 byte newline + 1 byte terminator
+	char in[3];
 
-  while (true)
-  {
-    printf(prompt);
-    fgets(in, sizeof(in), stdin);
+	while (true)
+	{
+		printf(prompt);
+		fgets(in, sizeof(in), stdin);
 
-    if (in[0] == '0')
-    {
-      return false;
-    }
-    else if (in[0] == '1')
-    {
-      return true;
-    }
-    else
-    {
-      printf("Input error (%c %c %c), you must input a valid boolean [0,1]\n", in[0], in[1], in[2]);
-    }
-  }
+		if (in[0] == '0')
+		{
+			return false;
+		}
+		else if (in[0] == '1')
+		{
+			return true;
+		}
+		else
+		{
+			printf("Input error (%c %c %c), you must input a valid boolean [0,1]\n", in[0], in[1], in[2]);
+		}
+	}
 }
 
 void clear()
 {
-  if (!CLEAR_SCREEN)
-  {
-    return;
-  }
+	if (!CLEAR_SCREEN)
+	{
+		return;
+	}
 
-  #if defined(_WIN32)
-  system("cls");
-  #endif
-  #if !defined(_WIN32)
-  system("clear");
-  #endif
+	#if defined(_WIN32)
+	system("cls");
+	#endif
+	#if !defined(_WIN32)
+	system("clear");
+	#endif
 }
 
 void newline()
 {
-  printf("%c", '\n');
+	printf("%c", '\n');
 }
