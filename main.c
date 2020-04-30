@@ -143,6 +143,7 @@ return_code player_move(Game* game, u8 player)
   return_code code;
   u8          x;
   u8          y;
+  bool        print;
 
   switch (player)
   {
@@ -157,10 +158,25 @@ return_code player_move(Game* game, u8 player)
       return false;
   }
 
+  print = false;
+
   clear();
   printf("Player %hhu, it's your turn!\n", player);
+
   newline();
+  print = read_bool("Do you want to print your own board? (0 = no, 1 = yes)\n");
+  if (print)
+  {
+    newline();
+    printf("Your board: \n");
+    board_print(player == 1 ? game->board_p1 : game->board_p2, false);
+  }
+  print = false;
+
+  newline();
+  printf("Opponent's board: \n");
   board_print(board, true);
+
   newline();
   printf("Choose where you want to strike on your opponents' board: \n");
 
@@ -247,6 +263,7 @@ void menu()
   // Menu
   while (menu != 1)
   {
+    clear();
     printf("Welcome to Kancolle Game!\n");
     newline();
     printf("1) New Game\n");
@@ -273,9 +290,6 @@ int main(int argc, char *argv[])
   // Define seed for randomization
   srand(time(NULL));
 
-  // Clear the user's screen
-  clear();
-
   // Game menu
   menu();
 
@@ -295,6 +309,10 @@ int main(int argc, char *argv[])
     if (player_move(game, player) == GAME_ATTACK_HIT_BOAT && REPLAY_ON_HIT)
     {
       player--;
+    }
+    if (player == 2)
+    {
+      player = 0;
     }
   }
 
