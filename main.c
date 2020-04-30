@@ -96,7 +96,7 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
     {
       // Manual coordinates
       printf("Choose the coordinates for your boat\n");
-      printf("Note: You must input the coordinates for the UPMOST LEFT coordinate of the 5x5 boat matrix\n\n");
+      printf("Note: You must input the coordinates for the CENTER coordinate of the 5x5 boat matrix\n\n");
       x = read_u8("Vertical coordinate: ");
       y = read_u8("Horizontal coordinate: ");
     }
@@ -107,11 +107,11 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
       y = rand() % (board->width  - 1);
     }
 
-    if (board_add(board, boat, x, y) != RETURN_OK)
+    if (board_add(board, boat, x-2, y-2) != RETURN_OK)
     {
       if (mode)
       {
-        printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)\n", x, y, x + 4, y + 4);
+        printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)\n", x-2, y-2, x+2, y+2);
       }
       x = -1;
       y = -1;
@@ -144,8 +144,8 @@ return_code player_move(Game* game, u8 player)
 {
   Board*      board;
   return_code code;
-  u8          x;
-  u8          y;
+  s16         x;
+  s16         y;
   bool        print;
 
   switch (player)
@@ -167,7 +167,7 @@ return_code player_move(Game* game, u8 player)
   printf("Player %hhu, it's your turn!\n", player);
 
   newline();
-  print = read_bool("Do you want to print your own board? (0 = no, 1 = yes)\n");
+  print = read_bool("Do you want to print your own board (0 = no, 1 = yes): ");
   if (print)
   {
     newline();

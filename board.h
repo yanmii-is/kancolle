@@ -15,4 +15,4 @@ typedef struct
 Board*       board_construct  (u8 height, u8 width);
 return_code  board_destruct   (Board* board);
 return_code  board_print      (Board* board, bool obfuscate);
-return_code  board_add        (Board* board, Boat* boat, u8 x, u8 y);
+return_code  board_add        (Board* board, Boat* boat, s16 x, s16 y);
