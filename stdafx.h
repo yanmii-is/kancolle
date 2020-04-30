@@ -1,6 +1,8 @@
-#pragma once
 #include <stdint.h>
 #include <stdbool.h>
+
+#ifndef STDAFX_H
+#define STDAFX_H
 
 typedef int8_t   s8;
 typedef uint8_t  u8;
@@ -23,3 +25,5 @@ typedef enum {
 	BOARD_ADD_OUT_OF_BOUNDS   = 0xB005,
 	BOAT_INVALID_BOAT         = 0xC001
 } return_code;
+
+#endif

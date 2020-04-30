@@ -1,8 +1,7 @@
 #include "stdafx.h"
-#include "boat.h"
-#include "game.h"
 #include "utils.h"
 #include "config.h"
+#include "game.h"
 
 
 u8 setup_boardsize()

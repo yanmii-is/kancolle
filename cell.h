@@ -1,6 +1,4 @@
-#pragma once
 #include "stdafx.h"
-#include "boat.h"
 
 typedef struct {
 	Boat* boat;
