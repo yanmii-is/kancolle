@@ -199,7 +199,7 @@ return_code player_move(Game* game, u8 player)
   return code;
 }
 
-void change_settings()
+void settings()
 {
   u8 menu;
   menu = 0;
@@ -239,16 +239,10 @@ void change_settings()
   }
 }
 
-int main(int argc, char *argv[])
+void menu()
 {
   u8 menu;
   menu = 0;
-
-  // Define seed for randomization
-  srand(time(NULL));
-
-  // Clear the user's screen
-  clear();
 
   // Menu
   while (menu != 1)
@@ -264,7 +258,7 @@ int main(int argc, char *argv[])
     // Settings
     if (menu == 2)
     {
-      change_settings();
+      settings();
     }
     // Exit Game
     if (menu == 3)
@@ -272,6 +266,18 @@ int main(int argc, char *argv[])
       exit(0);
     }
   }
+}
+
+int main(int argc, char *argv[])
+{
+  // Define seed for randomization
+  srand(time(NULL));
+
+  // Clear the user's screen
+  clear();
+
+  // Game menu
+  menu();
 
   // Game initial setup: config, board size, boat amount
   u8    boardsz = setup_boardsize();
