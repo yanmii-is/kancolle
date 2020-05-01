@@ -18,17 +18,6 @@ u8 setup_boardsize()
 						 ret, ret, BOARD_MIN_SIZE, BOARD_MIN_SIZE, BOARD_MAX_SIZE, BOARD_MAX_SIZE);
 		}
 	}
-
-	// If we can know the terminal size, then set a low limit for terminal width
-	refresh();
-	while (WINDOW.ws_col > 0 && WINDOW.ws_col < (4 + ret * 3))
-	{
-		printf("!!! Your console's width (%d) is too small for the current game!!!\n", WINDOW.ws_col);
-		printf("Please adjust your console's width to at least %d\n\n", 5 + ret * 3);
-		sleep(2);
-		refresh();
-	}
-
 	return ret;
 }
 

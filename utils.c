@@ -10,8 +10,6 @@
 //       and the remaining of the input will fall through
 //       to the next read functions on the program.
 
-struct winsize WINDOW;
-
 u8 read_u8(char *prompt)
 {
 	// 3 byte input + 1 byte newline + 1 byte terminator
@@ -63,8 +61,6 @@ bool read_bool(char *prompt)
 
 void clear()
 {
-	refresh();
-
 	if (!CLEAR_SCREEN)
 	{
 		return;
@@ -81,9 +77,4 @@ void clear()
 void newline()
 {
 	printf("%c", '\n');
-}
-
-void refresh()
-{
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &WINDOW);
 }
