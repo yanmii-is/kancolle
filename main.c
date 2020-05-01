@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <stdio.h>
 #include "utils.h"
 #include "log.h"
 #include "config.h"
@@ -292,11 +293,25 @@ int main(int argc, char *argv[])
 	// Define seed for randomization
 	srand(time(NULL));
 
+	// Refresh known terminal size
+	refresh();
+
 	// Game menu
 	menu();
 
 	// Game initial setup: config, board size, boat amount
 	u8    boardsz = setup_boardsize();
+
+	// If we can know the terminal size, then set a low limit for terminal width
+	refresh();
+	while (WINDOW.ws_col > 0 && WINDOW.ws_col < (4 + boardsz * 3))
+	{
+		printf("!!! Your console's width (%d) is too small for the current game!!!\n", WINDOW.ws_col);
+		printf("Please adjust your console's width to at least %d\n\n", 5 + boardsz * 3);
+		sleep(2);
+		refresh();
+	}
+
 	u8*   boats   = setup_boatamounts(boardsz);
 	Game* game    = game_construct(boardsz, boardsz);
 
