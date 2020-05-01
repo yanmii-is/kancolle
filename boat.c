@@ -45,24 +45,28 @@ Boat* boat_construct(BoatType type, BoatRotation rotation)
 	ret           = malloc(sizeof(Boat));
 	ret->type     = type;
 	ret->rotation = rotation;
-	ret->damage   = 0;
 
 	switch (type)
 	{
 		case TYPE_LINEAR_1:
 			memcpy(&ret->bitmap, &bitmap_TL1, sizeof(u8) * 5 * 5);
+			ret->life = 1;
 			break;
 		case TYPE_LINEAR_2:
 			memcpy(&ret->bitmap, &bitmap_TL2, sizeof(u8) * 5 * 5);
+			ret->life = 2;
 			break;
 		case TYPE_LINEAR_3:
 			memcpy(&ret->bitmap, &bitmap_TL3, sizeof(u8) * 5 * 5);
+			ret->life = 3;
 			break;
 		case TYPE_LINEAR_4:
 			memcpy(&ret->bitmap, &bitmap_TL4, sizeof(u8) * 5 * 5);
+			ret->life = 4;
 			break;
 		case TYPE_TSHAPE_5:
 			memcpy(&ret->bitmap, &bitmap_TT5, sizeof(u8) * 5 * 5);
+			ret->life = 5;
 			break;
 		default:
 			_logf(L_FATAL, "Attempted construction boat with invalid or unsupported type %d", type);
@@ -123,7 +127,7 @@ return_code boat_print(Boat* boat)
 					printf("BB ");
 					break;
 				case 2:
-					printf("±± ");
+					printf("OO ");
 					break;
 				case 3:
 					printf("xx ");

@@ -82,7 +82,7 @@ return_code game_attack(Game* game, u8 player, u8 x, u8 y)
 	else
 	{
 		board->matrix[x * board->height + y].shot = 2;
-		board->matrix[x * board->height + y].boat->damage++;
+		board->matrix[x * board->height + y].boat->life--;
 		game_verify(game, player);
 		return GAME_ATTACK_HIT_BOAT;
 	}

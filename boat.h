@@ -24,7 +24,7 @@ typedef struct
 	BoatType      type;
 	BoatRotation  rotation;
 	u8            bitmap[5][5];  // 0: Empty, 1: NoHit, 2: Hit, 3: Miss
-	u8            damage;
+	u8            life;
 } Boat;
 
 Boat*        boat_construct  (BoatType type, BoatRotation rotation);

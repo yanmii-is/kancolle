@@ -72,22 +72,32 @@ return_code board_print(Board* board, bool obfuscate)
 		printf("%02hhu | ", x);
 		for (u8 y = 0; y < board->width; y++)
 		{
+			// Sea cell without hit
 			if (board->matrix[x * board->height + y].boat == 0x0 && board->matrix[x * board->height + y].shot == 0)
 			{
 				printf("~~ ");
 			}
+			// Sea cell with hit
 			else if (board->matrix[x * board->height + y].shot == 1)
 			{
 				printf("xx ");
 			}
+			// Boat cell with hit, but boat still has life points
+			else if (board->matrix[x * board->height + y].shot == 2 && board->matrix[x * board->height + y].boat->life != 0)
+			{
+				printf("OO ");
+			}
+			// Boat cell with hit, and boat no longer has life points
 			else if (board->matrix[x * board->height + y].shot == 2)
 			{
 				printf("±± ");
 			}
+			// Every case below this one is obfuscated when this flag is true
 			else if (obfuscate)
 			{
 				printf("~~ ");
 			}
+			// Boat cell without hit
 			else if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
 			{
 				printf("BB ");
