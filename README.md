@@ -1,5 +1,10 @@
 # Kancolle
-A battleship game made in C.
+<img src="https://images6.alphacoders.com/608/608732.jpg" width="256">
+
+A battleship game made in C99
+<br>
+*Our fates are never sure, but no matter what, I’m happy to be a member of this fleet*
+
 
 ## Compiling
 Compilation is done through `make` <br>
