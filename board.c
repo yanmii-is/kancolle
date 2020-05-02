@@ -140,6 +140,11 @@ return_code board_add(Board* board, Boat* boat, s16 x, s16 y)
 		return BOARD_INVALID_COORDINATES;
 	}
 
+	if (board->n_boats >= board->height * board->width / 25)
+	{
+		return BOARD_CAPACITY_FULL;
+	}
+
 	// Verify if Boat won't overlap any used Board coordinates
 	for (s16 i = x; i < x+5; i++)
 	{

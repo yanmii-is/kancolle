@@ -106,15 +106,29 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool manual)
 		}
 
 		// Attempt adding the boat
-		if (board_add(board, boat, x-2, y-2) != RETURN_OK)
+		switch (board_add(board, boat, x-2, y-2))
 		{
-			if (manual)
-			{
-				printf("It's not possible to add the boat matrix on (%hd, %hd) to (%hd, %hd)\n",
-				(s16)(x-2), (s16)(y-2), (s16)(x+2), (s16)(y+2));
-			}
-			x = -1;
-			y = -1;
+			case RETURN_OK:
+				break;
+			case BOARD_INVALID_BOARD:
+			case BOARD_INVALID_BOAT:
+			case BOARD_CAPACITY_FULL:
+				_logf(L_FATAL, "An internal error occoured on board_add\n");
+				break;
+			case BOARD_INVALID_COORDINATES:
+				if (manual) printf("(%hd, %hd) to (%hd, %hd) are invalid coordinates\n", (s16)(x-2), (s16)(y-2), (s16)(x+2), (s16)(y+2));
+				x = -1 , y = -1;
+				break;
+			case BOARD_ADD_OUT_OF_BOUNDS:
+				if (manual) printf("You're trying to add a boat outside of the board's bounds (%hd, %hd) to (%hd, %hd)\n", (s16)(x-2), (s16)(y-2), (s16)(x+2), (s16)(y+2));
+				x = -1 , y = -1;
+				break;
+			case BOARD_ADD_OVERLAP:
+				if (manual) printf("You're trying to add a boat where another boat is already present");
+				x = -1 , y = -1;
+				break;
+			default:
+				break;
 		}
 	}
 }
@@ -129,6 +143,7 @@ void setup_board(u8 player, Board* board, u8* boat_count)
 	{
 		for (u8 remaining = boat_count[type]; remaining > 0; remaining--)
 		{
+			// Manual configuration
 			if (config)
 			{
 				newline();
