@@ -5,8 +5,6 @@
 #include <sys/ioctl.h>
 #include "log.h"
 
-extern struct winsize WINDOW;
-
 u8   read_u8    (char *prompt);
 bool read_bool  (char *prompt);
 void clear      ();
