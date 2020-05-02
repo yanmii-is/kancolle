@@ -105,7 +105,7 @@ return_code board_print(Board* board, bool obfuscate)
 				}
 				else
 				{
-					printf("OO ");
+					printf("00 ");
 				}
 			}
 			// Boat cell with hit, and boat no longer has life points
@@ -121,7 +121,7 @@ return_code board_print(Board* board, bool obfuscate)
 			// Boat cell without hit
 			else if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
 			{
-				printf("BB ");
+				printf("%d%d ", board->matrix[x * board->height + y].boat->type, board->matrix[x * board->height + y].boat->type);
 			}
 		}
 		printf("\n");

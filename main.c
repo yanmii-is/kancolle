@@ -158,22 +158,8 @@ void setup_board(u8 player, Board* board, u8* boat_count)
 
 return_code player_move(Game* game, u8 player)
 {
-	Board*      board;
 	return_code code;
 	bool        print;
-
-	switch (player)
-	{
-		case 1:
-			board = game->board_p1;
-			break;
-		case 2:
-			board = game->board_p2;
-			break;
-		default:
-			_logf(L_FATAL, "Tried running player_move with player %hhu", player);
-			return false;
-	}
 
 	clear();
 	printf("Player %hhu, it's your turn!\n", player);
@@ -190,7 +176,7 @@ return_code player_move(Game* game, u8 player)
 
 	newline();
 	printf("Opponent's board: \n");
-	board_print(board, true);
+	board_print(player == 1 ? game->board_p2 : game->board_p1, true);
 
 	newline();
 	printf("Choose where you want to strike on your opponents' board: \n");
@@ -199,8 +185,8 @@ return_code player_move(Game* game, u8 player)
 
 	while (code != GAME_ATTACK_HIT_SEA && code != GAME_ATTACK_HIT_BOAT)
 	{
-		s16 x = read_u8("Vertical coordinate: ");
-		s16 y = read_u8("Horizontal coordinate: ");
+		u8 x = read_u8("Vertical coordinate: ");
+		u8 y = read_u8("Horizontal coordinate: ");
 
 		code = game_attack(game, player, x, y);
 

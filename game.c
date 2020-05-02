@@ -53,6 +53,8 @@ return_code game_attack(Game* game, u8 player, u8 x, u8 y)
 {
 	Board* board;
 
+	printf("%d %d", x, y);
+
 	if (game == NULL)
 	{
 		return GAME_INVALID_GAME;
@@ -63,7 +65,7 @@ return_code game_attack(Game* game, u8 player, u8 x, u8 y)
 		return GAME_INVALID_PLAYER;
 	}
 
-	board = (player == 1) ? game->board_p1 : game->board_p2;
+	board = (player == 1) ? game->board_p2 : game->board_p1;
 
 	if (x >= board->height || y >= board->width)
 	{
