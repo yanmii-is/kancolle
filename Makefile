@@ -9,8 +9,8 @@ clean:
 
 test:
 	./kancolle < tests/random_b20_b11111.txt > /dev/null &> /dev/null
-	echo "[TEST 1/3] Exit code: $$?";\
+	echo "[TEST 1/3] 20x20 board with 1 of each boat | Exit code: $$?";\
 	./kancolle < tests/random_b20_b33333.txt > /dev/null &> /dev/null
-	echo "[TEST 2/3] Exit code: $$?";\
+	echo "[TEST 2/3] 20x20 board with 3 of each boat | Exit code: $$?";\
 	./kancolle < tests/random_b40_b99999.txt > /dev/null &> /dev/null
-	echo "[TEST 3/3] Exit code: $$?";\
+	echo "[TEST 3/3] 40x40 board with 9 of each boat | Exit code: $$?";\
