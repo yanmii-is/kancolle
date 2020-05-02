@@ -20,6 +20,19 @@ Alternatively, you can manually compile with `gcc -std=c99 -Wall -Werror -o kanc
 ## Running
 `./kancolle` on your favorite console window
 
+## Structure
+Simplified program flow diagrams are included as .drawio and .png: `diagram.drawio` and `diagram.png` <br>
+The program has the following classes:
+- main: Interacts with the game's backend, contains the I/O code.
+- game: Contains code relative to the game strcuture. A game structure contains two boards and the game state.
+- board: Contains code relative to the board structure. A board structure contains height, width, amount of boats, a cell matrix and list of boats.
+- boat: Contains code relative to the boat structure. A boat structure contains type, rotation, a bitmap matrix and life points.
+- config: Contains game settings and their predefined values.
+- log: Contains logging code.
+- utils: Contains utilities for I/O.
+- cell: Contains the cell structure.
+- stdafx: Contains return_code values and typedef for 1 and 2 byte (un)signed types.
+
 ## Tests
 There are 3 default input tests <br>
 Run all of them at once with `make -s test` <br>
