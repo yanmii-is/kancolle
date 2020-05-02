@@ -237,13 +237,15 @@ void settings()
 		clear();
 		printf("Current settings:\n");
 		newline();
-		printf("LOGGING = %s\n"         , LOGGING       ? "true" : "false");
-		printf("CLEAR_SCREEN = %s\n"    , CLEAR_SCREEN  ? "true" : "false");
-		printf("REPLAY_ON_HIT = %s\n"   , REPLAY_ON_HIT ? "true" : "false");
+		printf("LOGGING = %s\n"              , LOGGING               ? "true" : "false");
+		printf("CLEAR_SCREEN = %s\n"         , CLEAR_SCREEN          ? "true" : "false");
+		printf("REPLAY_ON_HIT = %s\n"        , REPLAY_ON_HIT         ? "true" : "false");
+		printf("SHOW_BOAT_TYPE_ON_HIT = %s\n", SHOW_BOAT_TYPE_ON_HIT ? "true" : "false");
 		newline();
 		printf("1) Toggle LOGGING\n");
 		printf("2) Toggle CLEAR_SCREEN\n");
 		printf("3) Toggle REPLAY_ON_HIT\n");
+		printf("4) Toggle SHOW_BOAT_TYPE_ON_HIT\n");
 		printf("9) Return to Main Menu\n");
 		newline();
 
@@ -257,6 +259,9 @@ void settings()
 				break;
 			case 3:
 				REPLAY_ON_HIT = !REPLAY_ON_HIT;
+				break;
+			case 4:
+				SHOW_BOAT_TYPE_ON_HIT = !SHOW_BOAT_TYPE_ON_HIT;
 				break;
 			case 9:
 				return;

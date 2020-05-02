@@ -10,3 +10,5 @@ extern bool LOGGING;
 extern bool CLEAR_SCREEN;
 // [false, true]
 extern bool REPLAY_ON_HIT;
+// [false, true]
+extern bool SHOW_BOAT_TYPE_ON_HIT;
