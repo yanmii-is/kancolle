@@ -11,10 +11,12 @@ Board* board_construct(u8 height, u8 width)
 		return NULL;
 	}
 
-	ret         = malloc(sizeof(Board));
-	ret->height = height;
-	ret->width  = width;
-	ret->matrix = (Cell*) malloc(width * height * sizeof(Cell));
+	ret          = malloc(sizeof(Board));
+	ret->height  = height;
+	ret->width   = width;
+	ret->n_boats = 0;
+	ret->matrix  = (Cell*) malloc(width * height * sizeof(Cell));
+	ret->boats   = (Boat**) malloc(width * height / 25 * sizeof(Boat*));
 
 	for (u8 x = 0; x < height; x++)
 	{
@@ -36,8 +38,20 @@ return_code board_destruct(Board* board)
 		return BOARD_INVALID_BOARD;
 	}
 
-	_logf(L_INFO, "Board (%hhu, %hhu) destructed", board->height, board->width);
+	// Destruct all Boat objects attached to this Board
+	for (s16 n = board->n_boats-1; n >= 0; n--)
+	{
+		boat_destruct(board->boats[n]);
+		board->n_boats--;
+	}
+
+	// Destruct the Boat pointers array
+	free(board->boats);
+
+	// Destruct the Cell matrix
 	free(board->matrix);
+
+	_logf(L_INFO, "Board (%hhu, %hhu) destructed", board->height, board->width);
 	free(board);
 
 	return RETURN_OK;
@@ -162,6 +176,9 @@ return_code board_add(Board* board, Boat* boat, s16 x, s16 y)
 			}
 		}
 	}
+
+	board->boats[board->n_boats] = boat;
+	board->n_boats++;
 
 	_logf(L_INFO, "Added boat with type %hhu to board", boat->type);
 

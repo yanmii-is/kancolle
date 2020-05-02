@@ -28,10 +28,9 @@ u8* setup_boatamounts(u8 boardsz)
 	u8*  boats     = (u8*) malloc((TYPE_TSHAPE_5 + 1) * sizeof(u8));
 	boats[0]       = 0;
 
+	// Ask for the amount of every type of boat in order
 	while (boats[0] == 0)
 	{
-		u16 all = 0;
-
 		for (u8 i = 1; i <= TYPE_TSHAPE_5; i++)
 		{
 			sprintf(prompt, "Choose the amount of type %hhu boats: ", i);
@@ -41,13 +40,11 @@ u8* setup_boatamounts(u8 boardsz)
 				printf("You must have at least one boat of each type in your game\n");
 				boats[i] = read_u8(prompt);
 			}
-			all += boats[i];
+			boats[0] += boats[i];
 		}
 
-		boats[0] = all;
-
-		// Overflow detected (u16 vs u8), user past the 255 limit or above max_boats limit
-		if (boats[0] != all || boats[0] > max_boats)
+		// User above max_boats limit
+		if (boats[0] > max_boats)
 		{
 			printf("You can't have more than %hhu boats on your game\n", max_boats);
 			boats[0] = 0;
@@ -56,7 +53,7 @@ u8* setup_boatamounts(u8 boardsz)
 	return boats;
 }
 
-void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
+void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool manual)
 {
 	Boat* boat = boat_construct(type, 0);
 	s16 x      = -1;
@@ -69,7 +66,7 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
 
 		while (true)
 		{
-			if (mode)
+			if (manual)
 			{
 				// Manual rotation
 				boat_print(boat);
@@ -93,7 +90,7 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
 	// Coordinates
 	while (x < 0 || y < 0 || x >= board->height || y >= board->width)
 	{
-		if (mode)
+		if (manual)
 		{
 			// Manual coordinates
 			printf("Choose the coordinates for your boat\n");
@@ -108,9 +105,10 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
 			y = rand() % (board->width  - 1);
 		}
 
+		// Attempt adding the boat
 		if (board_add(board, boat, x-2, y-2) != RETURN_OK)
 		{
-			if (mode)
+			if (manual)
 			{
 				printf("It's not possible to add the boat matrix on (%hd, %hd) to (%hd, %hd)\n",
 				(s16)(x-2), (s16)(y-2), (s16)(x+2), (s16)(y+2));

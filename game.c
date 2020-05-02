@@ -105,19 +105,16 @@ return_code game_verify(Game* game, u8 player)
 
 	board = (player == 1) ? game->board_p1 : game->board_p2;
 
-	for (u8 x = 0; x < board->height; x++)
+	for (u8 n = 0; n < board->n_boats; n++)
 	{
-		for (u8 y = 0; y < board->width; y++)
+		// Game still not over (found Boat Cell with life points)
+		if (board->boats[n]->life != 0)
 		{
-			// Game still not over (found Boat Cell without hit)
-			if (board->matrix[x * board->height + y].boat != 0x0 && board->matrix[x * board->height + y].shot == 0)
-			{
-				_logf(L_INFO, "verify_state: Found %hhu at %hhu, %hhu", board->matrix[x * board->height + y].shot, x, y);
-				game->state = false;
-				return RETURN_OK;
-			}
+			game->state = false;
+			return RETURN_OK;
 		}
 	}
+
 	// Game over
 	game->state = true;
 	return RETURN_OK;

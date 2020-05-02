@@ -1,6 +1,6 @@
 #include "boat.h"
 
-// Bitmap presets
+// Bitmap preset Linear size 1
 u8 bitmap_TL1[5][5] = {
 	{ 0, 0, 0, 0, 0 },
 	{ 0, 0, 0, 0, 0 },
@@ -8,6 +8,7 @@ u8 bitmap_TL1[5][5] = {
 	{ 0, 0, 0, 0, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
+// Bitmap preset Linear size 2
 u8 bitmap_TL2[5][5] = {
 	{ 0, 0, 0, 0, 0 },
 	{ 0, 0, 1, 0, 0 },
@@ -15,6 +16,7 @@ u8 bitmap_TL2[5][5] = {
 	{ 0, 0, 0, 0, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
+// Bitmap preset Linear size 3
 u8 bitmap_TL3[5][5] = {
 	{ 0, 0, 0, 0, 0 },
 	{ 0, 0, 1, 0, 0 },
@@ -22,6 +24,7 @@ u8 bitmap_TL3[5][5] = {
 	{ 0, 0, 1, 0, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
+// Bitmap preset Linear size 4
 u8 bitmap_TL4[5][5] = {
 	{ 0, 0, 1, 0, 0 },
 	{ 0, 0, 1, 0, 0 },
@@ -29,6 +32,7 @@ u8 bitmap_TL4[5][5] = {
 	{ 0, 0, 1, 0, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
+// Bitmap preset TShape size 5
 u8 bitmap_TT5[5][5] = {
 	{ 0, 0, 0, 0, 0 },
 	{ 0, 1, 1, 1, 0 },
@@ -70,6 +74,7 @@ Boat* boat_construct(BoatType type, BoatRotation rotation)
 			break;
 		default:
 			_logf(L_FATAL, "Attempted construction boat with invalid or unsupported type %d", type);
+			free(ret);
 			return NULL;
 	}
 
@@ -90,6 +95,7 @@ return_code boat_destruct(Boat* boat)
 	return RETURN_OK;
 }
 
+// Print the Boat's bitmap
 return_code boat_print(Boat* boat)
 {
 	if (boat == NULL)

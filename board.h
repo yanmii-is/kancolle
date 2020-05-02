@@ -8,7 +8,9 @@ typedef struct
 {
 	u8     height;
 	u8     width;
+	u8     n_boats;
 	Cell*  matrix;
+	Boat** boats;
 } Board;
 
 Board*       board_construct  (u8 height, u8 width);
