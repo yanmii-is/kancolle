@@ -83,6 +83,7 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool manual)
 				break;
 			}
 
+			// 90º clockwise rotation
 			boat_rotate(boat);
 		}
 	}
