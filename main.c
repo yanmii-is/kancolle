@@ -194,7 +194,7 @@ return_code player_move(Game* game, u8 player)
 		{
 			case GAME_INVALID_GAME:
 			case GAME_INVALID_PLAYER:
-				_logf(L_FATAL, "Internal error: invalid argument on player_move (0x%X)", code);
+				_logf(L_FATAL, "Internal error: invalid argument on player_move (0x%X)\n", code);
 				break;
 			case GAME_INVALID_COORDINATES:
 				printf("Invalid coordinates, the board is not that big!\n");
@@ -209,7 +209,7 @@ return_code player_move(Game* game, u8 player)
 				printf("You hit something!\n");
 				break;
 			default:
-				_logf(L_FATAL, "Internal error: unhandled error code on player_move (0x%X)", code);
+				_logf(L_FATAL, "Internal error: unhandled error code on player_move (0x%X)\n", code);
 		}
 	}
 

@@ -53,8 +53,6 @@ return_code game_attack(Game* game, u8 player, u8 x, u8 y)
 {
 	Board* board;
 
-	printf("%d %d", x, y);
-
 	if (game == NULL)
 	{
 		return GAME_INVALID_GAME;
