@@ -116,6 +116,6 @@ return_code game_verify(Game* game, u8 player)
 	}
 
 	// Game over
-	game->state = true;
+	game->state = player;
 	return RETURN_OK;
 }
