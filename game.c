@@ -13,6 +13,7 @@ Game* game_construct(u8 height, u8 width)
 	if (ret->board_p1 == NULL || ret->board_p2 == NULL)
 	{
 		_logf(L_FATAL, "Board creation failed, cannot initialize game");
+		game_destruct(ret);
 		return NULL;
 	}
 
