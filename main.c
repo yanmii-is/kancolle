@@ -58,14 +58,15 @@ u8* setup_boatamounts(u8 boardsz)
 
 void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
 {
-	Boat* boat  = boat_construct(type, 0);
-	bool rotate = false;
-	s16 x       = -1;
-	s16 y       = -1;
+	Boat* boat = boat_construct(type, 0);
+	s16 x      = -1;
+	s16 y      = -1;
 
 	// Rotation
 	if (type != TYPE_LINEAR_1)
 	{
+		bool rotate;
+
 		while (true)
 		{
 			if (mode)
@@ -111,7 +112,8 @@ void read_boat(Board* board, BoatType type, u8 remaining, u8 total, bool mode)
 		{
 			if (mode)
 			{
-				printf("It's not possible to add the boat matrix on (%hu, %hu) to (%hu, %hu)\n", x-2, y-2, x+2, y+2);
+				printf("It's not possible to add the boat matrix on (%hd, %hd) to (%hd, %hd)\n",
+				(s16)(x-2), (s16)(y-2), (s16)(x+2), (s16)(y+2));
 			}
 			x = -1;
 			y = -1;
@@ -144,8 +146,6 @@ return_code player_move(Game* game, u8 player)
 {
 	Board*      board;
 	return_code code;
-	s16         x;
-	s16         y;
 	bool        print;
 
 	switch (player)
@@ -160,8 +160,6 @@ return_code player_move(Game* game, u8 player)
 			_logf(L_FATAL, "Tried running player_move with player %hhu", player);
 			return false;
 	}
-
-	print = false;
 
 	clear();
 	printf("Player %hhu, it's your turn!\n", player);
@@ -187,8 +185,8 @@ return_code player_move(Game* game, u8 player)
 
 	while (code != GAME_ATTACK_HIT_SEA && code != GAME_ATTACK_HIT_BOAT)
 	{
-		x = read_u8("Vertical coordinate: ");
-		y = read_u8("Horizontal coordinate: ");
+		s16 x = read_u8("Vertical coordinate: ");
+		s16 y = read_u8("Horizontal coordinate: ");
 
 		code = game_attack(game, player, x, y);
 
@@ -220,9 +218,6 @@ return_code player_move(Game* game, u8 player)
 
 void settings()
 {
-	u8 menu;
-	menu = 0;
-
 	while (true)
 	{
 		clear();
@@ -237,9 +232,8 @@ void settings()
 		printf("3) Toggle REPLAY_ON_HIT\n");
 		printf("9) Return to Main Menu\n");
 		newline();
-		menu = read_u8("Choose a number: ");
 
-		switch (menu)
+		switch (read_u8("Choose a number: "))
 		{
 			case 1:
 				LOGGING = !LOGGING;
